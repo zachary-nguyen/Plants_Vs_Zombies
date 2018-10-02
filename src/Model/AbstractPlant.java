@@ -5,8 +5,12 @@ package Model;
  */
 public abstract class AbstractPlant extends Sprite{
 
-		public AbstactPlant(){
-			super();
+	public AbstactPlant(String name, int health, int damage){
+		super(name, health, damage);
+	}
+	
+	public AbstractPlant() {
+		super();
 	}
 	
 		

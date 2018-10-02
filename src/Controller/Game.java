@@ -38,7 +38,7 @@ public class Game{
         while(!response.equals("exit")){
             backyard.print();
 
-            System.out.println("What is your move? 'Add' 'Remove'");
+            System.out.println("What is your move? 'Add' 'Remove' 'Skip' ");
             response = scanner.next();
             response = response.trim();
             response = response.toLowerCase();
@@ -48,7 +48,6 @@ public class Game{
                 System.out.println("Select coordinates in format 'X Y' ");
                 response = scanner.nextLine();
                 response = response.trim();
-
 
             }
         }

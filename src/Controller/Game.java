@@ -19,10 +19,6 @@ public class Game{
         this.money = 250;
     }
 
-    public void responseTreatment(String response){
-
-    }
-
     public static void main(String[] args){
 
         //Set up the game
@@ -40,18 +36,23 @@ public class Game{
 
             System.out.println("What is your move? 'Add' 'Remove' 'Skip' ");
             response = scanner.next();
-            response = response.trim();
-            response = response.toLowerCase();
+            response = response.trim().toLowerCase();
 
             if(response.equals("add")){
                 scanner.nextLine();
                 System.out.println("Select coordinates in format 'X Y' ");
                 response = scanner.nextLine();
-                response = response.trim();
 
+                String[] coordinate = response.trim().split(" ");
+                int xValueToAdd = Integer.valueOf(coordinate[0]);
+                int yValueToAdd = Integer.valueOf(coordinate[1]);
+                //Make sure coordinates are in bound
+                if(xValueToAdd >= 0 && xValueToAdd < 19 && yValueToAdd >= 0 && yValueToAdd < 6) {
+                    backyard.addSprite(xValueToAdd, yValueToAdd, new Peashooter());
+                }else{
+                    System.out.println("Wrong coordinates!");
+                }
             }
         }
-
-
     }
 }

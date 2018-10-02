@@ -1,5 +1,6 @@
 /**
- *
+ * Plants vs Zombies
+ * Sprite Class used to model all entities in the game
  */
 public abstract class Sprite{
 

@@ -14,21 +14,40 @@ public abstract class Sprite{
 		this.damage = damage;
 	}
 	
+	public Sprite() {
+		name = null;
+		health = 0;
+		damage = 0;
+	}
 	
-	public void getName() {
+	
+	public String getName() {
 		return name;
 	}
 	
-	public void getHealth() {
+	public int getHealth() {
 		return health;
 	}
 	
-	public void getDamage() {
+	public int getDamage() {
 		return damage;
 	}
 	
 	public String toString() {
 		return getName();
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+	
 	
 }

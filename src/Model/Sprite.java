@@ -13,6 +13,7 @@ public abstract class Sprite{
 		this.damage = damage;
 	}
 	
+	
 	public void getName() {
 		return name;
 	}

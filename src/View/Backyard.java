@@ -6,9 +6,14 @@ import java.util.Arrays;
 
 public class Backyard {
 
-    private String[][] map;
     private static final int HEIGHT = 5;
     private static final int WIDTH = 18;
+
+    private String[][] map;
+
+    private int score;
+
+    private int money;
 
     public Backyard() {
         map = new String[HEIGHT][WIDTH];
@@ -44,5 +49,21 @@ public class Backyard {
             }
             System.out.println();
         }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }

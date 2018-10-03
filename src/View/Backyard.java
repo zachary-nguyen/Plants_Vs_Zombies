@@ -39,7 +39,7 @@ public class Backyard {
      * @param y y coordinate of plant to remove
      */
     public void removeSprite(int x, int y) {
-        map[x][y] = null;
+        map[y][x] = "-";
     }
 
     public void print() {

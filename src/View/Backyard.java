@@ -24,7 +24,7 @@ public class Backyard {
      * @param sprite Which type of plant is being added
      */
     public void addSprite(int x, int y, Sprite sprite) {
-       map[x][y] = sprite.getName();
+       map[y][x] = sprite.getName();
     }
 
     /**

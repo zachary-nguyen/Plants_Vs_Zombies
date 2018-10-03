@@ -37,20 +37,26 @@ public class Game{
             System.out.println("What is your move? 'Add' 'Remove' 'Skip' ");
             response = scanner.next();
             response = response.trim().toLowerCase();
+            scanner.nextLine();
 
             if(response.equals("add")){
-                scanner.nextLine();
-                System.out.println("Select coordinates in format 'X Y' ");
-                response = scanner.nextLine();
+                boolean addFlag = false;
+                while(true) {
 
-                String[] coordinate = response.trim().split(" ");
-                int xValueToAdd = Integer.valueOf(coordinate[0]);
-                int yValueToAdd = Integer.valueOf(coordinate[1]);
-                //Make sure coordinates are in bound
-                if(xValueToAdd >= 0 && xValueToAdd < 19 && yValueToAdd >= 0 && yValueToAdd < 6) {
-                    backyard.addSprite(xValueToAdd, yValueToAdd, new Peashooter());
-                }else{
-                    System.out.println("Wrong coordinates!");
+                    System.out.println("Select coordinates in format 'X Y' ");
+                    response = scanner.nextLine();
+
+                    String[] coordinate = response.trim().split(" ");
+                    int xValueToAdd = Integer.valueOf(coordinate[0]);
+                    int yValueToAdd = Integer.valueOf(coordinate[1]);
+
+                    //Make sure coordinates are in bound
+                    if (xValueToAdd >= 0 && xValueToAdd < 19 && yValueToAdd >= 0 && yValueToAdd < 6) {
+                        backyard.addSprite(xValueToAdd, yValueToAdd, new Peashooter());
+                        break;
+                    } else {
+                        System.out.println("Wrong coordinates!");
+                    }
                 }
             }
         }

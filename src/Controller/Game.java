@@ -5,61 +5,58 @@ import View.Backyard;
 
 import java.util.Scanner;
 
-public class Game{
+public class Game {
 
     private Backyard backyard;
+
     /**
      * Constructor for game.
      */
-    public Game(){
+    public Game() {
         this.backyard = new Backyard();
     }
 
     /**
      * Helper method for main method to get coordinates to add/remove sprite.
      */
-    private String[] inputCoordinates(){
+    private String[] inputCoordinates() {
         Scanner scanner = new Scanner(System.in);
         int xValueToAdd = 0;
         int yValueToAdd = 0;
+        String[] coordinate;
 
-        System.out.println("Select coordinates in format 'X Y' ");
-        String response = scanner.nextLine();
-        String[] coordinate = response.trim().split(" ");
-
-        if(coordinate.length==2){
-            xValueToAdd = Integer.valueOf(coordinate[0]);
-            yValueToAdd = Integer.valueOf(coordinate[1]);
-        }
-
-        while(xValueToAdd < 0 || xValueToAdd > 19 || yValueToAdd <0 || yValueToAdd >5 ||coordinate.length != 2) {
-            if(coordinate.length!=2){
-                System.out.println("Invalid Coordinates");
-            }else {
-                System.out.println("Coordinates out of bounds!");
-            }
+        while (true) {
             System.out.println("Select coordinates in format 'X Y' ");
-
-            response = scanner.nextLine();
+            String response = scanner.nextLine();
             coordinate = response.trim().split(" ");
 
-            if(coordinate.length==2){
+            if (coordinate.length == 2) {
                 xValueToAdd = Integer.valueOf(coordinate[0]);
                 yValueToAdd = Integer.valueOf(coordinate[1]);
+
+                //Make sure coordinates are in bound
+                if (xValueToAdd < 0 || xValueToAdd > 19 || yValueToAdd < 0 || yValueToAdd > 5) {
+                    System.out.println("Coordinates out of bounds");
+                }else{
+                    //Coordinates are valid break the loop
+                    break;
+                }
+            } else {
+                System.out.println("Invalid Coordinates");
             }
         }
         return coordinate;
     }
 
-    public void parse(String command){
-        switch(command){
+    public void parse(String command) {
+        switch (command) {
             case "add":
                 String[] addCoordinate = inputCoordinates();
-                backyard.addSprite(Integer.valueOf(addCoordinate[0]),Integer.valueOf(addCoordinate[1]),new Peashooter());
+                backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Peashooter());
                 break;
             case "remove":
                 String[] removeCoordinate = inputCoordinates();
-                backyard.removeSprite(Integer.valueOf(removeCoordinate[0]),Integer.valueOf(removeCoordinate[1]));
+                backyard.removeSprite(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
                 break;
             case "skip":
                 break;
@@ -72,30 +69,30 @@ public class Game{
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-            //Set up the game
-            final Game game = new Game();
+        //Set up the game
+        final Game game = new Game();
 
-            //user input
-            Scanner scanner = new Scanner(System.in);
+        //user input
+        Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Type anything to start game :");
-            String response = scanner.next();
+        System.out.println("Type anything to start game :");
+        String response = scanner.next();
 
-            while (!response.equals("exit")) {
-                //Print the backyard
-                game.getBackyard().print();
+        while (!response.equals("exit")) {
+            //Print the backyard
+            game.getBackyard().print();
 
-                System.out.println("What is your move? 'Add' 'Remove' 'Skip' 'Exit'");
-                response = scanner.next();
-                response = response.trim().toLowerCase();
-                scanner.nextLine();
+            System.out.println("What is your move? 'Add' 'Remove' 'Skip' 'Exit'");
+            response = scanner.next();
+            response = response.trim().toLowerCase();
+            scanner.nextLine();
 
-                //Treat User response
+            //Treat User response
 
-                game.parse(response);
-            }
+            game.parse(response);
+        }
     }
 
     public Backyard getBackyard() {

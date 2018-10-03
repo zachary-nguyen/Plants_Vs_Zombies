@@ -51,7 +51,7 @@ public class Game{
                     int yValueToAdd = Integer.valueOf(coordinate[1]);
 
                     //Make sure coordinates are in bound
-                    if (xValueToAdd >= 0 && xValueToAdd < 19 && yValueToAdd >= 0 && yValueToAdd < 6) {
+                    if (xValueToAdd >= 0 && xValueToAdd < 19 && yValueToAdd >= 0 && yValueToAdd < 5) {
                         backyard.addSprite(xValueToAdd, yValueToAdd, new Peashooter());
                         break;
                     } else {

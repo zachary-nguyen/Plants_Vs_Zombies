@@ -46,6 +46,7 @@ public abstract class Sprite{
         this.damage = damage;
     }
 
+    @Override
     public String toString() {
         return getName();
     }

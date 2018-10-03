@@ -16,33 +16,58 @@ public class Game{
     }
 
     /**
-     * Helper method for main method to add sprite.
+     * Helper method for main method to get coordinates to add/remove sprite.
      */
-    private void addSprite(){
+    private String[] inputCoordinates(){
         Scanner scanner = new Scanner(System.in);
+        int xValueToAdd = 0;
+        int yValueToAdd = 0;
+
         System.out.println("Select coordinates in format 'X Y' ");
-
         String response = scanner.nextLine();
+        String[] coordinate = response.trim().split(" ");
 
-        while(true) {
+        if(coordinate.length==2){
+            xValueToAdd = Integer.valueOf(coordinate[0]);
+            yValueToAdd = Integer.valueOf(coordinate[1]);
+        }
 
-            String[] coordinate = response.trim().split(" ");
-
-            if (coordinate.length == 2) {
-                int xValueToAdd = Integer.valueOf(coordinate[0]);
-                int yValueToAdd = Integer.valueOf(coordinate[1]);
-
-                //Make sure coordinates are in bound
-                if (xValueToAdd >= 0 && xValueToAdd < 19 && yValueToAdd >= 0 && yValueToAdd < 5) {
-                    backyard.addSprite(xValueToAdd, yValueToAdd, new Peashooter());
-                    break;
-                } else {
-                    System.out.println("Coordinates out of bonds!");
-                }
-            } else {
-                System.out.println("Invalid coordinates!");
+        while(xValueToAdd < 0 || xValueToAdd > 19 || yValueToAdd <0 || yValueToAdd >5 ||coordinate.length != 2) {
+            if(coordinate.length!=2){
+                System.out.println("Invalid Coordinates");
+            }else {
+                System.out.println("Coordinates out of bounds!");
             }
             System.out.println("Select coordinates in format 'X Y' ");
+
+            response = scanner.nextLine();
+            coordinate = response.trim().split(" ");
+
+            if(coordinate.length==2){
+                xValueToAdd = Integer.valueOf(coordinate[0]);
+                yValueToAdd = Integer.valueOf(coordinate[1]);
+            }
+        }
+        return coordinate;
+    }
+
+    public void parse(String command){
+        switch(command){
+            case "add":
+                String[] addCoordinate = inputCoordinates();
+                backyard.addSprite(Integer.valueOf(addCoordinate[0]),Integer.valueOf(addCoordinate[1]),new Peashooter());
+                break;
+            case "remove":
+                String[] removeCoordinate = inputCoordinates();
+                backyard.removeSprite(Integer.valueOf(removeCoordinate[0]),Integer.valueOf(removeCoordinate[1]));
+                break;
+            case "skip":
+                break;
+            case "exit":
+                break;
+            default:
+                System.out.println("Invalid command!");
+                break;
 
         }
     }
@@ -68,9 +93,8 @@ public class Game{
                 scanner.nextLine();
 
                 //Treat User response
-                if (response.equals("add")) {
-                    game.addSprite();
-                }
+
+                game.parse(response);
             }
     }
 

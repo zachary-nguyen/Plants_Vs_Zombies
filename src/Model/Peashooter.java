@@ -3,14 +3,13 @@ package Model;
 public class Peashooter extends AbstractPlant {
 
     public Peashooter() {
-        super("P", 100, 20, 0,100);
+        super("P", 100, 20, 2,100);
     }
 
 
     public boolean canShoot() {
-        this.setCounter(this.getCounter() + 1);
-        if (this.getCounter() == 2) {
-            this.setCounter(0);
+        if (this.getCounter() == 0) {
+            this.setCounter(2);
             return true;
         }
         return false;

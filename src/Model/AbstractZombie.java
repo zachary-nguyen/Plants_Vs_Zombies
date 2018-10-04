@@ -3,7 +3,7 @@ package Model;
 /**
  *
  */
-public abstract class AbstractZombie extends Sprite{
+public abstract class AbstractZombie extends Sprite {
 
     private int speed;
 

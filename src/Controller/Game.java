@@ -21,8 +21,8 @@ public class Game {
      */
     private String[] inputCoordinates() {
         Scanner scanner = new Scanner(System.in);
-        int xValueToAdd = 0;
-        int yValueToAdd = 0;
+        int xValueToAdd;
+        int yValueToAdd;
         String[] coordinate;
 
         while (true) {
@@ -37,7 +37,7 @@ public class Game {
                 //Make sure coordinates are in bound
                 if (xValueToAdd < 0 || xValueToAdd > 19 || yValueToAdd < 0 || yValueToAdd > 5) {
                     System.out.println("Coordinates out of bounds");
-                }else{
+                } else {
                     //Coordinates are valid break the loop
                     break;
                 }
@@ -54,7 +54,7 @@ public class Game {
                 String[] addCoordinate = inputCoordinates();
                 backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Peashooter());
                 break;
-            case "remove":
+            case "shovel":
                 String[] removeCoordinate = inputCoordinates();
                 backyard.removeSprite(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
                 break;
@@ -84,7 +84,7 @@ public class Game {
             //Print the backyard
             game.getBackyard().print();
 
-            System.out.println("What is your move? 'Add' 'Remove' 'Skip' 'Exit'");
+            System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Exit'");
             response = scanner.next();
             response = response.trim().toLowerCase();
             scanner.nextLine();

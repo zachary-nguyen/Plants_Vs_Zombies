@@ -6,7 +6,6 @@ import View.Backyard;
 import java.util.Scanner;
 
 public class Game {
-
     private Backyard backyard;
 
     /**

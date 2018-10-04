@@ -9,17 +9,20 @@ public abstract class Sprite {
     private String name;
     private int health;
     private int damage;
+    private int counter;
 
     public Sprite() {
         name = null;
         health = 0;
         damage = 0;
+        counter = 0;
     }
 
-    public Sprite(String name, int health, int damage) {
+    public Sprite(String name, int health, int damage, int counter) {
         this.name = name;
         this.health = health;
         this.damage = damage;
+        this.counter = counter;
     }
 
     public String getName() {
@@ -44,6 +47,14 @@ public abstract class Sprite {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 
     @Override

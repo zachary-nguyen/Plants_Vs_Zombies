@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Peashooter;
+import Model.Zombie;
 import View.Backyard;
 
 import java.util.Scanner;
@@ -9,11 +10,17 @@ public class Game {
 
     private Backyard backyard;
 
+    private int score;
+
+    private int money;
+
     /**
      * Constructor for game.
      */
     public Game() {
         this.backyard = new Backyard();
+        this.score = 0;
+        this.money = 300;
     }
 
     /**
@@ -59,6 +66,7 @@ public class Game {
                 backyard.removeSprite(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
                 break;
             case "skip":
+                backyard.updateBackyard();
                 break;
             case "exit":
                 break;
@@ -81,9 +89,10 @@ public class Game {
         String response = scanner.next();
 
         while (!response.equals("exit")) {
-            //Print the backyard
-            game.getBackyard().print();
 
+            System.out.println("----------WAVE 1----------");
+            System.out.println("Score: " + game.score + " Money : " + game.money);
+            game.getBackyard().print(); //print backyard
             System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Exit'");
             response = scanner.next();
             response = response.trim().toLowerCase();
@@ -97,5 +106,21 @@ public class Game {
 
     public Backyard getBackyard() {
         return backyard;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }

@@ -6,9 +6,9 @@ public class Sunflower extends AbstractPlant {
     }
 
     public void generateSun() {
-        if (getCounter() == 3) {
-            setName("C");
-            setCounter(0);
+        if (getCounter() == 0) {
+            this.setName("C");
+            this.setCounter(3);
         }
     }
 }

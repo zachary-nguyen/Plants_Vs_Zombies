@@ -2,7 +2,7 @@
 SYSC 3110 Group Project
 
 Team Members:
-Zachary Nguyen
-Fareed Ahmad
-Mathew Smith
+Zachary Nguyen,
+Fareed Ahmad,
+Mathew Smith,
 Eric Cosoreanu

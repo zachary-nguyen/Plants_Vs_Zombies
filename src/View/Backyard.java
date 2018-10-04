@@ -1,8 +1,10 @@
 package View;
 
 import Model.Sprite;
+import Model.Zombie;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Backyard {
 
@@ -21,6 +23,17 @@ public class Backyard {
             Arrays.fill(row, "-");
     }
 
+    public int randomGenerator() {
+        Random rand = new Random();
+        int n = rand.nextInt(HEIGHT - 1) + 1;
+        return n;
+    }
+
+    public void spawnZombie() {
+        Zombie z = new Zombie();
+        addSprite(WIDTH - 1, randomGenerator(), z);
+    }
+
     /**
      * Adds a new sprite to the map
      *
@@ -29,7 +42,9 @@ public class Backyard {
      * @param sprite Which type of plant is being added
      */
     public void addSprite(int x, int y, Sprite sprite) {
-        map[y][x] = sprite.getName();
+        if (map[y][x] == null) {
+            map[y][x] = sprite.getName();
+        }
     }
 
     /**

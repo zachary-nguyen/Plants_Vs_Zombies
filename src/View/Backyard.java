@@ -1,37 +1,22 @@
 package View;
 
+import Model.AbstractZombie;
 import Model.Sprite;
 import Model.Zombie;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class Backyard {
 
     private static final int HEIGHT = 5;
     private static final int WIDTH = 18;
 
-    private String[][] map;
-
-    private int score;
-
-    private int money;
+    private Sprite[][] map;
 
     public Backyard() {
-        map = new String[HEIGHT][WIDTH];
-        for (String[] row : map)
-            Arrays.fill(row, "-");
-    }
-
-    public int randomGenerator() {
-        Random rand = new Random();
-        int n = rand.nextInt(HEIGHT - 1) + 1;
-        return n;
-    }
-
-    public void spawnZombie() {
-        Zombie z = new Zombie();
-        addSprite(WIDTH - 1, randomGenerator(), z);
+        map = new Sprite[HEIGHT][WIDTH];
+        for (Sprite[] row : map)
+            Arrays.fill(row, null);
     }
 
     /**
@@ -42,9 +27,7 @@ public class Backyard {
      * @param sprite Which type of plant is being added
      */
     public void addSprite(int x, int y, Sprite sprite) {
-        if (map[y][x] == null) {
-            map[y][x] = sprite.getName();
-        }
+        map[y][x] = sprite;
     }
 
     /**
@@ -54,31 +37,42 @@ public class Backyard {
      * @param y y coordinate of plant to remove
      */
     public void removeSprite(int x, int y) {
-        map[y][x] = "-";
+        map[y][x] = null;
+    }
+
+    /**
+     * Method that updates all the objects in the backyard and makes them perform actions
+     */
+    public void updateBackyard() {
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                if(map[row][col] instanceof AbstractZombie){
+                    AbstractZombie zombie = (AbstractZombie)map[row][col];
+                    //Move Zombie according to speed
+                    map[row][col-zombie.getSpeed()] = zombie;
+                    map[row][col] = null; //Reset the tile zombie was previously on
+//                }else if(){
+//                    //TODO: Add sunflower treatment
+//                }else if(){
+//                    //TODO: Add plant treatment
+                }else{
+                    //do nothing
+                }
+            }
+        }
+
     }
 
     public void print() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
-                System.out.print(map[row][col] + " ");
+                if(map[row][col] == null){
+                    System.out.print("- ");
+                }else {
+                    System.out.print(map[row][col].toString() + " ");
+                }
             }
             System.out.println();
         }
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 }

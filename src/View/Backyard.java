@@ -1,8 +1,6 @@
 package View;
 
-import Model.AbstractZombie;
-import Model.Sprite;
-import Model.Zombie;
+import Model.*;
 
 import java.util.Arrays;
 
@@ -44,18 +42,32 @@ public class Backyard {
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() {
-        for (int row = 0; row < HEIGHT; row++) {
-            for (int col = 0; col < WIDTH; col++) {
-                if(map[row][col] instanceof AbstractZombie){
-                    AbstractZombie zombie = (AbstractZombie)map[row][col];
+        for (int row = 0; row < HEIGHT - 1; row++) {
+            for (int col = 0; col < WIDTH - 1; col++) {
+                if (map[row][col] == null) {
+                    continue;
+                }
+                map[row][col].setCounter(map[row][col].getCounter() - 1);
+                if (map[row][col] instanceof AbstractZombie) {
+                    AbstractZombie zombie = (AbstractZombie) map[row][col];
                     //Move Zombie according to speed
-                    map[row][col-zombie.getSpeed()] = zombie;
+                    map[row][col - zombie.getSpeed()] = zombie;
                     map[row][col] = null; //Reset the tile zombie was previously on
-//                }else if(){
-//                    //TODO: Add sunflower treatment
-//                }else if(){
-//                    //TODO: Add plant treatment
-                }else{
+                } else if (map[row][col] instanceof Sunflower) {
+                    Sunflower sunflower = (Sunflower) map[row][col];
+                    sunflower.generateSun();
+                } else if (map[row][col] instanceof Peashooter) {
+                    Peashooter peashooter = (Peashooter) map[row][col];
+                    if (peashooter.canShoot()) {
+                        map[row][col + 1] = peashooter.shoot();
+                        col++;
+                    }
+                } else if (map[row][col] instanceof Bullet) {
+                    Bullet bullet = (Bullet) map[row][col];
+                    map[row][col + 1] = bullet;
+                    map[row][col] = null;
+                    col++;
+                } else {
                     //do nothing
                 }
             }
@@ -66,9 +78,9 @@ public class Backyard {
     public void print() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
-                if(map[row][col] == null){
+                if (map[row][col] == null) {
                     System.out.print("- ");
-                }else {
+                } else {
                     System.out.print(map[row][col].toString() + " ");
                 }
             }

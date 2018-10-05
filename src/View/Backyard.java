@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class Backyard {
 
-    private static final int HEIGHT = 5;
-    private static final int WIDTH = 18;
+    public static final int HEIGHT = 5;
+    public static final int WIDTH = 18;
 
     private Sprite[][] map;
 
@@ -44,35 +44,34 @@ public class Backyard {
     public void updateBackyard() {
         for (int row = 0; row < HEIGHT - 1; row++) {
             for (int col = 0; col < WIDTH - 1; col++) {
-                if (map[row][col] == null) {
-                    continue;
-                }
-                map[row][col].setCounter(map[row][col].getCounter() - 1);
-                if (map[row][col] instanceof AbstractZombie) {
-                    AbstractZombie zombie = (AbstractZombie) map[row][col];
-                    //Move Zombie according to speed
-                    map[row][col - zombie.getSpeed()] = zombie;
-                    map[row][col] = null; //Reset the tile zombie was previously on
-                } else if (map[row][col] instanceof Sunflower) {
-                    Sunflower sunflower = (Sunflower) map[row][col];
-                    sunflower.generateSun();
-                } else if (map[row][col] instanceof Peashooter) {
-                    Peashooter peashooter = (Peashooter) map[row][col];
-                    if (peashooter.canShoot()) {
-                        map[row][col + 1] = peashooter.shoot();
+                Sprite sprite = map[row][col];
+                if(sprite != null) { // Null-pointer safeguard
+                    sprite.decrementCounter();
+                    if (sprite instanceof AbstractZombie) {
+                        AbstractZombie zombie = (AbstractZombie) sprite;
+                        //Move Zombie according to speed
+                        map[row][col - zombie.getSpeed()] = zombie;
+                        map[row][col] = null; //Reset the tile zombie was previously on
+                    } else if (sprite instanceof Sunflower) {
+                        Sunflower sunflower = (Sunflower) sprite;
+                        sunflower.generateSun();
+                    } else if (sprite instanceof Peashooter) {
+                        Peashooter peashooter = (Peashooter) sprite;
+                        if (peashooter.canShoot()) {
+                            map[row][col + 1] = peashooter.shoot();
+                            col++;
+                        }
+                    } else if (sprite instanceof Bullet) {
+                        Bullet bullet = (Bullet) sprite;
+                        map[row][col + 1] = bullet;
+                        map[row][col] = null;
                         col++;
+                    } else {
+                        //do nothing
                     }
-                } else if (map[row][col] instanceof Bullet) {
-                    Bullet bullet = (Bullet) map[row][col];
-                    map[row][col + 1] = bullet;
-                    map[row][col] = null;
-                    col++;
-                } else {
-                    //do nothing
                 }
             }
         }
-
     }
 
     public void print() {

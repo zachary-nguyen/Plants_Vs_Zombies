@@ -57,6 +57,10 @@ public abstract class Sprite {
         this.counter = counter;
     }
 
+    public void decrementCounter(){
+        this.setCounter(this.getCounter() - 1);
+    }
+
     @Override
     public String toString() {
         return getName();

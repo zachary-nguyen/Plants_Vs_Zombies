@@ -39,13 +39,33 @@ public class Backyard {
     }
 
     /**
+     * Collects all the sun on the map
+     *
+     * Returns the total amount of money gathered by all the sunflower plants.
+     */
+    public int collectSun() {
+        int money = 0;
+        for (int row = 0; row < HEIGHT - 1; row++) {
+            for (int col = 0; col < WIDTH - 1; col++) {
+                if (map[row][col] instanceof Sunflower) {
+                    Sunflower sunflower = (Sunflower) map[row][col];
+                    if (sunflower.isCollect()) {
+                        money += sunflower.collectSun();
+                    }
+                }
+            }
+        }
+        return money;
+    }
+
+    /**
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() {
         for (int row = 0; row < HEIGHT - 1; row++) {
             for (int col = 0; col < WIDTH - 1; col++) {
                 Sprite sprite = map[row][col];
-                if(sprite != null) { // Null-pointer safeguard
+                if (sprite != null) { // Null-pointer safeguard
                     sprite.decrementCounter();
                     if (sprite instanceof AbstractZombie) {
                         AbstractZombie zombie = (AbstractZombie) sprite;

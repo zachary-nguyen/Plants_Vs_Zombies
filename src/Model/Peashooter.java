@@ -6,7 +6,6 @@ public class Peashooter extends AbstractPlant {
         super("P", 100, 20, 2,100);
     }
 
-
     public boolean canShoot() {
         if (this.getCounter() == 0) {
             this.setCounter(2);

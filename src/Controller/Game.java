@@ -70,6 +70,9 @@ public class Game {
             case "skip":
                 backyard.updateBackyard();
                 break;
+            case "collect":
+                money += backyard.collectSun();
+                break;
             case "exit":
                 break;
             default:
@@ -136,7 +139,7 @@ public class Game {
             System.out.println("----------WAVE 1----------");
             System.out.println("Score: " + game.score + " Money : " + game.money);
             game.getBackyard().print(); //print backyard
-            System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Exit'");
+            System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
             response = scanner.next();
             response = response.trim().toLowerCase();
             scanner.nextLine();

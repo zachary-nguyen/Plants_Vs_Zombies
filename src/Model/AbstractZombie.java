@@ -1,7 +1,7 @@
 package Model;
 
 /**
- *
+ * Class models a abstract Zombie
  */
 public abstract class AbstractZombie extends Sprite {
 

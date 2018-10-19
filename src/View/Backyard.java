@@ -2,7 +2,7 @@ package View;
 
 import Model.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class Backyard {
 
@@ -17,6 +17,16 @@ public class Backyard {
             Arrays.fill(row, null);
     }
 
+    public int randomGenerator() {
+        Random rand = new Random();
+        return rand.nextInt(HEIGHT - 1) + 1;
+    }
+
+    public void spawnZombie() {
+        Zombie z = new Zombie();
+        addSprite(WIDTH - 1, randomGenerator(), z);
+    }
+
     /**
      * Adds a new sprite to the map
      *
@@ -25,7 +35,9 @@ public class Backyard {
      * @param sprite Which type of plant is being added
      */
     public void addSprite(int x, int y, Sprite sprite) {
-        map[y][x] = sprite;
+        if (map[y][x] == null) {
+            map[y][x] = sprite;
+        }
     }
 
     /**
@@ -72,6 +84,7 @@ public class Backyard {
                         //Move Zombie according to speed
                         map[row][col - zombie.getSpeed()] = zombie;
                         map[row][col] = null; //Reset the tile zombie was previously on
+
                     } else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
                         sunflower.generateSun();

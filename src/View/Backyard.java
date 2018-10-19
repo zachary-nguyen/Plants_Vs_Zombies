@@ -8,6 +8,7 @@ public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
+    private int  spawnCounter = 4;
 
     private Sprite[][] map;
 
@@ -57,8 +58,8 @@ public class Backyard {
      */
     public int collectSun() {
         int money = 0;
-        for (int row = 0; row < HEIGHT - 1; row++) {
-            for (int col = 0; col < WIDTH - 1; col++) {
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
                 if (map[row][col] instanceof Sunflower) {
                     Sunflower sunflower = (Sunflower) map[row][col];
                     if (sunflower.isCollect()) {
@@ -74,8 +75,9 @@ public class Backyard {
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() {
-        for (int row = 0; row < HEIGHT - 1; row++) {
-            for (int col = 0; col < WIDTH - 1; col++) {
+
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
                 Sprite sprite = map[row][col];
                 if (sprite != null) { // Null-pointer safeguard
                     sprite.decrementCounter();
@@ -104,6 +106,12 @@ public class Backyard {
                     }
                 }
             }
+        }
+        //Spawn zombie when needed after the turn is done
+        spawnCounter --;
+        if(spawnCounter == 0){
+            spawnZombie();
+            spawnCounter = randomGenerator();
         }
     }
 

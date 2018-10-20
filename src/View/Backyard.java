@@ -8,7 +8,7 @@ public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
-    private int spawnCounter = 4;
+    private int spawnCounter = 5;
 
     private Sprite[][] map;
 
@@ -53,7 +53,7 @@ public class Backyard {
 
     /**
      * Collects all the sun on the map
-     * <p>
+     *
      * Returns the total amount of money gathered by all the sunflower plants.
      */
     public int collectSun() {
@@ -83,18 +83,34 @@ public class Backyard {
                     sprite.decrementCounter();
                     if (sprite instanceof AbstractZombie) {
                         AbstractZombie zombie = (AbstractZombie) sprite;
+                        //check if zombie reaches end of screen
+                        if (col - zombie.getSpeed() < 0) {
+                            map[row][col] = null;
+                            //decrease lives or game over
+                            continue;
+                        }
                         //Check if zombie is walking into a bullet and decrease health if needed
-                        if(map[row][col - zombie.getSpeed()] instanceof Bullet){
+                        if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
                             Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
                             map[row][col - zombie.getSpeed()] = zombie;
-                            zombie.setHealth(zombie.getHealth()-bullet.getDamage());
-                            if(zombie.getHealth() <=0){
-                                map[row][col + bullet.getSpeed()] = null;
+                            map[row][col] = null; //Reset the tile zombie was previously on
+                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                            if (zombie.getHealth() <= 0) {
+                                map[row][col - zombie.getSpeed()] = null;
                             }
-                        }else{ //else if there is no collision move the zombie
+                        //Check if zombie can attack plant
+                        }else if(map[row][col - zombie.getSpeed()] instanceof AbstractPlant){
+                            AbstractPlant plant = (AbstractPlant) map[row][col - zombie.getSpeed()];
+                            plant.setHealth(plant.getHealth()-zombie.getDamage());
+                            if(plant.getHealth() <=0){
+                                map[row][col - zombie.getSpeed()] = zombie;
+                                map[row][col] = null;
+                            }
+                        } else { //else if there is no collision move the zombie
                             map[row][col - zombie.getSpeed()] = zombie;
+                            map[row][col] = null; //Reset the tile zombie was previously on
                         }
-                        map[row][col] = null; //Reset the tile zombie was previously on
+
 
                     } else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
@@ -107,11 +123,16 @@ public class Backyard {
                         }
                     } else if (sprite instanceof Bullet) {
                         Bullet bullet = (Bullet) sprite;
+                        //check if bullet goes off screen
+                        if (col + bullet.getSpeed() > WIDTH-1) {
+                            map[row][col] = null;
+                            continue;
+                        }
                         //check if the bullet will collide with a zombie
                         if (map[row][col + bullet.getSpeed()] instanceof AbstractZombie) {
                             AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
                             zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                            if(zombie.getHealth() <=0){
+                            if (zombie.getHealth() <= 0) {
                                 map[row][col + bullet.getSpeed()] = null;
                             }
                             map[row][col] = null;

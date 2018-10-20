@@ -89,29 +89,7 @@ public class Backyard {
                             //decrease lives or game over
                             continue;
                         }
-                        //Check if zombie is walking into a bullet and decrease health if needed
-                        if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
-                            Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
-                            map[row][col - zombie.getSpeed()] = zombie;
-                            map[row][col] = null; //Reset the tile zombie was previously on
-                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                            if (zombie.getHealth() <= 0) {
-                                map[row][col - zombie.getSpeed()] = null;
-                            }
-                        //Check if zombie can attack plant
-                        }else if(map[row][col - zombie.getSpeed()] instanceof AbstractPlant){
-                            AbstractPlant plant = (AbstractPlant) map[row][col - zombie.getSpeed()];
-                            plant.setHealth(plant.getHealth()-zombie.getDamage());
-                            if(plant.getHealth() <=0){
-                                map[row][col - zombie.getSpeed()] = zombie;
-                                map[row][col] = null;
-                            }
-                        } else { //else if there is no collision move the zombie
-                            map[row][col - zombie.getSpeed()] = zombie;
-                            map[row][col] = null; //Reset the tile zombie was previously on
-                        }
-
-
+                        this.treatZombieCollision(row,col,zombie); //call collision helper method
                     } else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
                         sunflower.generateSun();
@@ -153,6 +131,37 @@ public class Backyard {
         if (spawnCounter == 0) {
             spawnZombie();
             spawnCounter = randomGenerator();
+        }
+    }
+
+    /**
+     * Helper method to treat zombie collision
+     * @param row row index on map
+     * @param col col index on map
+     * @param zombie Zombie being treated
+     */
+    public void treatZombieCollision(int row, int col, AbstractZombie zombie){
+
+        //Check if zombie is walking into a bullet and decrease health if needed
+        if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
+            Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
+            map[row][col - zombie.getSpeed()] = zombie;
+            map[row][col] = null; //Reset the tile zombie was previously on
+            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+            if (zombie.getHealth() <= 0) {
+                map[row][col - zombie.getSpeed()] = null;
+            }
+            //Check if zombie can attack plant
+        }else if(map[row][col - zombie.getSpeed()] instanceof AbstractPlant){
+            AbstractPlant plant = (AbstractPlant) map[row][col - zombie.getSpeed()];
+            plant.setHealth(plant.getHealth()-zombie.getDamage());
+            if(plant.getHealth() <=0){
+                map[row][col - zombie.getSpeed()] = zombie;
+                map[row][col] = null;
+            }
+        } else { //else if there is no collision move the zombie
+            map[row][col - zombie.getSpeed()] = zombie;
+            map[row][col] = null; //Reset the tile zombie was previously on
         }
     }
 

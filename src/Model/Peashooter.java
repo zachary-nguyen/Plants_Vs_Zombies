@@ -3,7 +3,7 @@ package Model;
 public class Peashooter extends AbstractPlant {
 
     public Peashooter() {
-        super("P", 100, 20, 2,100);
+        super("P", 100, 50, 2,100);
     }
 
     public boolean canShoot() {
@@ -15,6 +15,6 @@ public class Peashooter extends AbstractPlant {
     }
 
     public Bullet shoot() {
-        return new Bullet(10, 1);
+        return new Bullet(getDamage(), 1);
     }
 }

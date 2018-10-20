@@ -8,6 +8,7 @@ public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
+    private int spawnCounter = 5;
 
     private Sprite[][] map;
 
@@ -57,8 +58,8 @@ public class Backyard {
      */
     public int collectSun() {
         int money = 0;
-        for (int row = 0; row < HEIGHT - 1; row++) {
-            for (int col = 0; col < WIDTH - 1; col++) {
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
                 if (map[row][col] instanceof Sunflower) {
                     Sunflower sunflower = (Sunflower) map[row][col];
                     if (sunflower.isCollect()) {
@@ -74,16 +75,42 @@ public class Backyard {
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() {
-        for (int row = 0; row < HEIGHT - 1; row++) {
-            for (int col = 0; col < WIDTH - 1; col++) {
+
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
                 Sprite sprite = map[row][col];
                 if (sprite != null) { // Null-pointer safeguard
                     sprite.decrementCounter();
                     if (sprite instanceof AbstractZombie) {
                         AbstractZombie zombie = (AbstractZombie) sprite;
-                        //Move Zombie according to speed
-                        map[row][col - zombie.getSpeed()] = zombie;
-                        map[row][col] = null; //Reset the tile zombie was previously on
+                        //check if zombie reaches end of screen
+                        if (col - zombie.getSpeed() < 0) {
+                            map[row][col] = null;
+                            //decrease lives or game over
+                            continue;
+                        }
+                        //Check if zombie is walking into a bullet and decrease health if needed
+                        if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
+                            Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
+                            map[row][col - zombie.getSpeed()] = zombie;
+                            map[row][col] = null; //Reset the tile zombie was previously on
+                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                            if (zombie.getHealth() <= 0) {
+                                map[row][col - zombie.getSpeed()] = null;
+                            }
+                        //Check if zombie can attack plant
+                        }else if(map[row][col - zombie.getSpeed()] instanceof AbstractPlant){
+                            AbstractPlant plant = (AbstractPlant) map[row][col - zombie.getSpeed()];
+                            plant.setHealth(plant.getHealth()-zombie.getDamage());
+                            if(plant.getHealth() <=0){
+                                map[row][col - zombie.getSpeed()] = zombie;
+                                map[row][col] = null;
+                            }
+                        } else { //else if there is no collision move the zombie
+                            map[row][col - zombie.getSpeed()] = zombie;
+                            map[row][col] = null; //Reset the tile zombie was previously on
+                        }
+
 
                     } else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
@@ -96,14 +123,36 @@ public class Backyard {
                         }
                     } else if (sprite instanceof Bullet) {
                         Bullet bullet = (Bullet) sprite;
-                        map[row][col + 1] = bullet;
-                        map[row][col] = null;
-                        col++;
+                        //check if bullet goes off screen
+                        if (col + bullet.getSpeed() > WIDTH-1) {
+                            map[row][col] = null;
+                            continue;
+                        }
+                        //check if the bullet will collide with a zombie
+                        if (map[row][col + bullet.getSpeed()] instanceof AbstractZombie) {
+                            AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
+                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                            if (zombie.getHealth() <= 0) {
+                                map[row][col + bullet.getSpeed()] = null;
+                            }
+                            map[row][col] = null;
+                        } else {
+                            map[row][col + bullet.getSpeed()] = bullet;
+                            map[row][col] = null;
+                            col++;
+                        }
                     } else {
                         //do nothing
+                        continue;
                     }
                 }
             }
+        }
+        //Spawn zombie when needed after the turn is done
+        spawnCounter--;
+        if (spawnCounter == 0) {
+            spawnZombie();
+            spawnCounter = randomGenerator();
         }
     }
 

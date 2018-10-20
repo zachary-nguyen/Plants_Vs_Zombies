@@ -78,7 +78,6 @@ public class Game {
             default:
                 System.out.println("Invalid command!\n");
                 break;
-
         }
     }
 

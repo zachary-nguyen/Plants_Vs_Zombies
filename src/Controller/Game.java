@@ -14,6 +14,8 @@ public class Game {
 
     private int money;
 
+    public static boolean endFlag = false;
+
     /**
      * Constructor for game.
      */
@@ -66,12 +68,14 @@ public class Game {
             case "shovel":
                 String[] removeCoordinate = inputCoordinates();
                 backyard.removeSprite(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
+                backyard.updateBackyard();
                 break;
             case "skip":
                 backyard.updateBackyard();
                 break;
             case "collect":
                 money += backyard.collectSun();
+                backyard.updateBackyard();
                 break;
             case "exit":
                 break;
@@ -130,13 +134,16 @@ public class Game {
         //user input
         Scanner scanner = new Scanner(System.in);
 
+        int round = 1;
+
         System.out.println("Welcome to Plants Vs Zombies!\nType anything to start game :");
         String response = scanner.next();
 
-        while (!response.equals("exit")) {
+        while (!response.equals("exit") && !(endFlag)) {
 
-            System.out.println("----------WAVE 1----------");
-            System.out.println("Score: " + game.score + " Money : " + game.money);
+            System.out.println("----------WAVE 1, ROUND " + round + "----------");
+            round++;
+            System.out.println("Score: " + game.getScore() + " Money : " + game.getMoney());
             game.getBackyard().print(); //print backyard
             System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
             response = scanner.next();
@@ -144,9 +151,15 @@ public class Game {
             scanner.nextLine();
 
             //Treat User response
-
-            game.parse(response,game);
+            game.parse(response, game);
         }
+
+        if (endFlag == true) {
+            //End game message
+            System.out.println("---------------------Game Over!---------------------");
+            System.out.println("Your garden has been overrun! Better luck next time!");
+        }
+
     }
 
     public Backyard getBackyard() {

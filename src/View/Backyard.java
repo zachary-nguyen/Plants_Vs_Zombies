@@ -1,5 +1,6 @@
 package View;
 
+import Controller.*;
 import Model.*;
 
 import java.util.*;
@@ -18,11 +19,19 @@ public class Backyard {
             Arrays.fill(row, null);
     }
 
+    /**
+     * Used to spawn zombies randomly along the rightmost column.
+     *
+     * @return random int number between specified index.
+     */
     public int randomGenerator() {
         Random rand = new Random();
         return rand.nextInt(HEIGHT - 1) + 1;
     }
 
+    /**
+     *  Spawns a zombie along the rightmost column of the map.
+     */
     public void spawnZombie() {
         Zombie z = new Zombie();
         addSprite(WIDTH - 1, randomGenerator(), z);
@@ -75,10 +84,10 @@ public class Backyard {
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() {
-
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 Sprite sprite = map[row][col];
+                endGameDetection(row, col); //end game check
                 if (sprite != null) { // Null-pointer safeguard
                     sprite.decrementCounter();
                     if (sprite instanceof AbstractZombie) {
@@ -86,10 +95,9 @@ public class Backyard {
                         //check if zombie reaches end of screen
                         if (col - zombie.getSpeed() < 0) {
                             map[row][col] = null;
-                            //decrease lives or game over
                             continue;
                         }
-                        this.treatZombieCollision(row,col,zombie); //call collision helper method
+                        this.treatZombieCollision(row, col, zombie); //call collision helper method
                     } else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
                         sunflower.generateSun();
@@ -97,7 +105,7 @@ public class Backyard {
                         Peashooter peashooter = (Peashooter) sprite;
                         if (peashooter.canShoot()) {
                             map[row][col + 1] = peashooter.shoot();
-                            col++;
+                            //col++; TODO-Refactor this. Col++ is causing the bullets to skip over zombies.
                         }
                     } else if (sprite instanceof Bullet) {
                         Bullet bullet = (Bullet) sprite;
@@ -117,7 +125,7 @@ public class Backyard {
                         } else {
                             map[row][col + bullet.getSpeed()] = bullet;
                             map[row][col] = null;
-                            col++;
+                            col++; //TODO-Refactor this. Col++ is causing the bullets to skip over zombies.
                         }
                     } else {
                         //do nothing
@@ -141,7 +149,6 @@ public class Backyard {
      * @param zombie Zombie being treated
      */
     public void treatZombieCollision(int row, int col, AbstractZombie zombie){
-
         //Check if zombie is walking into a bullet and decrease health if needed
         if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
             Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
@@ -149,6 +156,7 @@ public class Backyard {
             map[row][col] = null; //Reset the tile zombie was previously on
             zombie.setHealth(zombie.getHealth() - bullet.getDamage());
             if (zombie.getHealth() <= 0) {
+                updateMoney();
                 map[row][col - zombie.getSpeed()] = null;
             }
             //Check if zombie can attack plant
@@ -165,6 +173,32 @@ public class Backyard {
         }
     }
 
+    /**
+     * Determines when the player has lost the game based on Zombie position.
+     *
+     * @param row horizontal index on map
+     * @param col vertical index on map
+     */
+    public void endGameDetection(int row, int col) {
+        Game game = new Game();
+        if (map[row][0] instanceof AbstractZombie) {
+            game.endFlag = true;
+        }
+    }
+
+    /**
+     * Updates the
+     */
+    public void updateMoney() {
+        Game game = new Game();
+        int currentMoney = game.getMoney();
+        currentMoney += 50;
+        game.setMoney(currentMoney);
+    }
+
+    /**
+     * Prints the current state of the map for the player to see.
+     */
     public void print() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {

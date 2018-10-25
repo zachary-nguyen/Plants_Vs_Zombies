@@ -174,6 +174,7 @@ public class Game {
             game.setWave(game.getWave()+1);
         }
 
+
         if (endFlag == true) {
             //End game message
             System.out.println("---------------------Game Over!---------------------");

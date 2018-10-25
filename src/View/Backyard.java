@@ -165,6 +165,7 @@ public class Backyard {
                 }
             }
         }
+
         //Spawn zombie when needed after the turn is done
         spawnCounter--;
         if (spawnCounter == 0 && numZombieSpawn != 0) {

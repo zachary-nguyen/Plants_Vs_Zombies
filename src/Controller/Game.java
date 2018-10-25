@@ -161,7 +161,6 @@ public class Game {
                 game.parse(response, game);
             }
 
-
             System.out.println("---------------------Wave Complete!---------------------");
             endRound = false;
 

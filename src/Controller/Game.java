@@ -69,9 +69,7 @@ public class Game {
                 backyard.updateBackyard();
                 break;
             case "collect":
-                int money = backyard.getMoney();
-                money += backyard.collectSun();
-                backyard.setMoney(money);
+                backyard.collectSun();
                 backyard.updateBackyard();
                 break;
             case "exit":

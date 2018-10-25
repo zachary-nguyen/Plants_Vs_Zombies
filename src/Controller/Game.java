@@ -180,7 +180,6 @@ public class Game {
             System.out.println("---------------------Game Over!---------------------");
             System.out.println("Your garden has been overrun! Better luck next time!");
         }
-
     }
 
     public Backyard getBackyard() {

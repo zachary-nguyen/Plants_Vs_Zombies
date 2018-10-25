@@ -19,13 +19,13 @@ public class Game {
     public static boolean endFlag = false;
     public static boolean endRound = false;
 
+    public static int waveNumber;
+
     /**
      * Constructor for game.
      */
     public Game() {
         this.backyard = new Backyard();
-        this.score = 0;
-        this.money = 300;
         this.wave = 1;
         this.round = 1;
     }
@@ -79,7 +79,9 @@ public class Game {
                 backyard.updateBackyard();
                 break;
             case "collect":
+                int money = backyard.getMoney();
                 money += backyard.collectSun();
+                backyard.setMoney(money);
                 backyard.updateBackyard();
                 break;
             case "exit":
@@ -105,21 +107,25 @@ public class Game {
 
             if (response.equals("sunflower") || response.equals("s")) {
                 //Verify the user has enough money to buy
-                if(game.getMoney() >= 50){
+                if(backyard.getMoney() >= 50){
                     String[] addCoordinate = inputCoordinates();
                     backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Sunflower());
-                    game.setMoney(game.getMoney() - 50);
-                    return true;
-                }else{
+                    if (backyard.addFlag) {
+                        backyard.setMoney(backyard.getMoney() - 50);
+                        return true;
+                    }
+                    }else{
                     System.out.println("Insufficient funds!\n");
                     break;
                 }
             } else if (response.equals("peashooter") || response.equals("p")) {
-                if(game.getMoney() >= 100) {
+                if(backyard.getMoney() >= 100) {
                     String[] addCoordinate = inputCoordinates();
                     backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Peashooter());
-                    game.setMoney(game.getMoney() - 100); //Hardcoded values for now
-                    return true;
+                    if (backyard.addFlag) {
+                        backyard.setMoney(backyard.getMoney() - 100); //Hardcoded values for now
+                        return true;
+                    }
                 }else{
                     System.out.println("Insufficient funds!\n");
                     break;
@@ -135,6 +141,8 @@ public class Game {
 
         //Set up the game
         final Game game = new Game();
+
+        waveNumber = 1;
 
         //user input
         Scanner scanner = new Scanner(System.in);
@@ -170,6 +178,7 @@ public class Game {
                 System.out.println("-------------------Level Complete------------------");
                 endFlag = true;
 
+
             }
             game.setWave(game.getWave()+1);
         }
@@ -182,24 +191,9 @@ public class Game {
         }
     }
 
+
     public Backyard getBackyard() {
         return backyard;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 
     public int getWave() { return wave;  }
@@ -209,4 +203,5 @@ public class Game {
     public int getRound() { return round; }
 
     public void setRound(int level) {   this.round = level;  }
+
 }

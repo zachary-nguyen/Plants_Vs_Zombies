@@ -14,7 +14,7 @@ public class Peashooter extends AbstractPlant {
         return false;
     }
 
-    public Bullet shoot() {
+    public Bullet shootBullet() {
         return new Bullet(getDamage(), 1);
     }
 }

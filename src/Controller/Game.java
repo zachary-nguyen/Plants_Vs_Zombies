@@ -10,9 +10,6 @@ public class Game {
 
     private Backyard backyard;
 
-    private int score;
-    private int money;
-
     private int wave;
     private int round;
 

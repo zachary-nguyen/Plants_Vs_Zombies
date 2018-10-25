@@ -8,21 +8,16 @@ import java.util.Scanner;
 
 public class Game {
 
-    private Backyard backyard;
-
-    private int score;
-
-    private int money;
+    public static Backyard backyard = new Backyard();
 
     public static boolean endFlag = false;
+
+    public static int waveNumber;
 
     /**
      * Constructor for game.
      */
     public Game() {
-        this.backyard = new Backyard();
-        this.score = 0;
-        this.money = 300;
     }
 
     /**
@@ -74,7 +69,7 @@ public class Game {
                 backyard.updateBackyard();
                 break;
             case "collect":
-                money += backyard.collectSun();
+                backyard.money += backyard.collectSun();
                 backyard.updateBackyard();
                 break;
             case "exit":
@@ -100,21 +95,25 @@ public class Game {
 
             if (response.equals("sunflower") || response.equals("s")) {
                 //Verify the user has enough money to buy
-                if(game.getMoney() >= 50){
+                if(backyard.getMoney() >= 50){
                     String[] addCoordinate = inputCoordinates();
                     backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Sunflower());
-                    game.setMoney(game.getMoney() - 50);
-                    return true;
-                }else{
+                    if (backyard.addFlag) {
+                        backyard.setMoney(backyard.getMoney() - 50);
+                        return true;
+                    }
+                    }else{
                     System.out.println("Insufficient funds!\n");
                     break;
                 }
             } else if (response.equals("peashooter") || response.equals("p")) {
-                if(game.getMoney() >= 100) {
+                if(backyard.getMoney() >= 100) {
                     String[] addCoordinate = inputCoordinates();
                     backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Peashooter());
-                    game.setMoney(game.getMoney() - 100); //Hardcoded values for now
-                    return true;
+                    if (backyard.addFlag) {
+                        backyard.setMoney(backyard.getMoney() - 100); //Hardcoded values for now
+                        return true;
+                    }
                 }else{
                     System.out.println("Insufficient funds!\n");
                     break;
@@ -131,19 +130,19 @@ public class Game {
         //Set up the game
         final Game game = new Game();
 
+        waveNumber = 1;
+
         //user input
         Scanner scanner = new Scanner(System.in);
-
-        int round = 1;
 
         System.out.println("Welcome to Plants Vs Zombies!\nType anything to start game :");
         String response = scanner.next();
 
         while (!response.equals("exit") && !(endFlag)) {
 
-            System.out.println("----------WAVE 1, ROUND " + round + "----------");
-            round++;
-            System.out.println("Score: " + game.getScore() + " Money : " + game.getMoney());
+            System.out.println("----------ROUND: 1, WAVE: " + game.getWaveNumber() + "----------");
+            waveNumber++;
+            System.out.println("Score: " + backyard.getScore() + " Money : " + backyard.getMoney());
             game.getBackyard().print(); //print backyard
             System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
             response = scanner.next();
@@ -159,26 +158,13 @@ public class Game {
             System.out.println("---------------------Game Over!---------------------");
             System.out.println("Your garden has been overrun! Better luck next time!");
         }
+    }
 
+    public int getWaveNumber() {
+        return waveNumber;
     }
 
     public Backyard getBackyard() {
         return backyard;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 }

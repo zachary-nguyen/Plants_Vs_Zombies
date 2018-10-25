@@ -9,8 +9,8 @@ public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
-    public int money;
-    public int score;
+    private int money;
+    private int score;
     public boolean addFlag = false;
 
     private Sprite[][] map;
@@ -196,7 +196,7 @@ public class Backyard {
                 }
             }
         }
-        //spawnZombieComplexity();
+        spawnZombieComplexity();
     }
 
     /**

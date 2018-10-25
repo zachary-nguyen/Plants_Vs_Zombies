@@ -31,9 +31,8 @@ Group: 11
         - Sprite.java
         - Sunflower.java
         - Zombie.java
-    
-    - View:
         - Backyard.java
+    - View:
         
   * UML Diagrams
   

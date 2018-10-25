@@ -9,9 +9,17 @@ public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
+
+
+    private static int spawnCounter = 5; // turns between zombie spawns
+    private static int numZombieSpawn = 0; // number of zombies to end wave
+
+    private static int numZombieAlive = 0; // number of zombies to end wave
+
     private int money;
     private int score;
     public boolean addFlag = false;
+
 
     private Sprite[][] map;
 
@@ -25,6 +33,22 @@ public class Backyard {
     }
 
     /**
+     * Sets the number of zombies to spawn in a wave
+     * @param zombies The number of zombies to spawn
+     */
+    public static void setNumZombiesSpawn(int zombies) {
+        numZombieSpawn= zombies;
+    }
+
+    /**
+     * The current number of Zombies alive
+     * @return The number of zombies alive
+     */
+    public static int getNumZombieAlive() {
+        return numZombieAlive;
+    }
+
+    /**
      * Used to spawn zombies randomly along the rightmost column.
      *
      * @return random int number between specified index.
@@ -35,10 +59,20 @@ public class Backyard {
     }
 
     /**
+     * Sets the number of turns until a zombie spawns
+     * @param spawnCounter
+     */
+    public static void setSpawnCounter(int spawnCounter) {
+        Backyard.spawnCounter = spawnCounter;
+    }
+
+    /**
      *  Spawns a zombie along the rightmost column of the map.
      */
     public void spawnZombie() {
         Zombie z = new Zombie();
+        numZombieSpawn--;
+        numZombieAlive++;
         addSprite(WIDTH - 1, randomGenerator(), z);
     }
 
@@ -174,8 +208,12 @@ public class Backyard {
                             AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
                             zombie.setHealth(zombie.getHealth() - bullet.getDamage());
                             if (zombie.getHealth() <= 0) {
+
+                                numZombieAlive--;
+
                                 updateScore();
                                 updateMoney();
+
                                 map[row][col + bullet.getSpeed()] = null;
                             }
                             map[row][col] = null;
@@ -196,7 +234,15 @@ public class Backyard {
                 }
             }
         }
-        spawnZombieComplexity();
+
+
+
+        //Spawn zombie when needed after the turn is done
+        spawnCounter--;
+        if (spawnCounter == 0 && numZombieSpawn != 0) {
+            spawnZombie();
+            spawnCounter = randomGenerator();
+
     }
 
     /**
@@ -234,6 +280,15 @@ public class Backyard {
                 spawnZombie(); //spawn zombie if the number generate by the delay generator is even.
             }
             delay--;
+
+        }
+
+        //System.out.println("Num zombies Spawn : " + numZombieSpawn);
+        //System.out.println("Num zombies Alive : " + numZombieAlive);
+        //System.out.println("Spawn counter : " + spawnCounter);
+        // all zombies have been killed and no more spawn
+        if (numZombieAlive == 0 && numZombieSpawn == 0){
+            Game.endRound = true;
         }
     }
 
@@ -254,6 +309,7 @@ public class Backyard {
                 updateScore();
                 updateMoney(); //Updates Money per zombie killed.
                 map[row][col - zombie.getSpeed()] = null;
+                numZombieAlive--;
             }
             //Check if zombie can attack plant
         }else if(map[row][col - zombie.getSpeed()] instanceof AbstractPlant){

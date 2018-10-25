@@ -18,8 +18,6 @@ public class Backyard {
 
     private int money;
     private int score;
-    public boolean addFlag = false;
-
 
     private Sprite[][] map;
 
@@ -55,7 +53,7 @@ public class Backyard {
      *
      * @return random int number between specified index.
      */
-    public int randomGenerator() {
+    private int randomGenerator() {
         Random rand = new Random();
         return rand.nextInt(HEIGHT - 1) + 1;
     }
@@ -72,7 +70,7 @@ public class Backyard {
     /**
      * Spawns a zombie along the rightmost column of the map.
      */
-    public void spawnZombie() {
+    private void spawnZombie() {
         Zombie z = new Zombie();
         numZombieSpawn--;
         numZombieAlive++;
@@ -86,13 +84,13 @@ public class Backyard {
      * @param y      y coordinate for the plant
      * @param sprite Which type of plant is being added
      */
-    public void addSprite(int x, int y, Sprite sprite) {
+    public boolean addSprite(int x, int y, Sprite sprite) {
         if (map[y][x] == null) {
             map[y][x] = sprite;
-            addFlag = true;
+            return true;
         } else {
             System.out.println("Cannot add there!");
-            addFlag = false;
+            return false;
         }
     }
 
@@ -115,8 +113,7 @@ public class Backyard {
      * <p>
      * Returns the total amount of money gathered by all the sunflower plants.
      */
-    public int collectSun() {
-        int money = 0;
+    public void collectSun() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 if (map[row][col] instanceof Sunflower) {
@@ -127,7 +124,6 @@ public class Backyard {
                 }
             }
         }
-        return money;
     }
 
     /**
@@ -138,7 +134,7 @@ public class Backyard {
             for (int col = 0; col < WIDTH; col++) {
 
                 Sprite sprite = map[row][col];
-                endGameDetection(row, col); //end game check
+                // endGameDetection(row); //end game check
 
                 if (sprite != null) { // Null-pointer safeguard
 
@@ -147,11 +143,6 @@ public class Backyard {
                     if (sprite instanceof AbstractZombie) {
                         AbstractZombie zombie = (AbstractZombie) sprite;
 
-                        //check if zombie reaches end of screen
-                        if (col - zombie.getSpeed() < 0) {
-                            map[row][col] = null;
-                            continue;
-                        }
                         this.treatZombieCollision(row, col, zombie); //call collision helper method
 
                     } else if (sprite instanceof Sunflower) {
@@ -161,22 +152,18 @@ public class Backyard {
 
                     } else if (sprite instanceof Peashooter) {
                         Peashooter peashooter = (Peashooter) sprite;
-                        Game game = new Game();
                         if (peashooter.canShoot()) {
-                            if ((game.getWave() % 3) == 0) { //slows down bullet fire rate tremendously.
+                           // if ((Game.wave % 3) == 0) { //slows down bullet fire rate tremendously.
                                 map[row][col + 1] = peashooter.shootBullet();
                                 col++;
-                            } else {
-                                //do nothing
-                            }
+                           // }
                         }
                     } else if (sprite instanceof Bullet) {
                         Bullet bullet = (Bullet) sprite;
-
                         //check if bullet goes off screen
                         if (col + bullet.getSpeed() > WIDTH - 1) {
                             map[row][col] = null;
-                            continue;
+                            return;
                         }
 
                         //make bullet jump over plant in its path.
@@ -216,10 +203,6 @@ public class Backyard {
                             map[row][col] = null;
                             col++;
                         }
-
-                    } else {
-                        //do nothing
-                        continue;
                     }
                 }
             }
@@ -233,6 +216,7 @@ public class Backyard {
             spawnCounter = randomGenerator();
 
         }
+        //spawnZombieComplexity();
     }
 
     /**
@@ -242,7 +226,7 @@ public class Backyard {
      * @param wave Current wave number
      * @return int delay number
      */
-    public int delayGenerator(int wave) {
+    private int delayGenerator(int wave) {
         Random rand = new Random();
 
         int newWave = wave % 5;
@@ -258,9 +242,9 @@ public class Backyard {
      * Generates zombies at a random and even pace based on random ints and the current round number.
      */
     public void spawnZombieComplexity() {
-        Game game = new Game();
+        //Game game = new Game();
 
-        int waveNum = game.getWave();
+        int waveNum = Game.wave;
 
         int delay = delayGenerator(waveNum);
 
@@ -288,8 +272,14 @@ public class Backyard {
      * @param col    col index on map
      * @param zombie Zombie being treated
      */
-    public void treatZombieCollision(int row, int col, AbstractZombie zombie) {
+    private void treatZombieCollision(int row, int col, AbstractZombie zombie) {
         //Check if zombie is walking into a bullet and decrease health if needed
+        //check if zombie reaches end of screen
+        if (col - zombie.getSpeed() < 0) {
+            map[row][col] = null;
+            Game.gameOver = true;
+            return;
+        }
         if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
             Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
             map[row][col - zombie.getSpeed()] = zombie;
@@ -315,24 +305,12 @@ public class Backyard {
         }
     }
 
-    /**
-     * Determines when the player has lost the game based on Zombie position.
-     *
-     * @param row horizontal index on map
-     * @param col vertical index on map
-     */
-    public void endGameDetection(int row, int col) {
-        Game game = new Game();
-        if (map[row][0] instanceof AbstractZombie) {
-            game.endFlag = true;
-        }
-    }
 
     /**
      * Updates the player's money after each zombie killed.
      * +50 for every zombie killed.
      */
-    public void updateMoney() {
+    private void updateMoney() {
         int currentMoney = getMoney();
         currentMoney += 50;
         setMoney(currentMoney);
@@ -342,7 +320,7 @@ public class Backyard {
      * Updates the player's score after each zombie killed.
      * +1 for every zombie killed.
      */
-    public void updateScore() {
+    private void updateScore() {
         int currentScore = getScore();
         currentScore++;
         setScore(currentScore);

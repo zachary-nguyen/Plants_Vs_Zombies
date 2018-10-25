@@ -11,10 +11,13 @@ public class Game {
     private Backyard backyard;
 
     private int score;
-
     private int money;
 
+    private int wave;
+    private int round;
+
     public static boolean endFlag = false;
+    public static boolean endRound = false;
 
     /**
      * Constructor for game.
@@ -23,6 +26,8 @@ public class Game {
         this.backyard = new Backyard();
         this.score = 0;
         this.money = 300;
+        this.wave = 1;
+        this.round = 1;
     }
 
     /**
@@ -134,24 +139,40 @@ public class Game {
         //user input
         Scanner scanner = new Scanner(System.in);
 
-        int round = 1;
-
         System.out.println("Welcome to Plants Vs Zombies!\nType anything to start game :");
         String response = scanner.next();
 
         while (!response.equals("exit") && !(endFlag)) {
 
-            System.out.println("----------WAVE 1, ROUND " + round + "----------");
-            round++;
-            System.out.println("Score: " + game.getScore() + " Money : " + game.getMoney());
-            game.getBackyard().print(); //print backyard
-            System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
-            response = scanner.next();
-            response = response.trim().toLowerCase();
-            scanner.nextLine();
+            // set zombies for next wave
+            Backyard.setNumZombiesSpawn(5);
+            Backyard.setSpawnCounter(2);
+            while (!response.equals("exit") && !(endRound)) {
+                System.out.println("----------WAVE " + game.getWave() + ", ROUND " + game.getRound() + "----------");
+                //round++;
+                System.out.println("Score: " + game.getScore() + " Money : " + game.getMoney());
+                game.getBackyard().print(); //print backyard
+                System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
+                response = scanner.next();
+                response = response.trim().toLowerCase();
+                scanner.nextLine();
 
-            //Treat User response
-            game.parse(response, game);
+                //Treat User response
+                game.parse(response, game);
+            }
+
+
+            System.out.println("---------------------Wave Complete!---------------------");
+            endRound = false;
+
+            if (game.getWave() == 2) { // 2 waves per round
+                // reset wave for next round
+                // increment wave
+                System.out.println("-------------------Level Complete------------------");
+                endFlag = true;
+
+            }
+            game.setWave(game.getWave()+1);
         }
 
         if (endFlag == true) {
@@ -181,4 +202,12 @@ public class Game {
     public void setMoney(int money) {
         this.money = money;
     }
+
+    public int getWave() { return wave;  }
+
+    public void setWave(int wave) { this.wave = wave; }
+
+    public int getRound() { return round; }
+
+    public void setRound(int level) {   this.round = level;  }
 }

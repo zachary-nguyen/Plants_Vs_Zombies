@@ -9,9 +9,17 @@ public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
+
+
+    private static int spawnCounter = 5; // turns between zombie spawns
+    private static int numZombieSpawn = 0; // number of zombies to end wave
+
+    private static int numZombieAlive = 0; // number of zombies to end wave
+
     private int money;
     private int score;
     public boolean addFlag = false;
+
 
     private Sprite[][] map;
 
@@ -25,6 +33,22 @@ public class Backyard {
     }
 
     /**
+     * Sets the number of zombies to spawn in a wave
+     * @param zombies The number of zombies to spawn
+     */
+    public static void setNumZombiesSpawn(int zombies) {
+        numZombieSpawn= zombies;
+    }
+
+    /**
+     * The current number of Zombies alive
+     * @return The number of zombies alive
+     */
+    public static int getNumZombieAlive() {
+        return numZombieAlive;
+    }
+
+    /**
      * Used to spawn zombies randomly along the rightmost column.
      *
      * @return random int number between specified index.
@@ -35,10 +59,20 @@ public class Backyard {
     }
 
     /**
-     * Spawns a zombie along the rightmost column of the map.
+     * Sets the number of turns until a zombie spawns
+     * @param spawnCounter
+     */
+    public static void setSpawnCounter(int spawnCounter) {
+        Backyard.spawnCounter = spawnCounter;
+    }
+
+    /**
+     *  Spawns a zombie along the rightmost column of the map.
      */
     public void spawnZombie() {
         Zombie z = new Zombie();
+        numZombieSpawn--;
+        numZombieAlive++;
         addSprite(WIDTH - 1, randomGenerator(), z);
     }
 
@@ -53,7 +87,8 @@ public class Backyard {
         if (map[y][x] == null) {
             map[y][x] = sprite;
             addFlag = true;
-        } else {
+        }
+        else {
             System.out.println("Cannot add there!");
             addFlag = false;
         }
@@ -68,17 +103,19 @@ public class Backyard {
     public void removeSprite(int x, int y) {
         if (!(map[x][y] instanceof AbstractZombie)) {
             map[y][x] = null;
-        } else {
+        }
+        else {
             System.out.println("Cannot remove from those coordinates!");
         }
     }
 
     /**
      * Collects all the sun on the map
-     * <p>
+     *
      * Returns the total amount of money gathered by all the sunflower plants.
      */
-    public void collectSun() {
+    public int collectSun() {
+        int money = 0;
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 if (map[row][col] instanceof Sunflower) {
@@ -89,6 +126,7 @@ public class Backyard {
                 }
             }
         }
+        return money;
     }
 
     /**
@@ -114,10 +152,17 @@ public class Backyard {
                             continue;
                         }
                         this.treatZombieCollision(row, col, zombie); //call collision helper method
-                    } else if (sprite instanceof Sunflower) {
+
+                    }
+
+                    else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
                         sunflower.generateSun();
-                    } else if (sprite instanceof Peashooter) {
+
+
+                    }
+
+                    else if (sprite instanceof Peashooter) {
                         Peashooter peashooter = (Peashooter) sprite;
                         Game game = new Game();
                         if (peashooter.canShoot()) {
@@ -125,12 +170,17 @@ public class Backyard {
                                 map[row][col + 1] = peashooter.shootBullet();
                                 col++;
                             }
+                            else {
+                                //do nothing
+                            }
                         }
-                    } else if (sprite instanceof Bullet) {
+                    }
+
+                    else if (sprite instanceof Bullet) {
                         Bullet bullet = (Bullet) sprite;
 
                         //check if bullet goes off screen
-                        if (col + bullet.getSpeed() > WIDTH - 1) {
+                        if (col + bullet.getSpeed() > WIDTH-1) {
                             map[row][col] = null;
                             continue;
                         }
@@ -158,25 +208,41 @@ public class Backyard {
                             AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
                             zombie.setHealth(zombie.getHealth() - bullet.getDamage());
                             if (zombie.getHealth() <= 0) {
+
+                                numZombieAlive--;
+
                                 updateScore();
                                 updateMoney();
+
                                 map[row][col + bullet.getSpeed()] = null;
                             }
                             map[row][col] = null;
-                        } else {
+                        }
+
+                        else {
                             map[row][col + bullet.getSpeed()] = bullet;
                             map[row][col] = null;
                             col++;
                         }
 
-                    } else {
+                    }
+
+                    else {
                         //do nothing
                         continue;
                     }
                 }
             }
         }
-        spawnZombieComplexity();
+
+
+
+        //Spawn zombie when needed after the turn is done
+        spawnCounter--;
+        if (spawnCounter == 0 && numZombieSpawn != 0) {
+            spawnZombie();
+            spawnCounter = randomGenerator();
+
     }
 
     /**
@@ -192,9 +258,10 @@ public class Backyard {
         int newWave = wave % 5;
 
         if (newWave != 0) {
-            return rand.nextInt(newWave) + 1;
-        } else {
-            return delayGenerator(newWave + 1);
+           return rand.nextInt(newWave) + 1;
+        }
+        else {
+           return delayGenerator(newWave + 1);
         }
     }
 
@@ -213,17 +280,25 @@ public class Backyard {
                 spawnZombie(); //spawn zombie if the number generate by the delay generator is even.
             }
             delay--;
+
+        }
+
+        //System.out.println("Num zombies Spawn : " + numZombieSpawn);
+        //System.out.println("Num zombies Alive : " + numZombieAlive);
+        //System.out.println("Spawn counter : " + spawnCounter);
+        // all zombies have been killed and no more spawn
+        if (numZombieAlive == 0 && numZombieSpawn == 0){
+            Game.endRound = true;
         }
     }
 
     /**
      * Helper method to treat zombie collision
-     *
-     * @param row    row index on map
-     * @param col    col index on map
+     * @param row row index on map
+     * @param col col index on map
      * @param zombie Zombie being treated
      */
-    public void treatZombieCollision(int row, int col, AbstractZombie zombie) {
+    public void treatZombieCollision(int row, int col, AbstractZombie zombie){
         //Check if zombie is walking into a bullet and decrease health if needed
         if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
             Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
@@ -232,14 +307,15 @@ public class Backyard {
             zombie.setHealth(zombie.getHealth() - bullet.getDamage());
             if (zombie.getHealth() <= 0) {
                 updateScore();
-                // updateMoney(); //Updates Money per zombie killed.
+                updateMoney(); //Updates Money per zombie killed.
                 map[row][col - zombie.getSpeed()] = null;
+                numZombieAlive--;
             }
             //Check if zombie can attack plant
-        } else if (map[row][col - zombie.getSpeed()] instanceof AbstractPlant) {
+        }else if(map[row][col - zombie.getSpeed()] instanceof AbstractPlant){
             AbstractPlant plant = (AbstractPlant) map[row][col - zombie.getSpeed()];
-            plant.setHealth(plant.getHealth() - zombie.getDamage());
-            if (plant.getHealth() <= 0) {
+            plant.setHealth(plant.getHealth()-zombie.getDamage());
+            if(plant.getHealth() <=0){
                 map[row][col - zombie.getSpeed()] = zombie;
                 map[row][col] = null;
             }
@@ -277,7 +353,9 @@ public class Backyard {
      * +1 for every zombie killed.
      */
     public void updateScore() {
-        setScore(getScore() + 1);
+        int currentScore = getScore();
+        currentScore++;
+        setScore(currentScore);
     }
 
     /**

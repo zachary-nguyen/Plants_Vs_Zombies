@@ -35,7 +35,7 @@ public class Game {
 
     private Backyard backyard;
 
-    public static int wave;
+    private int wave;
     private int round;
 
     public static boolean gameOver = false;
@@ -49,6 +49,10 @@ public class Game {
         this.wave = 1;
         this.round = 1;
         startGame();
+    }
+
+    public void setEndRound(boolean endRound) {
+        this.endRound = endRound;
     }
 
     /**
@@ -191,8 +195,8 @@ public class Game {
         while (!response.equals("exit") && !(gameOver)) {
 
             // set zombies for next wave
-            Backyard.setNumZombiesSpawn(5);
-            Backyard.setSpawnCounter(2);
+            backyard.setNumZombiesSpawn(5);
+            backyard.setSpawnCounter(2);
             while (!response.equals("exit") && !(endRound) && !gameOver) {
                 System.out.println("----------WAVE " + getWave() + ", ROUND " + getRound() + "----------");
                 //round++;
@@ -207,24 +211,27 @@ public class Game {
                 parse(response);
             }
 
-            System.out.println("---------------------Wave Complete!---------------------");
-            endRound = false;
+            if (!gameOver) {
+                System.out.println("---------------------Wave Complete!---------------------");
+                endRound = false;
 
-            if (getWave() == 2) { // 2 waves per round
-                // reset wave for next round
-                // increment wave
-                System.out.println("-------------------Level Complete------------------");
-                // endFlag = true;
+                if (getWave() == 2) { // 2 waves per round
+                    // reset wave for next round
+                    // increment wave
+                    System.out.println("-------------------Level Complete------------------");
+                    gameOver = true;
+                    endRound = true;
 
 
+                }
+                setWave(getWave() + 1);
             }
-            setWave(getWave() + 1);
         }
 
-        if (gameOver) {
+        if (gameOver && endRound) {
             //End game message
             System.out.println("---------------------Game Over!---------------------");
-            System.out.println("Your garden has been overrun! Better luck next time!");
+            //System.out.println("Your garden has been overrun! Better luck next time!");
         }
     }
 

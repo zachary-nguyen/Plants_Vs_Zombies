@@ -216,6 +216,16 @@ public class Backyard {
             spawnCounter = randomGenerator();
 
         }
+
+        // for testing waves
+        System.out.println("Num zombies Spawn : " + numZombieSpawn);
+        System.out.println("Num zombies Alive : " + numZombieAlive);
+        System.out.println("Spawn counter : " + spawnCounter);
+        // all zombies have been killed and no more spawn
+        if (numZombieAlive == 0 && numZombieSpawn == 0) {
+            Game.endRound = true;
+        }
+
         //spawnZombieComplexity();
     }
 
@@ -242,9 +252,9 @@ public class Backyard {
      * Generates zombies at a random and even pace based on random ints and the current round number.
      */
     public void spawnZombieComplexity() {
-        //Game game = new Game();
+        Game game = new Game();
 
-        int waveNum = Game.wave;
+        int waveNum = game.getWave();
 
         int delay = delayGenerator(waveNum);
 
@@ -255,15 +265,7 @@ public class Backyard {
             delay--;
 
         }
-
-        //System.out.println("Num zombies Spawn : " + numZombieSpawn);
-        //System.out.println("Num zombies Alive : " + numZombieAlive);
-        //System.out.println("Spawn counter : " + spawnCounter);
-        // all zombies have been killed and no more spawn
-        if (numZombieAlive == 0 && numZombieSpawn == 0) {
-            Game.endRound = true;
-        }
-    }
+            }
 
     /**
      * Helper method to treat zombie collision

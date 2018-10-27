@@ -1,8 +1,8 @@
 package Controller;
 
+import Model.Backyard;
 import Model.Peashooter;
 import Model.Sunflower;
-import View.Backyard;
 
 import java.util.Scanner;
 
@@ -198,7 +198,7 @@ public class Game {
             backyard.setNumZombiesSpawn(5);
             backyard.setSpawnCounter(2);
             while (!response.equals("exit") && !(endRound) && !gameOver) {
-                System.out.println("----------WAVE " + getWave() + ", ROUND " + getRound() + "----------");
+                System.out.println("----------WAVE " + this.wave + ", ROUND " + this.round + "----------");
                 //round++;
                 System.out.println("Score: " + backyard.getScore() + " Money : " + backyard.getMoney());
                 getBackyard().print(); //print backyard
@@ -215,16 +215,14 @@ public class Game {
                 System.out.println("---------------------Wave Complete!---------------------");
                 endRound = false;
 
-                if (getWave() == 2) { // 2 waves per round
+                if (this.wave == 2) { // 2 waves per round
                     // reset wave for next round
                     // increment wave
                     System.out.println("-------------------Level Complete------------------");
                     gameOver = true;
                     endRound = true;
-
-
                 }
-                setWave(getWave() + 1);
+                setWave(this.wave + 1);
             }
         }
 

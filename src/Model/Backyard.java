@@ -1,9 +1,9 @@
-package View;
+package Model;
 
-import Controller.*;
-import Model.*;
+import Controller.Game;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Backyard {
 
@@ -101,7 +101,7 @@ public class Backyard {
      * @param y y coordinate of plant to remove
      */
     public void removeSprite(int x, int y) {
-        if (!(map[x][y] instanceof AbstractZombie)) {
+        if (!(map[x][y] instanceof AbstractZombie) && x > 0 && x <= WIDTH && y <= HEIGHT && y > 0) {
             map[y][x] = null;
         } else {
             System.out.println("Cannot remove from those coordinates!");

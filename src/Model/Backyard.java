@@ -4,8 +4,11 @@ import Controller.Game;
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
 
+/**
+ * Backyard class contains the map with all the sprites.
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
+ */
 public class Backyard {
 
     public static final int HEIGHT = 5;
@@ -18,6 +21,9 @@ public class Backyard {
 
     private Sprite[][] map;
 
+    /**
+     * Constructor for Backyard class
+     */
     public Backyard() {
         this.score = 0;
         this.money = 300;
@@ -72,8 +78,7 @@ public class Backyard {
 
     /**
      * Collects all the sun on the map
-     * <p>
-     * Returns the total amount of money gathered by all the sunflower plants.
+     *
      */
     public void collectSun() {
         for (int row = 0; row < HEIGHT; row++) {
@@ -103,26 +108,20 @@ public class Backyard {
 
                     if (sprite instanceof AbstractZombie) {
                         AbstractZombie zombie = (AbstractZombie) sprite;
-
                         this.treatZombieCollision(row, col, zombie); //call collision helper method
 
                     } else if (sprite instanceof Sunflower) {
                         Sunflower sunflower = (Sunflower) sprite;
                         sunflower.generateSun();
 
-
                     } else if (sprite instanceof Peashooter) {
                         Peashooter peashooter = (Peashooter) sprite;
                         if (peashooter.canShoot()) {
-                            Random rand = new Random();
-                            int spawnProbability = rand.nextInt(101);
-                            if (spawnProbability > 70 || spawnProbability < 30) {//randomize rate of fire
-                                if (map[row][col + 1] instanceof AbstractZombie) {//check if bullet is spawning onto zombie
-                                    treatBulletCollidedWithZombie(row,col,peashooter.shootBullet());
-                                }else {
-                                    map[row][col + 1] = peashooter.shootBullet();
-                                    col++;
-                                }
+                            if (map[row][col + 1] instanceof AbstractZombie) {//check if bullet is spawning onto zombie
+                                treatBulletCollidedWithZombie(row,col,peashooter.shootBullet());
+                            }else {
+                                map[row][col + 1] = peashooter.shootBullet();
+                                col++;
                             }
                         }
                     } else if (sprite instanceof Bullet) {
@@ -130,8 +129,6 @@ public class Backyard {
                         //check if bullet goes off screen
                         if (col + bullet.getSpeed() > WIDTH - 1) {
                             map[row][col] = null;
-
-
                             //make bullet jump over plant in its path.
                         } else if (map[row][col + bullet.getSpeed()] instanceof AbstractPlant) {
                             map[row][col + (bullet.getSpeed() + 1)] = bullet;
@@ -139,7 +136,6 @@ public class Backyard {
                                 map[row][col] = null;
                             }
                             col = col + 2;
-
                             //TODO: make bullet jump over another bullet in its path (incomplete)
                         } else if (map[row][col + bullet.getSpeed()] instanceof Bullet) {
                             map[row][col + (bullet.getSpeed() + 1)] = bullet;
@@ -147,7 +143,6 @@ public class Backyard {
                                 map[row][col] = null;
                             }
                             col = col + 2;
-
 
                             //check if the bullet will collide with a zombie
                         } else if (map[row][col + bullet.getSpeed()] instanceof AbstractZombie) {
@@ -166,14 +161,15 @@ public class Backyard {
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());
-        }else if(currentWave.isComplete()){
-            System.out.println("---------------------Wave Complete!---------------------");
-            System.out.println("Type anything to start the next wave:");
-            Scanner scanner = new Scanner(System.in);
-            scanner.next();
         }
     }
 
+    /**
+     * Method that treats collision between a bullet and zombie.
+     * @param row Row of collision
+     * @param col Col of collision
+     * @param bullet Bullet being collided with
+     */
     private void treatBulletCollidedWithZombie(int row, int col, Bullet bullet) {
         AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
         zombie.setHealth(zombie.getHealth() - bullet.getDamage());

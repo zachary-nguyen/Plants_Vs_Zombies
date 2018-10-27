@@ -1,38 +1,36 @@
 package Model;
 
-import java.util.Random;
-import java.util.Scanner;
+import Controller.Game;
 
+import java.util.Random;
+
+/**
+ * Wave class to be passed to backyard. Contains the amount of zombies to be killed for the wave.
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
+ */
 public class Wave {
     private int numZombieSpawn; // number of zombies to end wave
     private int numZombieAlive; // number of zombies to end wave
     private boolean complete;
-    public static int waveNumber;
 
     public Wave(int numZombieSpawn) {
         this.numZombieSpawn = numZombieSpawn;
         this.numZombieAlive = 0;
         complete = false;
-        Wave.waveNumber += 1;
     }
 
     /**
      * Spawns a zombie along the rightmost column of the map.
      */
-
-
     public boolean spawnZombie() {
         Random rand = new Random();
         if (numZombieSpawn == 0) {
             return false;
         }
 
-        //this.spawnCounter--;
-
         // if (spawnCounter == 0) {
         int spawnProbability = rand.nextInt(101);
         if (spawnProbability > 85 || spawnProbability < 15) {
-            //spawnCounter = Backyard.randomGenerator();
             numZombieSpawn--;
             numZombieAlive++;
             return true;
@@ -61,26 +59,6 @@ public class Wave {
         }
     }
 
-    /**
-     * Generates zombies at a random and even pace based on random ints and the current round number.
-     */
-    public boolean spawnZombieComplexity() {
-
-        int waveNum = Wave.waveNumber;
-
-        int delay = delayGenerator(waveNum);
-
-        // while (delay != 0) {
-        if ((delay % 2) == 0) {
-            //spawn zombie if the number generate by the delay generator is even.
-            return true;
-        }
-        //delay--;
-
-        // }
-        return false;
-    }
-
 
     public void decrementZombiesRemaining() {
         numZombieSpawn--;
@@ -100,15 +78,30 @@ public class Wave {
 
     @Override
     public String toString() {
-        return ("--------------WAVE " + Wave.waveNumber + "---------------") +
-                ("\nNum zombies Spawn : " + numZombieSpawn) +
-                ("\nNum zombies Alive : " + numZombieAlive);
+        return ("--------------WAVE " + Game.getCurrentWaveNumber() + "---------------") +
+                ("\nNumber of zombies left : " + numZombieSpawn) +
+                ("\nNumber of zombies alive : " + numZombieAlive);
     }
 
     /***********************
      * GETTERS and SETTERS
      ***********************/
 
+    public int getNumZombieSpawn() {
+        return numZombieSpawn;
+    }
+
+    public void setNumZombieSpawn(int numZombieSpawn) {
+        this.numZombieSpawn = numZombieSpawn;
+    }
+
+    public void setNumZombieAlive(int numZombieAlive) {
+        this.numZombieAlive = numZombieAlive;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
 
     /**
      * The current number of Zombies alive

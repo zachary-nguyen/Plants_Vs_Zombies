@@ -3,14 +3,19 @@ package Controller;
 import Model.Backyard;
 import Model.Peashooter;
 import Model.Sunflower;
-import Model.Wave;
 
 import java.util.Scanner;
 
+/**
+ * Game class is a controller class in charge of treating user input and the flow of the game.
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
+ */
 public class Game {
 
     private Backyard backyard;
     public static boolean gameOver = false;
+    private static final int NUMBER_OF_WAVES = 2;
+    private static int currentWaveNumber;
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
@@ -41,6 +46,7 @@ public class Game {
      */
     public Game() {
         this.backyard = new Backyard();
+        currentWaveNumber = 1;
         startGame();
     }
 
@@ -58,7 +64,7 @@ public class Game {
             String response = scanner.nextLine();
             coordinate = response.trim().split(" ");
 
-            if (coordinate.length == 2) {
+            if (coordinate.length == 2 && isInteger(coordinate[0])  && isInteger(coordinate[1]) ) {
                 xValueToAdd = Integer.valueOf(coordinate[0]);
                 yValueToAdd = Integer.valueOf(coordinate[1]);
 
@@ -76,6 +82,10 @@ public class Game {
         return coordinate;
     }
 
+    /**
+     * Parse the user input and determine what action to take.
+     * @param command The command being parsed.
+     */
     private void parse(String command) {
 
         switch (command) {
@@ -172,18 +182,31 @@ public class Game {
         }
     }
 
+    /**
+     * This is the main loop for the game. Treats user inputs and determines when game is done.
+     */
     private void startGame() {
         //user input
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to Plants Vs Zombies!\nType anything to start game :");
         String response = scanner.next();
-
+        backyard.setCurrentWave(5);//initialize the first wave
         while (!response.equals("exit") && !(gameOver)) {
 
-            // set zombies for next wave
-            if (backyard.getCurrentWave() == null || backyard.getCurrentWave().isComplete()) {
-                backyard.setCurrentWave(5);//TODO: Make number of zombies increase as levels go on
+            //Prepares new wave
+            if (backyard.getCurrentWave() != null && backyard.getCurrentWave().isComplete()) {
+                currentWaveNumber++;
+                //Check if the level is completed
+                if(currentWaveNumber == NUMBER_OF_WAVES){
+                    System.out.println("---------------------Level Completed!---------------------");
+                    break;
+                }
+                System.out.println("---------------------Wave Complete!---------------------");
+                System.out.println("Type anything to start the next wave:");
+                Scanner scan = new Scanner(System.in);
+                scan.next();
+                backyard.setCurrentWave(5);//creates a new wave for backyard
             }
 
             System.out.println(backyard.getCurrentWave());
@@ -196,7 +219,7 @@ public class Game {
 
             //Treat User response
             parse(response);
-            // }
+
         }
 
         if (gameOver) {
@@ -207,13 +230,34 @@ public class Game {
         System.out.println("Thanks for playing!");
     }
 
+    /**
+     * Determine is a string is Integer
+     * @param str String to check
+     * @return Return true if String is integer else return false
+     */
+    private static boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         //Set up the game
         final Game game = new Game();
     }
 
+    public static int getCurrentWaveNumber() {
+        return currentWaveNumber;
+    }
 
-    public Backyard getBackyard() {
+    public static void setCurrentWaveNumber(int currentWaveNumber) {
+        Game.currentWaveNumber = currentWaveNumber;
+    }
+
+    private Backyard getBackyard() {
         return backyard;
     }
 }

@@ -3,6 +3,7 @@ package Model;
 /**
  * Plants vs Zombies
  * Sprite Class used to model all entities in the game
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
  */
 public abstract class Sprite {
 
@@ -57,6 +58,10 @@ public abstract class Sprite {
         this.counter = counter;
     }
 
+    /**
+     * Decrements the counter of the sprite. If the sprite is a Sun then keep the counter such as.
+     *
+     */
     public void decrementCounter(){
         this.setCounter(this.getCounter() - 1);
     }

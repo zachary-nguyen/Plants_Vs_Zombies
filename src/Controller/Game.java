@@ -2,7 +2,7 @@ package Controller;
 
 import Model.Peashooter;
 import Model.Sunflower;
-import View.Backyard;
+import Model.Backyard;
 
 import java.util.Scanner;
 
@@ -191,8 +191,8 @@ public class Game {
         while (!response.equals("exit") && !(gameOver)) {
 
             // set zombies for next wave
-            Backyard.setNumZombiesSpawn(5);
-            Backyard.setSpawnCounter(2);
+            backyard.setNumZombiesSpawn(5);
+            backyard.setSpawnCounter(2);
             while (!response.equals("exit") && !(endRound) && !gameOver) {
                 System.out.println("----------WAVE " + getWave() + ", ROUND " + getRound() + "----------");
                 //round++;
@@ -214,7 +214,7 @@ public class Game {
                 // reset wave for next round
                 // increment wave
                 System.out.println("-------------------Level Complete------------------");
-                gameOver = true;
+                // endFlag = true;
 
 
             }
@@ -224,7 +224,7 @@ public class Game {
         if (gameOver) {
             //End game message
             System.out.println("---------------------Game Over!---------------------");
-            //System.out.println("Your garden has been overrun! Better luck next time!");
+            System.out.println("Your garden has been overrun! Better luck next time!");
         }
     }
 

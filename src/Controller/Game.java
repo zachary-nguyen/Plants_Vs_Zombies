@@ -3,11 +3,14 @@ package Controller;
 import Model.Backyard;
 import Model.Peashooter;
 import Model.Sunflower;
+import Model.Wave;
 
 import java.util.Scanner;
 
 public class Game {
 
+    private Backyard backyard;
+    public static boolean gameOver = false;
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
@@ -24,7 +27,7 @@ public class Game {
         }
 
         public String toString() {
-            return name + "("+cost+")";
+            return name + "(" + cost + ")";
         }
 
         Plants(String name, int cost) {
@@ -33,26 +36,12 @@ public class Game {
         }
     }
 
-    private Backyard backyard;
-
-    private int wave;
-    private int round;
-
-    public static boolean gameOver = false;
-    public static boolean endRound = false;
-
     /**
      * Constructor for game.
      */
     public Game() {
         this.backyard = new Backyard();
-        this.wave = 1;
-        this.round = 1;
         startGame();
-    }
-
-    public void setEndRound(boolean endRound) {
-        this.endRound = endRound;
     }
 
     /**
@@ -97,7 +86,7 @@ public class Game {
                 break;
             case "shovel":
                 String[] removeCoordinate = inputCoordinates();
-                backyard.removeSprite(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
+                backyard.removePlant(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
                 backyard.updateBackyard();
                 break;
             case "skip":
@@ -116,14 +105,14 @@ public class Game {
     }
 
     /**
-        Return a list of plants that the player can afford
+     * Return a list of plants that the player can afford
      */
     private String getAffordablePlants() {
         String list = "";
         Plants[] plants = Plants.values();
         for (Plants plant : plants) {
             if (backyard.getMoney() >= plant.getCost()) {
-                list += plant.toString() +" ";
+                list += plant.toString() + " ";
             }
         }
         return list;
@@ -184,8 +173,6 @@ public class Game {
     }
 
     private void startGame() {
-        wave = 1;
-
         //user input
         Scanner scanner = new Scanner(System.in);
 
@@ -195,42 +182,29 @@ public class Game {
         while (!response.equals("exit") && !(gameOver)) {
 
             // set zombies for next wave
-            backyard.setNumZombiesSpawn(5);
-            backyard.setSpawnCounter(2);
-            while (!response.equals("exit") && !(endRound) && !gameOver) {
-                System.out.println("----------WAVE " + this.wave + ", ROUND " + this.round + "----------");
-                //round++;
-                System.out.println("Score: " + backyard.getScore() + " Money : " + backyard.getMoney());
-                getBackyard().print(); //print backyard
-                System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
-                response = scanner.next();
-                response = response.trim().toLowerCase();
-                scanner.nextLine();
-
-                //Treat User response
-                parse(response);
+            if (backyard.getCurrentWave() == null || backyard.getCurrentWave().isComplete()) {
+                backyard.setCurrentWave(5);//TODO: Make number of zombies increase as levels go on
             }
 
-            if (!gameOver) {
-                System.out.println("---------------------Wave Complete!---------------------");
-                endRound = false;
+            System.out.println(backyard.getCurrentWave());
+            System.out.println("Score: " + backyard.getScore() + " Money : " + backyard.getMoney());
+            getBackyard().print(); //print backyard
+            System.out.println("What is your move? 'Add' 'Shovel' 'Skip' 'Collect' 'Exit'");
+            response = scanner.next();
+            response = response.trim().toLowerCase();
+            scanner.nextLine();
 
-                if (this.wave == 2) { // 2 waves per round
-                    // reset wave for next round
-                    // increment wave
-                    System.out.println("-------------------Level Complete------------------");
-                    gameOver = true;
-                    endRound = true;
-                }
-                setWave(this.wave + 1);
-            }
+            //Treat User response
+            parse(response);
+            // }
         }
 
-        if (gameOver && endRound) {
+        if (gameOver) {
             //End game message
             System.out.println("---------------------Game Over!---------------------");
             //System.out.println("Your garden has been overrun! Better luck next time!");
         }
+        System.out.println("Thanks for playing!");
     }
 
     public static void main(String[] args) {
@@ -241,21 +215,5 @@ public class Game {
 
     public Backyard getBackyard() {
         return backyard;
-    }
-
-    public int getWave() {
-        return wave;
-    }
-
-    public void setWave(int wave) {
-        this.wave = wave;
-    }
-
-    public int getRound() {
-        return round;
-    }
-
-    public void setRound(int level) {
-        this.round = level;
     }
 }

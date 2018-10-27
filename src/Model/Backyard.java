@@ -4,17 +4,14 @@ import Controller.Game;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 18;
 
-
-    private static int spawnCounter = 5; // turns between zombie spawns
-    private static int numZombieSpawn = 0; // number of zombies to end wave
-
-    private static int numZombieAlive = 0; // number of zombies to end wave
+    private Wave currentWave;
 
     private int money;
     private int score;
@@ -30,51 +27,9 @@ public class Backyard {
             Arrays.fill(row, null);
     }
 
-    /**
-     * Sets the number of zombies to spawn in a wave
-     *
-     * @param zombies The number of zombies to spawn
-     */
-    public static void setNumZombiesSpawn(int zombies) {
-        numZombieSpawn = zombies;
-    }
-
-    /**
-     * The current number of Zombies alive
-     *
-     * @return The number of zombies alive
-     */
-    public static int getNumZombieAlive() {
-        return numZombieAlive;
-    }
-
-    /**
-     * Used to spawn zombies randomly along the rightmost column.
-     *
-     * @return random int number between specified index.
-     */
-    private int randomGenerator() {
+    public static int randomGenerator() {
         Random rand = new Random();
         return rand.nextInt(HEIGHT - 1) + 1;
-    }
-
-    /**
-     * Sets the number of turns until a zombie spawns
-     *
-     * @param spawnCounter
-     */
-    public static void setSpawnCounter(int spawnCounter) {
-        Backyard.spawnCounter = spawnCounter;
-    }
-
-    /**
-     * Spawns a zombie along the rightmost column of the map.
-     */
-    private void spawnZombie() {
-        Zombie z = new Zombie();
-        numZombieSpawn--;
-        numZombieAlive++;
-        addSprite(WIDTH - 1, randomGenerator(), z);
     }
 
     /**
@@ -85,6 +40,13 @@ public class Backyard {
      * @param sprite Which type of plant is being added
      */
     public boolean addSprite(int x, int y, Sprite sprite) {
+        if (map[y][x] instanceof Bullet && sprite instanceof Zombie) {
+            Bullet bullet = (Bullet) map[y][x];
+            Zombie zombie = (Zombie) sprite;
+            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+            map[y][x] = sprite;
+            return true;
+        }
         if (map[y][x] == null) {
             map[y][x] = sprite;
             return true;
@@ -100,8 +62,8 @@ public class Backyard {
      * @param x x coordinate of plant to remove
      * @param y y coordinate of plant to remove
      */
-    public void removeSprite(int x, int y) {
-        if (!(map[x][y] instanceof AbstractZombie) && x > 0 && x <= WIDTH && y <= HEIGHT && y > 0) {
+    public void removePlant(int x, int y) {
+        if ((map[y][x] instanceof AbstractPlant)) {
             map[y][x] = null;
         } else {
             System.out.println("Cannot remove from those coordinates!");
@@ -134,7 +96,6 @@ public class Backyard {
             for (int col = 0; col < WIDTH; col++) {
 
                 Sprite sprite = map[row][col];
-                // endGameDetection(row); //end game check
 
                 if (sprite != null) { // Null-pointer safeguard
 
@@ -153,50 +114,44 @@ public class Backyard {
                     } else if (sprite instanceof Peashooter) {
                         Peashooter peashooter = (Peashooter) sprite;
                         if (peashooter.canShoot()) {
-                           // if ((Game.wave % 3) == 0) { //slows down bullet fire rate tremendously.
-                                map[row][col + 1] = peashooter.shootBullet();
-                                col++;
-                           // }
+                            Random rand = new Random();
+                            int spawnProbability = rand.nextInt(101);
+                            if (spawnProbability > 70 || spawnProbability < 30) {//randomize rate of fire
+                                if (map[row][col + 1] instanceof AbstractZombie) {//check if bullet is spawning onto zombie
+                                    treatBulletCollidedWithZombie(row,col,peashooter.shootBullet());
+                                }else {
+                                    map[row][col + 1] = peashooter.shootBullet();
+                                    col++;
+                                }
+                            }
                         }
                     } else if (sprite instanceof Bullet) {
                         Bullet bullet = (Bullet) sprite;
                         //check if bullet goes off screen
                         if (col + bullet.getSpeed() > WIDTH - 1) {
                             map[row][col] = null;
-                            return;
-                        }
 
-                        //make bullet jump over plant in its path.
-                        if (map[row][col + bullet.getSpeed()] instanceof AbstractPlant) {
+
+                            //make bullet jump over plant in its path.
+                        } else if (map[row][col + bullet.getSpeed()] instanceof AbstractPlant) {
                             map[row][col + (bullet.getSpeed() + 1)] = bullet;
                             if (!(map[row][col] instanceof AbstractPlant)) {
                                 map[row][col] = null;
                             }
                             col = col + 2;
-                        }
 
-                        //TODO: make bullet jump over another bullet in its path (incomplete)
-                        if (map[row][col + bullet.getSpeed()] instanceof Bullet) {
+                            //TODO: make bullet jump over another bullet in its path (incomplete)
+                        } else if (map[row][col + bullet.getSpeed()] instanceof Bullet) {
                             map[row][col + (bullet.getSpeed() + 1)] = bullet;
                             if (!(map[row][col] instanceof Sprite)) {
                                 map[row][col] = null;
                             }
                             col = col + 2;
-                        }
 
-                        //check if the bullet will collide with a zombie
-                        if (map[row][col + bullet.getSpeed()] instanceof AbstractZombie) {
-                            AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
-                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                            if (zombie.getHealth() <= 0) {
 
-                                numZombieAlive--;
-
-                                updateScore();
-                                updateMoney();
-
-                                map[row][col + bullet.getSpeed()] = null;
-                            }
+                            //check if the bullet will collide with a zombie
+                        } else if (map[row][col + bullet.getSpeed()] instanceof AbstractZombie) {
+                            treatBulletCollidedWithZombie(row, col, bullet);
                             map[row][col] = null;
                         } else {
                             map[row][col + bullet.getSpeed()] = bullet;
@@ -208,64 +163,30 @@ public class Backyard {
             }
         }
 
-
-        //Spawn zombie when needed after the turn is done
-        spawnCounter--;
-        if (spawnCounter == 0 && numZombieSpawn != 0) {
-            spawnZombie();
-            spawnCounter = randomGenerator();
-
-        }
-
-        // for testing waves
-        System.out.println("Num zombies Spawn : " + numZombieSpawn);
-        System.out.println("Num zombies Alive : " + numZombieAlive);
-        System.out.println("Spawn counter : " + spawnCounter);
-        // all zombies have been killed and no more spawn
-        if (numZombieAlive == 0 && numZombieSpawn == 0) {
-            Game.endRound = true;
-        }
-
-        //spawnZombieComplexity();
-    }
-
-    /**
-     * Generates a random delay number based on the current wave for use in
-     * spawnZombieComplexity() method.
-     *
-     * @param wave Current wave number
-     * @return int delay number
-     */
-    private int delayGenerator(int wave) {
-        Random rand = new Random();
-
-        int newWave = wave % 5;
-
-        if (newWave != 0) {
-            return rand.nextInt(newWave) + 1;
-        } else {
-            return delayGenerator(newWave + 1);
+        //Spawn zombie if required and current wave is not complete
+        if (!currentWave.isComplete() && currentWave.spawnZombie()) {
+            addSprite(WIDTH - 1, randomGenerator(), new Zombie());
+        }else if(currentWave.isComplete()){
+            System.out.println("---------------------Wave Complete!---------------------");
+            System.out.println("Type anything to start the next wave:");
+            Scanner scanner = new Scanner(System.in);
+            scanner.next();
         }
     }
 
-    /**
-     * Generates zombies at a random and even pace based on random ints and the current round number.
-     */
-    public void spawnZombieComplexity() {
-        Game game = new Game();
+    private void treatBulletCollidedWithZombie(int row, int col, Bullet bullet) {
+        AbstractZombie zombie = (AbstractZombie) map[row][col + bullet.getSpeed()];
+        zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+        if (zombie.getHealth() <= 0) {
 
-        int waveNum = game.getWave();
+            currentWave.decrementZombiesAlive();
 
-        int delay = delayGenerator(waveNum);
+            updateScore();
+            updateMoney();
 
-        while (delay != 0) {
-            if ((delay % 2) == 0) {
-                spawnZombie(); //spawn zombie if the number generate by the delay generator is even.
-            }
-            delay--;
-
+            map[row][col + bullet.getSpeed()] = null;
         }
-            }
+    }
 
     /**
      * Helper method to treat zombie collision
@@ -291,7 +212,7 @@ public class Backyard {
                 updateScore();
                 updateMoney(); //Updates Money per zombie killed.
                 map[row][col - zombie.getSpeed()] = null;
-                numZombieAlive--;
+                currentWave.decrementZombiesAlive();
             }
             //Check if zombie can attack plant
         } else if (map[row][col - zombie.getSpeed()] instanceof AbstractPlant) {
@@ -360,4 +281,11 @@ public class Backyard {
         this.money = money;
     }
 
+    public Wave getCurrentWave() {
+        return currentWave;
+    }
+
+    public void setCurrentWave(int numOfZombies) {
+        this.currentWave = new Wave(numOfZombies);
+    }
 }

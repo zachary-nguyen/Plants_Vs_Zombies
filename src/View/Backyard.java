@@ -163,7 +163,8 @@ public class Backyard {
                         //check if bullet goes off screen
                         if (col + bullet.getSpeed() > WIDTH - 1) {
                             map[row][col] = null;
-                            return;
+                            //return;
+                            break;
                         }
 
                         //make bullet jump over plant in its path.
@@ -214,9 +215,18 @@ public class Backyard {
         if (spawnCounter == 0 && numZombieSpawn != 0) {
             spawnZombie();
             spawnCounter = randomGenerator();
-
         }
+
         //spawnZombieComplexity();
+
+        // THIS NEEDS TO STAY IN UPDATEBACKYARD
+        System.out.println("Num zombies Spawn : " + numZombieSpawn);
+        System.out.println("Num zombies Alive : " + numZombieAlive);
+        System.out.println("Spawn counter : " + spawnCounter);
+        // all zombies have been killed and no more spawn
+        if (numZombieAlive == 0 && numZombieSpawn == 0) {
+            Game.endRound = true;
+        }
     }
 
     /**
@@ -254,14 +264,6 @@ public class Backyard {
             }
             delay--;
 
-        }
-
-        //System.out.println("Num zombies Spawn : " + numZombieSpawn);
-        //System.out.println("Num zombies Alive : " + numZombieAlive);
-        //System.out.println("Spawn counter : " + spawnCounter);
-        // all zombies have been killed and no more spawn
-        if (numZombieAlive == 0 && numZombieSpawn == 0) {
-            Game.endRound = true;
         }
     }
 

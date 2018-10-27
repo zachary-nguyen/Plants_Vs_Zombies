@@ -214,7 +214,7 @@ public class Game {
                 // reset wave for next round
                 // increment wave
                 System.out.println("-------------------Level Complete------------------");
-                // endFlag = true;
+                gameOver = true;
 
 
             }
@@ -224,7 +224,7 @@ public class Game {
         if (gameOver) {
             //End game message
             System.out.println("---------------------Game Over!---------------------");
-            System.out.println("Your garden has been overrun! Better luck next time!");
+            //System.out.println("Your garden has been overrun! Better luck next time!");
         }
     }
 

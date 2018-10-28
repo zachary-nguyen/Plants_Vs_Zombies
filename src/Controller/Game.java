@@ -14,7 +14,7 @@ public class Game {
 
     private Backyard backyard;
     public static boolean gameOver = false;
-    private static final int NUMBER_OF_WAVES = 2;
+    private static final int NUMBER_OF_WAVES = 3;
     private static int currentWaveNumber;
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
@@ -206,7 +206,7 @@ public class Game {
                 System.out.println("Type anything to start the next wave:");
                 Scanner scan = new Scanner(System.in);
                 scan.next();
-                backyard.setCurrentWave(5);//creates a new wave for backyard
+                backyard.setCurrentWave(5*currentWaveNumber);//creates a new wave for backyard
             }
 
             System.out.println(backyard.getCurrentWave());

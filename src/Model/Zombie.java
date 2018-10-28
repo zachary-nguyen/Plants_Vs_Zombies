@@ -1,13 +1,13 @@
 package Model;
 
+/**
+ * Zombie class is a model class for a basic zombie. It has no special attributes.
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
+ */
 public class Zombie extends AbstractZombie {
+
     public Zombie() {
-        super("Z", 100, 20, 1, 0);
+        super("Z", 100, 25, 1, 0);
     }
 
-    /*
-    public void attack(Sprite plant) {
-        plant.setHealth(plant.getHealth() - this.getDamage());
-    }
-    */
 }

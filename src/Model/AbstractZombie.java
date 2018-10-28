@@ -1,7 +1,8 @@
 package Model;
 
 /**
- * Class models a abstract Zombie
+ * Class models an abstract Zombie to be implemented by other zombie classes.
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
  */
 public abstract class AbstractZombie extends Sprite {
 

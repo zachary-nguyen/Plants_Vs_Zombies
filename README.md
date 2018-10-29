@@ -51,7 +51,7 @@ Group: 11
 
 
 ### Roadmap:
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Our next steps regarding this project are to first fix the remaining issues with the game mechanics, such as those listed in the “known issues” section. Additionally, our next big step with this project will be to convert the text-based project we have now to a GUI-based version. This GUI version will have a grid of spaces with plant and zombie objects represented by their own distinct images. Additionally, we will also be creating test classes to test the game’s functionality. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Our next steps regarding this project are to first fix the remaining issues with the game mechanics, such as those listed in the “known issues” section. We will also be focussing on refactoring some of several small issues such as: changing the class that keeps track of Sprite location to Sprite instead of Backyard. Additionally, our next big step with this project will be to convert the text-based project we have now to a GUI-based version. This GUI version will have a grid of spaces with plant and zombie objects represented by their own distinct images. Additionally, we will also be creating test classes to test the game’s functionality. 
   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the future, the project will also have various features including a cancel feature for game moves, and an undo and redo feature to allow a player more control over their gameplay. Finally, the end milestones for the project as a whole include: have a refined working game design with no “smells”, having the implementation of a save and load feature, and a working implementation of a game level builder. 
   

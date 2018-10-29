@@ -44,6 +44,7 @@ public class Backyard {
      * @param x      x coordinate for the plant
      * @param y      y coordinate for the plant
      * @param sprite Which type of plant is being added
+     * @return Return true if sprite was added successfully else false
      */
     public boolean addSprite(int x, int y, Sprite sprite) {
         if (map[y][x] instanceof Bullet && sprite instanceof Zombie) {
@@ -260,6 +261,10 @@ public class Backyard {
             System.out.println();
         }
     }
+
+    /***********************
+     * GETTERS and SETTERS
+     ***********************/
 
     public int getScore() {
         return score;

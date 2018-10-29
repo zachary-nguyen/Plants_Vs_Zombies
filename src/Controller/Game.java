@@ -52,6 +52,7 @@ public class Game {
 
     /**
      * Helper method for main method to get coordinates to add/remove sprite.
+     * @return Return the coordinates in an array.
      */
     private String[] inputCoordinates() {
         Scanner scanner = new Scanner(System.in);
@@ -116,6 +117,7 @@ public class Game {
 
     /**
      * Return a list of plants that the player can afford
+     * @return String of affordable plants
      */
     private String getAffordablePlants() {
         String list = "";
@@ -248,6 +250,9 @@ public class Game {
         //Set up the game
         final Game game = new Game();
     }
+    /***********************
+     * GETTERS and SETTERS
+     ***********************/
 
     public static int getCurrentWaveNumber() {
         return currentWaveNumber;

@@ -21,6 +21,7 @@ public class Wave {
 
     /**
      * Spawns a zombie along the rightmost column of the map.
+     * @return Return true if Zombie is spawned
      */
     public boolean spawnZombie() {
         Random rand = new Random();
@@ -88,7 +89,7 @@ public class Wave {
      ***********************/
 
     public int getNumZombieSpawn() {
-        return numZombieSpawn;
+        return this.numZombieSpawn;
     }
 
     public void setNumZombieSpawn(int numZombieSpawn) {

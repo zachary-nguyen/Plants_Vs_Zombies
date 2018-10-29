@@ -44,6 +44,10 @@ public class Sunflower extends AbstractPlant {
         return collect;
     }
 
+    /***********************
+     * GETTERS and SETTERS
+     ***********************/
+
     public void setCollect(boolean collect) {
         this.collect = collect;
     }

@@ -13,5 +13,13 @@ public class Bullet extends Sprite {
         this.speed = speed;
     }
 
+    /***********************
+     * GETTERS and SETTERS
+     ***********************/
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     public int getSpeed() { return speed; }
 }

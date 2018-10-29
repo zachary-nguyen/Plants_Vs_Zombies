@@ -26,6 +26,10 @@ public abstract class Sprite {
         this.counter = counter;
     }
 
+    /***********************
+     * GETTERS and SETTERS
+     ***********************/
+
     public String getName() {
         return name;
     }

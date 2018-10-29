@@ -29,7 +29,6 @@ public class Wave {
             return false;
         }
 
-        // if (spawnCounter == 0) {
         int spawnProbability = rand.nextInt(101);
         if (spawnProbability > 85 || spawnProbability < 15) {
             numZombieSpawn--;

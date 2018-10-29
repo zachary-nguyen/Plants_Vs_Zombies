@@ -39,11 +39,6 @@ Group: 11
   * Other Documentation
 
 ### Known Issues:
-  * There are infinite waves so far. 
-    The game continues indefinitely until the player beats the game, or they get overrun. 
-
-  * Currently, the number of zombies spawned per wave does not increase which each successive wave. 
-    There are the same number of zombies each wave.
 
   * Cannot spawn a new sun without collecting the current sun generated on the map.
     That is, there cannot be more than one sun on the map at any time. 

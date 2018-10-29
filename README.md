@@ -46,7 +46,7 @@ Group: 11
   * A bullet cannot jump over another bullet in its path. 
     Thus, if two bullets collide, one of the bullets will be eliminated from the map. 
 
-  * Currently, a plant can be placed where a bullet is on the map, eliminating the bullet. 
+  * Currently, a plant can't be placed where a bullet is on the map. 
     In the finished version a plant will not be allowed to be placed on a square occupied by a bullet. 
 
 

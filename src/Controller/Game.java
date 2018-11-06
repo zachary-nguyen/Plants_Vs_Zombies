@@ -3,18 +3,21 @@ package Controller;
 import Model.Backyard;
 import Model.Peashooter;
 import Model.Sunflower;
+import View.View;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 /**
  * Game class is a controller class in charge of treating user input and the flow of the game.
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
  */
-public class Game {
+public class Game implements ActionListener {
 
     private Backyard backyard;
     public static boolean gameOver = false;
-    private static final int NUMBER_OF_WAVES = 3;
+    private static final int MAX_NUMBER_OF_WAVES = 2;
     private static int currentWaveNumber;
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
@@ -47,7 +50,26 @@ public class Game {
     public Game() {
         this.backyard = new Backyard();
         currentWaveNumber = 1;
-        startGame();
+      //  startGame();
+
+        View view = new View();
+
+    }
+
+    /**
+     * Initialiaze Action Listener
+     */
+    public void initGame(){
+
+    }
+
+    /**
+     * Treat ActionEvents
+     * @param e Event being treated.
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 
     /**
@@ -200,7 +222,7 @@ public class Game {
             if (backyard.getCurrentWave() != null && backyard.getCurrentWave().isComplete()) {
                 currentWaveNumber++;
                 //Check if the level is completed
-                if(currentWaveNumber == NUMBER_OF_WAVES){
+                if(currentWaveNumber == MAX_NUMBER_OF_WAVES){
                     System.out.println("---------------------Level Completed!---------------------");
                     break;
                 }

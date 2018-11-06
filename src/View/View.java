@@ -5,101 +5,95 @@ import java.awt.*;
 
 public class View extends JFrame {
 
-    private JMenuItem addSunflower,addPeashooter,save,collect,skip,shovel,exit;
+    private JButton addSunflower,addPeashooter,save,collect,skip,shovel,exit;
 
     private JFrame frame;
     public View(){
         //Initialize Frame
         this.frame = new JFrame("Plants Vs Zombies");
-        frame.setLayout(new BorderLayout());
+        frame.setLayout(new FlowLayout());
 
         //Create menu bar
         JMenuBar menuBar = new JMenuBar();
 
-        //Create menu
-        JMenu menu  = new JMenu("Actions");
-
         //Create menu items
-        JMenuItem  addSunflower = new JMenuItem("Sunflower");
-        JMenuItem  addPeashooter = new JMenuItem("Peashooter");
-        JMenuItem save = new JMenuItem("Save");
-        JMenuItem collect = new JMenuItem("Collect");
-        JMenuItem skip = new JMenuItem("Skip");
-        JMenuItem  shovel = new JMenuItem("Shovel");
-        JMenuItem exit = new JMenuItem("Exit");
+        JButton  addSunflower = new JButton("Sunflower");
+        JButton addPeashooter = new JButton("Peashooter");
+        JButton save = new JButton("Save");
+        JButton collect = new JButton("Collect");
+        JButton skip = new JButton("Skip");
+        JButton  shovel = new JButton("Shovel");
+        JButton exit = new JButton("Exit");
 
 
-        menu.add(addSunflower);
-        menu.add(addPeashooter);
-        menu.add(save);
-        menu.add(collect);
-        menu.add(skip);
-        menu.add(shovel);
-        menu.add(exit);
-
-
-        menuBar.add(menu);
+        menuBar.add(addSunflower);
+        menuBar.add(addPeashooter);
+        menuBar.add(save);
+        menuBar.add(collect);
+        menuBar.add(skip);
+        menuBar.add(shovel);
+        menuBar.add(exit);
 
         frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000,800);
+        frame.setSize(1280,1000);
         frame.setVisible(true);
     }
 
-    public JMenuItem getAddSunflower() {
+    public JButton getAddSunflower() {
         return addSunflower;
     }
 
-    public void setAddSunflower(JMenuItem addSunflower) {
+    public void setAddSunflower(JButton addSunflower) {
         this.addSunflower = addSunflower;
     }
 
-    public JMenuItem getAddPeashooter() {
+    public JButton getAddPeashooter() {
         return addPeashooter;
     }
 
-    public void setAddPeashooter(JMenuItem addPeashooter) {
+    public void setAddPeashooter(JButton addPeashooter) {
         this.addPeashooter = addPeashooter;
     }
 
-    public JMenuItem getSave() {
+    public JButton getSave() {
         return save;
     }
 
-    public void setSave(JMenuItem save) {
+    public void setSave(JButton save) {
         this.save = save;
     }
 
-    public JMenuItem getCollect() {
+    public JButton getCollect() {
         return collect;
     }
 
-    public void setCollect(JMenuItem collect) {
+    public void setCollect(JButton collect) {
         this.collect = collect;
     }
 
-    public JMenuItem getSkip() {
+    public JButton getSkip() {
         return skip;
     }
 
-    public void setSkip(JMenuItem skip) {
+    public void setSkip(JButton skip) {
         this.skip = skip;
     }
 
-    public JMenuItem getShovel() {
+    public JButton getShovel() {
         return shovel;
     }
 
-    public void setShovel(JMenuItem shovel) {
+    public void setShovel(JButton shovel) {
         this.shovel = shovel;
     }
 
-    public JMenuItem getExit() {
+    public JButton getExit() {
         return exit;
     }
 
-    public void setExit(JMenuItem exit) {
+    public void setExit(JButton exit) {
         this.exit = exit;
     }
 

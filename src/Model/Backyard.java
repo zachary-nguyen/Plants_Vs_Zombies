@@ -270,6 +270,10 @@ public class Backyard {
         return score;
     }
 
+    public Sprite[][] getMap() {
+        return map;
+    }
+
     public void setScore(int score) {
         this.score = score;
     }

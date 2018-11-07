@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class Game implements ActionListener {
 
     private Backyard backyard;
+    private View view;
     public static boolean gameOver = false;
     private static final int MAX_NUMBER_OF_WAVES = 2;
     private static int currentWaveNumber;
@@ -50,9 +51,9 @@ public class Game implements ActionListener {
     public Game() {
         this.backyard = new Backyard();
         currentWaveNumber = 1;
-      //  startGame();
 
-        View view = new View();
+        view = new View();
+        startGame();
 
     }
 
@@ -216,6 +217,7 @@ public class Game implements ActionListener {
         System.out.println("Welcome to Plants Vs Zombies!\nType anything to start game :");
         String response = scanner.next();
         backyard.setCurrentWave(5);//initialize the first wave
+        view.displayBackyard(backyard.getMap());
         while (!response.equals("exit") && !(gameOver)) {
 
             //Prepares new wave
@@ -243,7 +245,7 @@ public class Game implements ActionListener {
 
             //Treat User response
             parse(response);
-
+            view.displayBackyard(backyard.getMap());
         }
 
         if (gameOver) {

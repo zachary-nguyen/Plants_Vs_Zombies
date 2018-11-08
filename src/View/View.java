@@ -1,6 +1,5 @@
 package View;
 
-import Controller.Game;
 import Model.Backyard;
 import Model.Sprite;
 
@@ -11,7 +10,7 @@ public class View extends JFrame {
 
     private JButton addSunflower, addPeashooter, save, collect, skip, shovel, exit;
     private Tile[][] buttonGrid;
-    private JPanel backyardPanel;
+    private JPanel backyardPanel,actionPanel,scorePanel;
     private JFrame frame;
 
     public View() {
@@ -19,39 +18,50 @@ public class View extends JFrame {
         this.frame = new JFrame("Plants Vs Zombies");
         frame.setLayout(new BorderLayout());
 
-        //Create menu bar
-        JMenuBar menuBar = new JMenuBar();
-
-        //Create menu items
+        //Create action Panel
+        actionPanel = new JPanel(new GridLayout());
+        //Create Action buttons
         addSunflower = new JButton("Sunflower");
-        addSunflower.setActionCommand("sunflower");
-
         addPeashooter = new JButton("Peashooter");
-        addPeashooter.setActionCommand("peashooter");
-
         save = new JButton("Save");
-        save.setActionCommand("save");
-
         collect = new JButton("Collect");
-        collect.setActionCommand("collect");
-
         skip = new JButton("Skip");
-        skip.setActionCommand("skip");
-
         shovel = new JButton("Shovel");
-        shovel.setActionCommand("shovel");
-
         exit = new JButton("Exit");
+
+        //Set action commands
+        addSunflower.setActionCommand("sunflower");
+        addPeashooter.setActionCommand("peashooter");
+        save.setActionCommand("save");
+        collect.setActionCommand("collect");
+        skip.setActionCommand("skip");
+        shovel.setActionCommand("shovel");
         exit.setActionCommand("exit");
 
+        //Add buttons to action panel
+        actionPanel.add(addSunflower);
+        actionPanel.add(addPeashooter);
+        actionPanel.add(save);
+        actionPanel.add(collect);
+        actionPanel.add(skip);
+        actionPanel.add(shovel);
+        actionPanel.add(exit);
 
-        menuBar.add(addSunflower);
-        menuBar.add(addPeashooter);
-        menuBar.add(save);
-        menuBar.add(collect);
-        menuBar.add(skip);
-        menuBar.add(shovel);
-        menuBar.add(exit);
+        //Create score panel
+        scorePanel = new JPanel(new GridLayout());
+
+        //Create new text fields
+        JLabel wave = new JLabel("Wave ");
+        JLabel  score = new JLabel ("Score: ");
+        JLabel  sun = new JLabel ("Sun: ");
+        JLabel  zombieAlive = new JLabel ("Zombies Alive: ");
+        JLabel  zombieLeft = new JLabel ("Zombies Left: ");
+
+        scorePanel.add(wave);
+        scorePanel.add(score);
+        scorePanel.add(sun);
+        scorePanel.add(zombieAlive);
+        scorePanel.add(zombieLeft);
 
         //initialize button grid
         backyardPanel = new JPanel(new GridLayout(Backyard.HEIGHT, Backyard.WIDTH));
@@ -71,7 +81,8 @@ public class View extends JFrame {
         }
 
         frame.getContentPane().add(backyardPanel, BorderLayout.CENTER);
-        frame.setJMenuBar(menuBar);
+        frame.getContentPane().add(actionPanel,BorderLayout.PAGE_START);
+        frame.getContentPane().add(scorePanel,BorderLayout.AFTER_LAST_LINE);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 1000);

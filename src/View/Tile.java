@@ -1,6 +1,8 @@
 package View;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 public class Tile extends JButton {
 
@@ -18,8 +20,8 @@ public class Tile extends JButton {
         this.setFocusPainted(false);
     }
 
-    public void setImage(String imagePath){
-        this.setIcon(new ImageIcon(this.getClass().getResource(imagePath)));
+    void setImage(Icon imagePath) {
+        this.setIcon(imagePath);
     }
 
     public int getRow() {

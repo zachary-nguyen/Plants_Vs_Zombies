@@ -1,5 +1,11 @@
 package Model;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Plants vs Zombies
  * Sprite Class used to model all entities in the game
@@ -7,20 +13,20 @@ package Model;
  */
 public abstract class Sprite {
 
-    private String name;
     private int health;
     private int damage;
     private int counter;
+    private Image img;
 
-    public Sprite() {
-        name = null;
+    public Sprite() throws IOException {
+        img = null;
         health = 0;
         damage = 0;
         counter = 0;
     }
 
-    public Sprite(String name, int health, int damage, int counter) {
-        this.name = name;
+    public Sprite(Image img, int health, int damage, int counter) {
+        this.img = img;
         this.health = health;
         this.damage = damage;
         this.counter = counter;
@@ -30,13 +36,9 @@ public abstract class Sprite {
      * GETTERS and SETTERS
      ***********************/
 
-    public String getName() {
-        return name;
-    }
+    public Image getIcon() { return img; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setIcon(Image img) { this.img = img; }
 
     public int getHealth() {
         return health;
@@ -68,11 +70,6 @@ public abstract class Sprite {
      */
     public void decrementCounter(){
         this.setCounter(this.getCounter() - 1);
-    }
-
-    @Override
-    public String toString() {
-        return getName();
     }
 
 }

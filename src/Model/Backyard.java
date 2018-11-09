@@ -2,6 +2,7 @@ package Model;
 
 import Controller.Game;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -81,7 +82,7 @@ public class Backyard {
      * Collects all the sun on the map
      *
      */
-    public void collectSun() {
+    public void collectSun() throws IOException {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 if (map[row][col] instanceof Sunflower) {
@@ -97,7 +98,7 @@ public class Backyard {
     /**
      * Method that updates all the objects in the backyard and makes them perform actions
      */
-    public void updateBackyard() {
+    public void updateBackyard() throws IOException {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
 

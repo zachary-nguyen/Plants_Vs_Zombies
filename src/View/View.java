@@ -1,10 +1,17 @@
 package View;
 
 import Model.Backyard;
+import Model.Peashooter;
 import Model.Sprite;
 
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 
 public class View extends JFrame {
 
@@ -89,19 +96,33 @@ public class View extends JFrame {
         frame.setVisible(true);
     }
 
-    public void displayBackyard(Sprite[][] map) {
+    public void displayBackyard(Sprite[][] map) throws IOException {
         for (int row = 0; row < Backyard.HEIGHT; row++) {
             for (int col = 0; col < Backyard.WIDTH; col++) {
 
                 Sprite sprite = map[row][col];
                 if (sprite == null) {
-                    buttonGrid[row][col].setText("-");
-                } else {
-                    buttonGrid[row][col].setText(sprite.getName()); //TODO: change this to display the image instead of text
+                    Image img = ImageIO.read(new File("src/images/GRASS.png"));
+                    Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
+
+                    buttonGrid[row][col].setImage(new ImageIcon(resizedImage));
+                }
+                else {
+                    try {
+                        Image img = sprite.getIcon();
+                        Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
+
+                        buttonGrid[row][col].setImage(new ImageIcon(resizedImage)); //TODO: change this to display the image instead of text
+
+                    }
+                    catch (Exception e) {
+                        System.out.println(e);
+                    }
                 }
             }
         }
     }
+
 
 
     public JButton getAddSunflower() {

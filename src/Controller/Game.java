@@ -7,6 +7,7 @@ import View.View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -48,7 +49,7 @@ public class Game implements ActionListener {
     /**
      * Constructor for game.
      */
-    public Game() {
+    public Game() throws IOException {
         this.backyard = new Backyard();
         currentWaveNumber = 1;
 
@@ -110,7 +111,7 @@ public class Game implements ActionListener {
      * Parse the user input and determine what action to take.
      * @param command The command being parsed.
      */
-    private void parse(String command) {
+    private void parse(String command) throws IOException {
 
         switch (command) {
             case "add":
@@ -158,7 +159,7 @@ public class Game implements ActionListener {
      *
      * @return Return true if a plant was successfully added or else return false
      */
-    private boolean addPlant() {
+    private boolean addPlant() throws IOException {
         Scanner scanner = new Scanner(System.in);
         String[] addCoordinate;
 
@@ -210,7 +211,7 @@ public class Game implements ActionListener {
     /**
      * This is the main loop for the game. Treats user inputs and determines when game is done.
      */
-    private void startGame() {
+    private void startGame() throws IOException {
         //user input
         Scanner scanner = new Scanner(System.in);
 
@@ -270,7 +271,7 @@ public class Game implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Set up the game
         final Game game = new Game();
     }

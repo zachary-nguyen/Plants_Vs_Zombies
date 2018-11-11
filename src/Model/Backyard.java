@@ -254,30 +254,37 @@ public class Backyard {
             Game.gameOver = true;
             return;
         }
-        /*
-        if (map[row][col - zombie.getSpeed()] instanceof Bullet) {
-            Bullet bullet = (Bullet) map[row][col - zombie.getSpeed()];
-            map[row][col - zombie.getSpeed()] = zombie;
-            map[row][col] = null; //Reset the tile zombie was previously on
-            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-            if (zombie.getHealth() <= 0) {
-                updateScore();
-                updateMoney(); //Updates Money per zombie killed.
-                map[row][col - zombie.getSpeed()] = null;
-                currentWave.decrementZombiesAlive();
+
+        for (Iterator<Sprite> iter = map[row][col-1].iterator(); iter.hasNext(); ) {
+            Sprite sprite = iter.next();
+
+            if (sprite instanceof Bullet) {
+                Bullet bullet = (Bullet) sprite;
+                map[row][col - zombie.getSpeed()].add(zombie);
+                map[row][col].remove(zombie); //Reset the tile zombie was previously on
+                zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                if (zombie.getHealth() <= 0) {
+                    updateScore();
+                    updateMoney(); //Updates Money per zombie killed.
+                    map[row][col - zombie.getSpeed()].remove(zombie);
+                    currentWave.decrementZombiesAlive();
+                }
+                //Check if zombie can attack plant
+            } else if (sprite instanceof AbstractPlant) {
+                AbstractPlant plant = (AbstractPlant) sprite;
+                plant.setHealth(plant.getHealth() - zombie.getDamage());
+                if (plant.getHealth() <= 0) {
+                    map[row][col - zombie.getSpeed()].add(zombie);
+                    map[row][col].remove(plant);
+                }
             }
-            //Check if zombie can attack plant
-        } else if (map[row][col - zombie.getSpeed()] instanceof AbstractPlant) {
-            AbstractPlant plant = (AbstractPlant) map[row][col - zombie.getSpeed()];
-            plant.setHealth(plant.getHealth() - zombie.getDamage());
-            if (plant.getHealth() <= 0) {
-                map[row][col - zombie.getSpeed()] = zombie;
-                map[row][col] = null;
-            }
-        } else { //else if there is no collision move the zombie
-            map[row][col - zombie.getSpeed()] = zombie;
-            map[row][col] = null; //Reset the tile zombie was previously on
-        }*/
+
+
+        }
+        if (map[row][col].contains(zombie)) { //else if there is no collision move the zombie
+            map[row][col - zombie.getSpeed()].add(zombie);
+            map[row][col].remove(zombie); //Reset the tile zombie was previously on
+        }
     }
 
 

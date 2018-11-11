@@ -106,28 +106,24 @@ public class View extends JFrame {
         for (int row = 0; row < Backyard.HEIGHT; row++) {
             for (int col = 0; col < Backyard.WIDTH; col++) {
 
-
-                Sprite sprite = (Sprite) map[row][col].peek();
-                if (sprite == null) {
-
-
+                if (map[row][col].isEmpty()) {
                     buttonGrid[row][col].setImage(new ImageIcon(resizedImage));
-                }
-                else {
+                } else {
                     try {
+                        Sprite sprite = (Sprite) map[row][col].peek();
                         Image spriteImg = sprite.getIcon();
                         Image sizedImage = spriteImg.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
 
                         buttonGrid[row][col].setImage(new ImageIcon(sizedImage)); //TODO: change this to display the image instead of text
 
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println(e);
                     }
                 }
             }
         }
     }
+
 
 
 

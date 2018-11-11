@@ -255,7 +255,7 @@ public class Backyard {
             return;
         }
 
-        for (Iterator<Sprite> iter = map[row][col-1].iterator(); iter.hasNext(); ) {
+        for (Iterator<Sprite> iter = map[row][col - zombie.getSpeed()].iterator(); iter.hasNext(); ) {
             Sprite sprite = iter.next();
 
             if (sprite instanceof Bullet) {
@@ -263,6 +263,7 @@ public class Backyard {
                 map[row][col - zombie.getSpeed()].add(zombie);
                 map[row][col].remove(zombie); //Reset the tile zombie was previously on
                 zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                map[row][col - zombie.getSpeed()].remove(sprite);
                 if (zombie.getHealth() <= 0) {
                     updateScore();
                     updateMoney(); //Updates Money per zombie killed.
@@ -275,7 +276,7 @@ public class Backyard {
                 plant.setHealth(plant.getHealth() - zombie.getDamage());
                 if (plant.getHealth() <= 0) {
                     map[row][col - zombie.getSpeed()].add(zombie);
-                    map[row][col].remove(plant);
+                    map[row][col].remove(sprite);
                 }
             }
 

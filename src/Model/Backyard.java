@@ -135,7 +135,7 @@ public class Backyard {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 // need to run for all entities in the queue
-                for( Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext();){
+                for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
                     Sprite sprite = iter.next();
                     if (sprite != null) { // Null-pointer safeguard
 
@@ -152,18 +152,22 @@ public class Backyard {
                         } else if (sprite instanceof Peashooter) {
                             Peashooter peashooter = (Peashooter) sprite;
                             if (peashooter.canShoot()) {
-                                /*if (map[row][col + 1] instanceof AbstractZombie) {//check if bullet is spawning onto zombie
-                                    treatBulletCollidedWithZombie(row, col, peashooter.shootBullet());
-                                } else {
-                                    map[row][col + 1] = peashooter.shootBullet();
-                                    col++;
-                                }*/
+                                for (Iterator<Sprite> iter2 = map[row][col].iterator(); iter2.hasNext(); ) {
+                                    Sprite next = iter2.next();
+                                    if (next instanceof AbstractZombie) {//check if bullet is spawning onto zombie
+                                        treatBulletCollidedWithZombie(row, col, peashooter.shootBullet());
+                                    } else {
+                                        map[row][col + 1].add(peashooter.shootBullet());
+                                        col++;
+                                    }
+                                }
                             }
                         } else if (sprite instanceof Bullet) {
                             Bullet bullet = (Bullet) sprite;
                             //check if bullet goes off screen
                             if (col + bullet.getSpeed() > WIDTH - 1) {
                                 map[row][col].remove(sprite);
+                                break;
                                 //make bullet jump over plant in its path.
                             /*} else if (map[row][col + bullet.getSpeed()] instanceof AbstractPlant) {
                                 map[row][col + (bullet.getSpeed() + 1)] = bullet;
@@ -179,21 +183,30 @@ public class Backyard {
                                 }
                                 col = col + 2;
 
-                                //check if the bullet will collide with a zombie
-                            } else if (map[row][col + bullet.getSpeed()] instanceof AbstractZombie) {
-                                treatBulletCollidedWithZombie(row, col, bullet);
-                                map[row][col] = null;*/
-                            } else {
+                              */  //check if the bullet will collide with a zombie
+                            }
+                            // zombie in next column
+                            for (Iterator<Sprite> iter2 = map[row][col].iterator(); iter2.hasNext(); ) {
+                                Sprite next = iter2.next();
+                                if (next instanceof AbstractZombie) {
+                                    treatBulletCollidedWithZombie(row, col, bullet);
+                                    map[row][col].remove(bullet);
+                                }
+                            }
+
+                            // moves bullet
+                            if (map[row][col].contains(bullet)) {
                                 map[row][col + bullet.getSpeed()].add(bullet);
                                 map[row][col].remove(bullet);
                                 col++;
                             }
+
                         }
+
                     }
                 }
             }
         }
-
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());

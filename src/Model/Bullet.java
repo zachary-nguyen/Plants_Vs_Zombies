@@ -26,4 +26,9 @@ public class Bullet extends Sprite {
     }
 
     public int getSpeed() { return speed; }
+
+    @Override
+    public int compareTo(Object o) {
+        return -1;
+    }
 }

@@ -14,7 +14,7 @@ public class Sunflower extends AbstractPlant {
     private static final int MONEY = 25;
 
     public Sunflower() throws IOException {
-        super(ImageIO.read(new File("src/images/SUNFLOWER.png")), 100, 0, 4, 50);
+        super(ImageIO.read(new File("src/images/SUNFLOWER.jpg")), 100, 0, 4, 50);
         this.collect = false;
     }
 
@@ -54,5 +54,10 @@ public class Sunflower extends AbstractPlant {
 
     public void setCollect(boolean collect) {
         this.collect = collect;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

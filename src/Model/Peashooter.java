@@ -25,4 +25,9 @@ public class Peashooter extends AbstractPlant {
         return new Bullet(getDamage(), 1);
     }
 
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
 }

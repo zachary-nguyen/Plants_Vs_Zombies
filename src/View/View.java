@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.PriorityQueue;
 
 
 public class View extends JFrame {
@@ -96,23 +97,28 @@ public class View extends JFrame {
         frame.setVisible(true);
     }
 
-    public void displayBackyard(Sprite[][] map) throws IOException {
+    public void displayBackyard(PriorityQueue[][] map) throws IOException {
+
+
+        Image img = ImageIO.read(new File("src/images/GRASS.png"));
+        Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
+
         for (int row = 0; row < Backyard.HEIGHT; row++) {
             for (int col = 0; col < Backyard.WIDTH; col++) {
 
-                Sprite sprite = map[row][col];
+
+                Sprite sprite = (Sprite) map[row][col].peek();
                 if (sprite == null) {
-                    Image img = ImageIO.read(new File("src/images/GRASS.png"));
-                    Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
+
 
                     buttonGrid[row][col].setImage(new ImageIcon(resizedImage));
                 }
                 else {
                     try {
-                        Image img = sprite.getIcon();
-                        Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
+                        Image spriteImg = sprite.getIcon();
+                        Image sizedImage = spriteImg.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
 
-                        buttonGrid[row][col].setImage(new ImageIcon(resizedImage)); //TODO: change this to display the image instead of text
+                        buttonGrid[row][col].setImage(new ImageIcon(sizedImage)); //TODO: change this to display the image instead of text
 
                     }
                     catch (Exception e) {

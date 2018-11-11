@@ -166,7 +166,8 @@ public class Backyard {
                             Bullet bullet = (Bullet) sprite;
                             //check if bullet goes off screen
                             if (col + bullet.getSpeed() > WIDTH - 1) {
-                                map[row][col].remove(sprite);
+                                //map[row][col].remove(sprite);
+                                iter.remove();
                                 break;
                                 //make bullet jump over plant in its path.
                             /*} else if (map[row][col + bullet.getSpeed()] instanceof AbstractPlant) {
@@ -186,18 +187,18 @@ public class Backyard {
                               */  //check if the bullet will collide with a zombie
                             }
                             // zombie in next column
-                            for (Iterator<Sprite> iter2 = map[row][col].iterator(); iter2.hasNext(); ) {
+                            for (Iterator<Sprite> iter2 = map[row][col + bullet.getSpeed()].iterator(); iter2.hasNext(); ) {
                                 Sprite next = iter2.next();
                                 if (next instanceof AbstractZombie) {
-                                    treatBulletCollidedWithZombie(row, col, bullet);
-                                    map[row][col].remove(bullet);
+                                    treatBulletCollidedWithZombie(row, col , bullet);
+                                    iter2.remove();
                                 }
                             }
 
                             // moves bullet
                             if (map[row][col].contains(bullet)) {
                                 map[row][col + bullet.getSpeed()].add(bullet);
-                                map[row][col].remove(bullet);
+                                iter.remove(); // remove bullet
                                 col++;
                             }
 
@@ -255,15 +256,17 @@ public class Backyard {
             return;
         }
 
+        map[row][col - zombie.getSpeed()].add(zombie);
+        map[row][col].remove(zombie); //Reset the tile zombie was previously on
+
         for (Iterator<Sprite> iter = map[row][col - zombie.getSpeed()].iterator(); iter.hasNext(); ) {
             Sprite sprite = iter.next();
 
             if (sprite instanceof Bullet) {
                 Bullet bullet = (Bullet) sprite;
-                map[row][col - zombie.getSpeed()].add(zombie);
-                map[row][col].remove(zombie); //Reset the tile zombie was previously on
                 zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                map[row][col - zombie.getSpeed()].remove(sprite);
+                iter.remove();
+                //map[row][col - zombie.getSpeed()].remove(bullet);
                 if (zombie.getHealth() <= 0) {
                     updateScore();
                     updateMoney(); //Updates Money per zombie killed.
@@ -275,12 +278,10 @@ public class Backyard {
                 AbstractPlant plant = (AbstractPlant) sprite;
                 plant.setHealth(plant.getHealth() - zombie.getDamage());
                 if (plant.getHealth() <= 0) {
-                    map[row][col - zombie.getSpeed()].add(zombie);
-                    map[row][col].remove(sprite);
+                    iter.remove();
+                    //map[row][col].remove(sprite);
                 }
             }
-
-
         }
         if (map[row][col].contains(zombie)) { //else if there is no collision move the zombie
             map[row][col - zombie.getSpeed()].add(zombie);

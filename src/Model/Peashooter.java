@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
 public class Peashooter extends AbstractPlant {
 
     public Peashooter() throws IOException {
@@ -23,6 +22,11 @@ public class Peashooter extends AbstractPlant {
 
     public Bullet shootBullet() throws IOException {
         return new Bullet(getDamage(), 1);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 
 }

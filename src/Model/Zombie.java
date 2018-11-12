@@ -15,4 +15,8 @@ public class Zombie extends AbstractZombie {
         super(ImageIO.read(new File("src/images/ZOMBIE.png")), 100, 25, 1, 0);
     }
 
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
 }

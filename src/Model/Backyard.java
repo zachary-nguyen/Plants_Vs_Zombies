@@ -253,6 +253,9 @@ public class Backyard {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
 
+                //ArrayList list = new ArrayList(map[row][col]);
+                Zombie deadZombie = null;
+
                 for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
                     Sprite ent1 = sprite1.next();
                     if (ent1 instanceof Bullet) {
@@ -268,8 +271,10 @@ public class Backyard {
                                     currentWave.decrementZombiesAlive();
                                     updateScore();
                                     updateMoney();
-                                    sprite2.remove();
-                                    
+                                    //sprite2.remove();
+                                    deadZombie = zombie;
+                                    break;
+
                                 }
 
                                 //return;
@@ -277,7 +282,10 @@ public class Backyard {
                         }
 
                     }
+
                 }
+
+                map[row][col].remove(deadZombie);
             }
         }
     }

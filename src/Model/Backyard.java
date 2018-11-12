@@ -199,6 +199,7 @@ public class Backyard {
                         } else { // move bullet possible collision
                             map[row][col + bullet.getSpeed()].add(bullet);
                             iter.remove();
+                            // could make collisions more efficient
                             //collisionHelper(row, col + bullet.getSpeed());
                         }
                     }
@@ -207,11 +208,13 @@ public class Backyard {
             }
         }
 
+        // checks for bullets hitting zombies
         collisionHelper(0,0);
-        // all plants
+        // all plants and zombies
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
+                    // for each sprite in the queue
                     Sprite sprite = iter.next();
                     if (sprite instanceof Sunflower) {
                         System.out.println("Sun");
@@ -233,6 +236,7 @@ public class Backyard {
                         Zombie zombie = (Zombie) sprite;
                         map[row][col - zombie.getSpeed()].add(zombie);
                         iter.remove();
+                        // could make collisions more efficient
                         //collisionHelper(row, col - zombie.getSpeed());
                     }
 
@@ -241,6 +245,7 @@ public class Backyard {
             }
         }
 
+        // checks for zombie hits bullet
         collisionHelper(0,0);
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
@@ -248,14 +253,18 @@ public class Backyard {
         }
 
     }
-
+    /**
+     * Method that treats collision between bullets and zombies.
+     * Currently checks all board positions for collision
+     * @param row    Row of collision
+     * @param col    Col of collision
+     */
     private void collisionHelper(int row1, int col1){
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
+                Zombie deadZombie = null; // zombie to be removed
 
-                //ArrayList list = new ArrayList(map[row][col]);
-                Zombie deadZombie = null;
-
+                // if the tile contains a bullet and zombie
                 for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
                     Sprite ent1 = sprite1.next();
                     if (ent1 instanceof Bullet) {
@@ -271,13 +280,10 @@ public class Backyard {
                                     currentWave.decrementZombiesAlive();
                                     updateScore();
                                     updateMoney();
-                                    //sprite2.remove();
                                     deadZombie = zombie;
                                     break;
 
                                 }
-
-                                //return;
                             }
                         }
 

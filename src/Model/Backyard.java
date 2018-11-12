@@ -256,8 +256,8 @@ public class Backyard {
     /**
      * Method that treats collision between bullets and zombies.
      * Currently checks all board positions for collision
-     * @param row    Row of collision
-     * @param col    Col of collision
+     * @param row1    Row of collision
+     * @param col1    Col of collision
      */
     private void collisionHelper(int row1, int col1){
         for (int row = 0; row < HEIGHT; row++) {

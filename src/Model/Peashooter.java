@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
 public class Peashooter extends AbstractPlant {
 
     public Peashooter() throws IOException {

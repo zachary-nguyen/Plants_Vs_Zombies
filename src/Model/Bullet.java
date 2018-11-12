@@ -10,11 +10,13 @@ import java.io.IOException;
  */
 public class Bullet extends Sprite {
     private int speed;
+    private boolean move;
 
     public Bullet(int damage, int speed) throws IOException {
 
         super(ImageIO.read(new File("src/images/BULLET.png")), 0, damage, speed);
         this.speed = speed;
+        move = false;
     }
 
     /***********************
@@ -26,6 +28,14 @@ public class Bullet extends Sprite {
     }
 
     public int getSpeed() { return speed; }
+
+    public boolean isMove() {
+        return move;
+    }
+
+    public void setMove(boolean move) {
+        this.move = move;
+    }
 
     @Override
     public int compareTo(Object o) {

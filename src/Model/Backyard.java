@@ -40,22 +40,13 @@ public class Backyard {
         this.score = 0;
         this.money = 300;
 
-        try {
-            /*ArrayList<Sprite> sprites = new ArrayList<>();
-            sprites.add(new Sunflower());
-            sprites.add(new Peashooter());
-            sprites.add(new Zombie());
-            Collection<Sprite> c = sprites;*/
-
-            map = new PriorityQueue[HEIGHT][WIDTH];
-            for (int row = 0; row < HEIGHT; row++) {
-                for (int col = 0; col < WIDTH; col++) {
-                    map[row][col] = new PriorityQueue<Sprite>();
-                }
+        map = new PriorityQueue[HEIGHT][WIDTH];
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                map[row][col] = new PriorityQueue<Sprite>();
             }
-        } catch (Exception e) {
-            System.out.println("cant set up");
         }
+
     }
 
     public static int randomGenerator() {
@@ -137,10 +128,11 @@ public class Backyard {
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() throws IOException {
-        for (int row = 0; row < HEIGHT; row++) {
-            for (int col = 0; col < WIDTH; col++) {
+        // moves bullets
+        for (int row = HEIGHT -1; row >= 0; row--) {
+            for (int col = WIDTH -1; col >= 0; col--) {
                 // need to run for all entities in the queue
-                for (Sprite sprite : map[row][col]) {
+                /*for (Sprite sprite : map[row][col]) {
                     if (sprite != null) { // Null-pointer safeguard
 
                         sprite.decrementCounter();
@@ -199,15 +191,113 @@ public class Backyard {
                             }
                         }
                     }
+                }*/
+
+                for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
+                    Sprite sprite = iter.next();
+                    if (sprite instanceof Bullet) {
+                        Bullet bullet = (Bullet) sprite;
+                        // bullet goes off map
+                        if (col + bullet.getSpeed() > WIDTH - 1) {
+                            iter.remove();
+                        } else { // move bullet possible collision
+                            map[row][col + bullet.getSpeed()].add(bullet);
+                            iter.remove();
+                            // could make collisions more efficient
+                            //collisionHelper(row, col + bullet.getSpeed());
+                        }
+                    }
+
                 }
             }
         }
 
+        // checks for bullets hitting zombies
+        collisionHelper(0,0);
+        // all plants and zombies
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
+                    // for each sprite in the queue
+                    Sprite sprite = iter.next();
+                    if (sprite instanceof Sunflower) {
+                        System.out.println("Sun");
+                        Sunflower sunflower = (Sunflower) sprite;
+                        sunflower.generateSun();
+
+                    } else if (sprite instanceof Peashooter) {
+                        Peashooter peashooter = (Peashooter) sprite;
+                        //if (peashooter.canShoot()) {
+                            //boolean spawnBullet = true;
+                            //if (spawnBullet) {
+                                System.out.println("Shooting");
+                                Bullet newBullet = peashooter.shootBullet();
+                                //newBullet.setMove(false);
+                                map[row][col + 1].add(newBullet);
+                            //}
+                        //}
+                    } else if (sprite instanceof AbstractZombie) {
+                        Zombie zombie = (Zombie) sprite;
+                        map[row][col - zombie.getSpeed()].add(zombie);
+                        iter.remove();
+                        // could make collisions more efficient
+                        //collisionHelper(row, col - zombie.getSpeed());
+                    }
+
+
+                }
+            }
+        }
+
+        // checks for zombie hits bullet
+        collisionHelper(0,0);
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());
         }
 
+    }
+    /**
+     * Method that treats collision between bullets and zombies.
+     * Currently checks all board positions for collision
+     * @param row1    Row of collision
+     * @param col1    Col of collision
+     */
+    private void collisionHelper(int row1, int col1){
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                Zombie deadZombie = null; // zombie to be removed
+
+                // if the tile contains a bullet and zombie
+                for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
+                    Sprite ent1 = sprite1.next();
+                    if (ent1 instanceof Bullet) {
+                        for (Iterator<Sprite> sprite2 = map[row][col].iterator(); sprite2.hasNext(); ) {
+                            Sprite ent2 = sprite2.next();
+                            if (ent2 instanceof Zombie) {
+                                Bullet bullet = (Bullet) ent1;
+                                Zombie zombie = (Zombie) ent2;
+
+                                zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                                sprite1.remove();
+                                if (zombie.getHealth() <= 0) {
+                                    currentWave.decrementZombiesAlive();
+                                    updateScore();
+                                    updateMoney();
+                                    deadZombie = zombie;
+                                    break;
+
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+                map[row][col].remove(deadZombie);
+            }
+        }
     }
 
     /**

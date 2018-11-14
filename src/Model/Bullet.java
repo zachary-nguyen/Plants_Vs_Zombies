@@ -1,9 +1,5 @@
 package Model;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-
 /**
  * Bullet class is shot by plants to kill zombies
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
@@ -12,9 +8,9 @@ public class Bullet extends Sprite {
     private int speed;
     private boolean move;
 
-    public Bullet(int damage, int speed) throws IOException {
+    public Bullet(int damage, int speed){
 
-        super(ImageIO.read(new File("src/images/BULLET.png")), 0, damage, speed);
+        super("src/images/BULLET.png", 0, damage, speed);
         this.speed = speed;
         move = false;
     }

@@ -1,9 +1,5 @@
 package Model;
 
-import Controller.Game;
-
-import java.awt.*;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -19,8 +15,6 @@ public class Backyard {
     public static final int WIDTH = 9;
 
     private Wave currentWave;
-
-    private Image image;
 
     private int money;
     private int score;
@@ -87,7 +81,7 @@ public class Backyard {
     /**
      * Collects all the sun on the map
      */
-    public void collectSun() throws IOException {
+    public void collectSun() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 for (Sprite sprite : map[row][col]) {
@@ -105,7 +99,7 @@ public class Backyard {
     /**
      * Method that updates all the objects in the backyard and makes them perform actions
      */
-    public void updateBackyard() throws IOException {
+    public void updateBackyard() {
         // moves bullets
         for (int row = HEIGHT -1; row >= 0; row--) {
             for (int col = WIDTH -1; col >= 0; col--) {
@@ -172,6 +166,7 @@ public class Backyard {
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());
+
         }
 
     }

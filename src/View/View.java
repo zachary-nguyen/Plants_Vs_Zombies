@@ -5,10 +5,7 @@ import Model.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.util.List;
 import java.util.PriorityQueue;
-
 
 public class View extends JFrame {
 
@@ -16,6 +13,7 @@ public class View extends JFrame {
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
+    private JLabel wave, sun, score, zombieAlive, zombieLeft;
 
     public View() {
         //Initialize Frame
@@ -55,11 +53,11 @@ public class View extends JFrame {
         scorePanel = new JPanel(new GridLayout());
 
         //Create new text fields
-        JLabel wave = new JLabel("Wave ");
-        JLabel score = new JLabel("Score: ");
-        JLabel sun = new JLabel("Sun: ");
-        JLabel zombieAlive = new JLabel("Zombies Alive: ");
-        JLabel zombieLeft = new JLabel("Zombies Left: ");
+        wave = new JLabel("Wave ");
+        score = new JLabel("Score: ");
+        sun = new JLabel("Sun: ");
+        zombieAlive = new JLabel("Zombies Alive: ");
+        zombieLeft = new JLabel("Zombies Left: ");
 
         scorePanel.add(wave);
         scorePanel.add(score);
@@ -113,9 +111,7 @@ public class View extends JFrame {
                 try {
                     if (map[row][col].peek() != null) { //null pointer safeguard
                         Sprite sprite = (Sprite) map[row][col].peek();
-                        Image spriteImg = sprite.getImage();
-                        Image sizedImage = spriteImg.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
-                        buttonGrid[row][col].setImage(new ImageIcon(sizedImage));
+                        buttonGrid[row][col].setImage(sprite.getImage());
                     } else {
                         buttonGrid[row][col].setImage(null); // remove image
                     }
@@ -135,6 +131,7 @@ public class View extends JFrame {
         shovel.setEnabled(false);
         exit.setEnabled(false);
     }
+
     public void enableCommandBtns() {
         addSunflower.setEnabled(true);
         addPeashooter.setEnabled(true);
@@ -143,6 +140,14 @@ public class View extends JFrame {
         skip.setEnabled(true);
         shovel.setEnabled(true);
         exit.setEnabled(true);
+    }
+
+    public void updateScorePanel(int wave, int score, int sun, int zombieAlive, int zombieLeft) {
+        this.wave.setText("Wave: " + wave);
+        this.score.setText("Score: " + score);
+        this.sun.setText("Sun: " + sun);
+        this.zombieAlive.setText("Zombies Alive: " + zombieAlive);
+        this.zombieLeft.setText("Zombies Remaining: " +zombieLeft);
     }
 
     public JButton getAddSunflower() {

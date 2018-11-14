@@ -1,15 +1,9 @@
 package Model;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 public class Peashooter extends AbstractPlant {
 
-    public Peashooter() throws IOException {
-        super(ImageIO.read(new File("src/images/PEASHOOTER.png")), 100, 25, 2,100);
+    public Peashooter()  {
+        super("src/images/PEASHOOTER.png", 100, 25, 2,100);
     }
 
     public boolean canShoot() {
@@ -20,7 +14,7 @@ public class Peashooter extends AbstractPlant {
         return false;
     }
 
-    public Bullet shootBullet() throws IOException {
+    public Bullet shootBullet()  {
         return new Bullet(getDamage(), 1);
     }
 

@@ -18,7 +18,7 @@ public abstract class Sprite implements Comparable{
     private int x;
     private int y;
 
-    public Sprite() throws IOException {
+    public Sprite(){
         image = null;
         health = 0;
         damage = 0;

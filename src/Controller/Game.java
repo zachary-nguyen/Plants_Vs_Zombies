@@ -146,6 +146,9 @@ public class Game implements ActionListener {
                     }
                     nextTurn();
                     break;
+                case "shovel":
+
+                    break;
                 case "exit":
                     System.exit(0);
                     break;
@@ -153,77 +156,6 @@ public class Game implements ActionListener {
         }
     }
 
-
-    /**
-     * Helper method for main method to get coordinates to add/remove sprite.
-     *
-     * @return Return the coordinates in an array.
-     */
-/*
-    private String[] inputCoordinates() {
-        Scanner scanner = new Scanner(System.in);
-        int xValueToAdd;
-        int yValueToAdd;
-        String[] coordinate;
-
-        while (true) {
-            System.out.println("Select coordinates in format 'X Y' ");
-            String response = scanner.nextLine();
-            coordinate = response.trim().split(" ");
-
-            if (coordinate.length == 2 && isInteger(coordinate[0]) && isInteger(coordinate[1])) {
-                xValueToAdd = Integer.valueOf(coordinate[0]);
-                yValueToAdd = Integer.valueOf(coordinate[1]);
-
-                //Make sure coordinates are in bound
-                if (xValueToAdd < 0 || xValueToAdd > Backyard.WIDTH - 1 || yValueToAdd < 0 || yValueToAdd > Backyard.HEIGHT - 1) {
-                    System.out.println("Coordinates out of bounds");
-                } else {
-                    //Coordinates are valid break the loop
-                    break;
-                }
-            } else {
-                System.out.println("Invalid Coordinates");
-            }
-        }
-        return coordinate;
-    }
-*/
-    /**
-     * Parse the user input and determine what action to take.
-     *
-     * @param command The command being parsed.
-     */
-/*
-    private void parse(String command) throws IOException {
-
-        switch (command) {
-            case "add":
-                if (this.addPlant()) {
-                    backyard.updateBackyard(); //only update the backyard if a plant was successfully added
-                }
-                break;
-            case "shovel":
-                String[] removeCoordinate = inputCoordinates();
-                backyard.removePlant(Integer.valueOf(removeCoordinate[0]), Integer.valueOf(removeCoordinate[1]));
-                backyard.updateBackyard();
-                break;
-            case "skip":
-                backyard.updateBackyard();
-                break;
-            case "collect":
-                backyard.collectSun();
-                backyard.updateBackyard();
-                break;
-            case "exit":
-                break;
-            default:
-                System.out.println("Invalid command!\n");
-                break;
-        }
-    }
-
-*/
     /**
      * Disbales buttons for adding plants that player cannot afford
      *
@@ -242,61 +174,6 @@ public class Game implements ActionListener {
         }
     }
 
-    /**
-     * Helper method for the parse for user to add a new plant
-     *
-     * @return Return true if a plant was successfully added or else return false
-     */
-/*
-    private boolean addPlant() throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        String[] addCoordinate;
-
-        //if they cant buy the cheapest plant return false right away
-        if (backyard.getMoney() < 50) {
-            System.out.println("You need at least 50 sun to buy a plant!!\n");
-            return false;
-        }
-
-        while (true) {
-            System.out.println("What kind of plant do you want to add?");
-            System.out.println(getAffordablePlants());
-            String response = scanner.nextLine(); //Get user answer
-            response = response.trim().toLowerCase();
-
-            switch (response) {
-                case "sunflower":
-                case "s":
-                    //Verify the user has enough money to buy
-                    if (backyard.getMoney() < Plants.SUNFLOWER.getCost()) {
-                        System.out.println("Insufficient funds!\n");
-                        break;
-                    }
-                    addCoordinate = inputCoordinates();
-                    if (backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Sunflower())) {
-                        backyard.setMoney(backyard.getMoney() - Plants.SUNFLOWER.getCost());
-                        return true;
-                    }
-                    break;
-                case "peashooter":
-                case "p":
-                    if (backyard.getMoney() < Plants.PEASHOOTER.getCost()) {
-                        System.out.println("Insufficient funds!\n");
-                        break;
-                    }
-                    addCoordinate = inputCoordinates();
-                    if (backyard.addSprite(Integer.valueOf(addCoordinate[0]), Integer.valueOf(addCoordinate[1]), new Peashooter())) {
-                        backyard.setMoney(backyard.getMoney() - Plants.PEASHOOTER.getCost()); //Hardcoded values for now
-                        return true;
-                    }
-                    break;
-                default:
-                    System.out.println("Please select a plant!\n");
-                    break;
-            }
-        }
-    }
-*/
 
     /**
      * This is the main loop for the game. Treats user inputs and determines when game is done.
@@ -401,7 +278,7 @@ public class Game implements ActionListener {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         //Set up the game
         final Game game = new Game();
     }

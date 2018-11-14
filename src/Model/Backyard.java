@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Backyard class contains the map with all the sprites.
  *
- * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Mathew Smith
  */
 public class Backyard {
 
@@ -24,13 +24,6 @@ public class Backyard {
 
     private int money;
     private int score;
-
-    // enum implements comparable
-    // in the order declared from highest to lowest
-    public enum Sprites {
-        SUNFLOWER, PEASHOOTER, ZOMBIE, BULLET;
-
-    }
 
     private PriorityQueue<Sprite>[][] map;
 
@@ -64,28 +57,15 @@ public class Backyard {
      * @return Return true if sprite was added successfully else false
      */
     public boolean addSprite(int x, int y, Sprite sprite) {
-        /*if (map[y][x].contains(instanceof Bullet) && sprite instanceof Zombie) {
-            Bullet bullet = (Bullet) map[y][x];
-            Zombie zombie = (Zombie) sprite;
-            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-            map[y][x] = sprite;
-            sprite.setX(x);
-            sprite.setY(y);
-            return true;
+        for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
+            Sprite curr = iter.next();
+            if (curr instanceof AbstractPlant) {
+                System.out.println("cant add");
+                return false;
+            }
         }
-        if (map[y][x] == null) {
-            map[y][x] = sprite;
-            sprite.setX(x);
-            sprite.setY(y);
-            return true;
-        } else {
-            System.out.println("Cannot add there!");
-            return false;
-        }*/
-
         System.out.println("adding");
         return map[y][x].add(sprite);
-        //return true;
     }
 
     /**
@@ -96,15 +76,12 @@ public class Backyard {
      */
     public void removePlant(int x, int y) {
         // check if plant is in queue
-        for (Sprite sprite : map[y][x]) {
-            if ((sprite instanceof AbstractPlant)) {
-                map[y][x].remove(sprite);
+        for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
+            Sprite curr = iter.next();
+            if (curr instanceof AbstractPlant) {
+                map[y][x].remove(curr);
             }
         }
-        /*
-        } else {
-            System.out.println("Cannot remove from those coordinates!");
-        }*/
     }
 
     /**
@@ -132,67 +109,6 @@ public class Backyard {
         // moves bullets
         for (int row = HEIGHT -1; row >= 0; row--) {
             for (int col = WIDTH -1; col >= 0; col--) {
-                // need to run for all entities in the queue
-                /*for (Sprite sprite : map[row][col]) {
-                    if (sprite != null) { // Null-pointer safeguard
-
-                        sprite.decrementCounter();
-
-                        if (sprite instanceof AbstractZombie) {
-                            AbstractZombie zombie = (AbstractZombie) sprite;
-                            this.treatZombieCollision(row, col, zombie); //call collision helper method
-
-                        } else if (sprite instanceof Sunflower) {
-                            Sunflower sunflower = (Sunflower) sprite;
-                            sunflower.generateSun();
-
-                        } else if (sprite instanceof Peashooter) {
-                            Peashooter peashooter = (Peashooter) sprite;
-                            if (peashooter.canShoot()) {
-
-                                boolean spawnBullet = true;
-                                for (Sprite next : map[row][col + 1]) {
-                                    if (next instanceof AbstractZombie) {//check if bullet is spawning onto zombie
-                                        treatBulletCollidedWithZombie(row, col, peashooter.shootBullet(), (AbstractZombie) next);
-                                        spawnBullet = false;
-                                        break;
-                                    }
-                                }
-
-                                if (spawnBullet) {
-                                    Bullet newBullet = peashooter.shootBullet();
-                                    newBullet.setMove(false);
-                                    map[row][col + 1].add(newBullet);
-                                }
-                            }
-                        } else if (sprite instanceof Bullet) {
-                            Bullet bullet = (Bullet) sprite;
-                            if (!bullet.isMove()) {
-                                bullet.setMove(true);
-                                continue;
-                            }
-                            //check if bullet goes off screen
-                            if (col + bullet.getSpeed() > WIDTH - 1) {
-                                map[row][col].remove(bullet);
-                                continue;
-                            }
-                            // zombie in next column
-                            for (Sprite next : map[row][col + 1]) {
-                                if (next instanceof AbstractZombie) {
-                                    treatBulletCollidedWithZombie(row, col, bullet, (AbstractZombie) next);
-                                    map[row][col].remove(bullet);
-                                }
-                            }
-
-                            // moves bullet
-                            if (map[row][col].contains(bullet)) {
-                                map[row][col + bullet.getSpeed()].add(bullet);
-                                map[row][col].remove(bullet);
-                                bullet.setMove(false);
-                            }
-                        }
-                    }
-                }*/
 
                 for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
                     Sprite sprite = iter.next();
@@ -229,13 +145,13 @@ public class Backyard {
                     } else if (sprite instanceof Peashooter) {
                         Peashooter peashooter = (Peashooter) sprite;
                         //if (peashooter.canShoot()) {
-                            //boolean spawnBullet = true;
-                            //if (spawnBullet) {
-                                System.out.println("Shooting");
-                                Bullet newBullet = peashooter.shootBullet();
-                                //newBullet.setMove(false);
-                                map[row][col + 1].add(newBullet);
-                            //}
+                        //boolean spawnBullet = true;
+                        //if (spawnBullet) {
+                        System.out.println("Shooting");
+                        Bullet newBullet = peashooter.shootBullet();
+                        //newBullet.setMove(false);
+                        map[row][col + 1].add(newBullet);
+                        //}
                         //}
                     } else if (sprite instanceof AbstractZombie) {
                         Zombie zombie = (Zombie) sprite;
@@ -275,6 +191,7 @@ public class Backyard {
                     if (ent1 instanceof Bullet) {
                         for (Iterator<Sprite> sprite2 = map[row][col].iterator(); sprite2.hasNext(); ) {
                             Sprite ent2 = sprite2.next();
+                            // zombie on same tile
                             if (ent2 instanceof Zombie) {
                                 Bullet bullet = (Bullet) ent1;
                                 Zombie zombie = (Zombie) ent2;
@@ -298,76 +215,6 @@ public class Backyard {
 
                 map[row][col].remove(deadZombie);
             }
-        }
-    }
-
-    /**
-     * Method that treats collision between a bullet and zombie.
-     *
-     * @param row    Row of collision
-     * @param col    Col of collision
-     * @param bullet Bullet being collided with
-     */
-    private void treatBulletCollidedWithZombie(int row, int col, Bullet bullet, AbstractZombie zombie) {
-        zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-
-        if (zombie.getHealth() <= 0) {
-            currentWave.decrementZombiesAlive();
-
-            updateScore();
-            updateMoney();
-
-            map[row][col + bullet.getSpeed()].remove(zombie);
-        }
-    }
-
-    /**
-     * Helper method to treat zombie collision
-     *
-     * @param row    row index on map
-     * @param col    col index on map
-     * @param zombie Zombie being treated
-     */
-    private void treatZombieCollision(int row, int col, AbstractZombie zombie) {
-
-        //check if zombie reaches end of screen
-        if (col - zombie.getSpeed() < 0) {
-            map[row][col].remove(zombie);
-            Game.gameOver = true;
-            return;
-        }
-
-        boolean moveZombie = true;
-        for (Sprite sprite : map[row][col - zombie.getSpeed()]) {
-            //Sprite sprite = iter.next();
-
-            //Check if zombie is walking into a bullet and decrease health if needed
-            if (sprite instanceof Bullet) {
-                Bullet bullet = (Bullet) sprite;
-                zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                map[row][col - zombie.getSpeed()].remove(bullet);
-                if (zombie.getHealth() <= 0) {
-                    moveZombie = false;
-                    updateScore();
-                    updateMoney(); //Updates Money per zombie killed.
-                    map[row][col].remove(zombie);
-                    currentWave.decrementZombiesAlive();
-                }
-                //Check if zombie can attack plant
-            } else if (sprite instanceof AbstractPlant) {
-                AbstractPlant plant = (AbstractPlant) sprite;
-                plant.setHealth(plant.getHealth() - zombie.getDamage());
-                if (plant.getHealth() <= 0) {
-                    map[row][col - zombie.getSpeed()].remove(plant);
-                } else {
-                    moveZombie = false;
-                }
-            }
-        }
-
-        if (moveZombie) {
-            map[row][col - zombie.getSpeed()].add(zombie);
-            map[row][col].remove(zombie); //Reset the tile zombie was previously on
         }
     }
 

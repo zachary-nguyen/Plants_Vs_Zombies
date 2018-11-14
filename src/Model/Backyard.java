@@ -140,6 +140,7 @@ public class Backyard {
                     if (sprite instanceof Sunflower) {
                         System.out.println("Sun");
                         Sunflower sunflower = (Sunflower) sprite;
+                        sunflower.decrementCounter();
                         sunflower.generateSun();
 
                     } else if (sprite instanceof Peashooter) {

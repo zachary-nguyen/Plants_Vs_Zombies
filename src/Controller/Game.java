@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 /**
  * Game class is a controller class in charge of treating user input and the flow of the game.
- * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
+ * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Mathew Smith
  */
 public class Game implements ActionListener {
 

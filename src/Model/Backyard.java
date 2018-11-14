@@ -2,8 +2,11 @@ package Model;
 
 import Controller.Game;
 
+import java.awt.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+import java.util.Random;
 
 /**
  * Backyard class contains the map with all the sprites.
@@ -16,6 +19,8 @@ public class Backyard {
     public static final int WIDTH = 9;
 
     private Wave currentWave;
+
+    private Image image;
 
     private int money;
     private int score;

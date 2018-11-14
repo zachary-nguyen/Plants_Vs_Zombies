@@ -1,16 +1,12 @@
 package View;
 
 import Model.Backyard;
-import Model.Peashooter;
 import Model.Sprite;
 
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.PriorityQueue;
 
 
 public class View extends JFrame {
@@ -20,7 +16,7 @@ public class View extends JFrame {
     private JPanel backyardPanel,actionPanel,scorePanel;
     private JFrame frame;
 
-    public View() {
+    public View() throws IOException {
         //Initialize Frame
         this.frame = new JFrame("Plants Vs Zombies");
         frame.setLayout(new BorderLayout());
@@ -78,51 +74,56 @@ public class View extends JFrame {
         for (int row = 0; row < Backyard.HEIGHT; row++) {
             for (int col = 0; col < Backyard.WIDTH; col++) {
                 Tile tile = new Tile(row, col);
-                tile.setOpaque(false);
+                tile.setOpaque(true);
                 tile.setContentAreaFilled(false);
-                tile.setBorderPainted(false);
+                tile.setBorderPainted(true);
                 tile.setFocusPainted(false);
+                //alternate background colors
+                if(row % 2 == 0) {
+                    if (col % 2 == 0) {
+                        tile.setBackground(new Color(65, 195, 32));
+                    } else {
+                        tile.setBackground(new Color(0,153,0));
+                    }
+                }else{
+                    if(col % 2 == 0){
+                        tile.setBackground(new Color(102,204,0));
+                    }else{
+                        tile.setBackground(new Color(0,204,0));
+
+                    }
+                }
                 buttonGrid[row][col] = tile;
                 backyardPanel.add(buttonGrid[row][col]);
             }
         }
-
         frame.getContentPane().add(backyardPanel, BorderLayout.CENTER);
         frame.getContentPane().add(actionPanel,BorderLayout.PAGE_START);
         frame.getContentPane().add(scorePanel,BorderLayout.AFTER_LAST_LINE);
-        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 1000);
         frame.setVisible(true);
     }
 
-    public void displayBackyard(Sprite[][] map) throws IOException {
+    public void displayBackyard(PriorityQueue[][] map) throws IOException {
+
         for (int row = 0; row < Backyard.HEIGHT; row++) {
             for (int col = 0; col < Backyard.WIDTH; col++) {
-
-                Sprite sprite = map[row][col];
-                if (sprite == null) {
-                    Image img = ImageIO.read(new File("src/images/GRASS.png"));
-                    Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
-
-                    buttonGrid[row][col].setImage(new ImageIcon(resizedImage));
-                }
-                else {
-                    try {
-                        Image img = sprite.getIcon();
-                        Image resizedImage = img.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
-
-                        buttonGrid[row][col].setImage(new ImageIcon(resizedImage)); //TODO: change this to display the image instead of text
-
+                try {
+                    if(map[row][col].peek() != null) { //null pointer safeguard
+                        Sprite sprite = (Sprite) map[row][col].peek();
+                        Image spriteImg = sprite.getImage();
+                        Image sizedImage = spriteImg.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
+                        buttonGrid[row][col].setImage(new ImageIcon(sizedImage));
+                    }else{
+                        buttonGrid[row][col].setImage(null); // remove image
                     }
-                    catch (Exception e) {
-                        System.out.println(e);
-                    }
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
             }
         }
     }
-
 
 
     public JButton getAddSunflower() {

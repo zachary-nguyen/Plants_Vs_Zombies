@@ -126,8 +126,6 @@ public class View extends JFrame {
     }
 
 
-
-
     public JButton getAddSunflower() {
         return addSunflower;
     }

@@ -18,8 +18,6 @@ public class Backyard {
 
     private Wave currentWave;
 
-    private Image image;
-
     private int money;
     private int score;
 
@@ -91,7 +89,7 @@ public class Backyard {
     /**
      * Collects all the sun on the map
      */
-    public void collectSun() throws IOException {
+    public void collectSun() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 for (Sprite sprite : map[row][col]) {
@@ -109,7 +107,7 @@ public class Backyard {
     /**
      * Method that updates all the objects in the backyard and makes them perform actions
      */
-    public void updateBackyard() throws IOException {
+    public void updateBackyard() {
         // moves bullets
         for (int row = HEIGHT -1; row >= 0; row--) {
             for (int col = WIDTH -1; col >= 0; col--) {
@@ -144,6 +142,7 @@ public class Backyard {
                     if (sprite instanceof Sunflower) {
                         System.out.println("Sun");
                         Sunflower sunflower = (Sunflower) sprite;
+                        sunflower.decrementCounter();
                         sunflower.generateSun();
 
                     } else if (sprite instanceof Peashooter) {
@@ -159,10 +158,31 @@ public class Backyard {
                         //}
                     } else if (sprite instanceof AbstractZombie) {
                         Zombie zombie = (Zombie) sprite;
-                        map[row][col - zombie.getSpeed()].add(zombie);
-                        iter.remove();
+
+                        AbstractPlant removePlant = null; // plant in next col
+                        boolean moveZombie = true;
+                        for (Iterator<Sprite> iter2 = map[row][col-zombie.getSpeed()].iterator(); iter2.hasNext(); ) {
+                            // for each sprite in the queue
+                            Sprite nextPlant = iter2.next();
+                            if (nextPlant instanceof AbstractPlant) {
+                                moveZombie = false;
+                                AbstractPlant plant = (AbstractPlant) nextPlant;
+                                plant.setHealth(plant.getHealth() - zombie.getDamage());
+                                if (plant.getHealth() < 0) {
+                                    removePlant = plant;
+                                }
+                            }
+                        }
+
+                        if (moveZombie) {
+                            map[row][col - zombie.getSpeed()].add(zombie);
+                            iter.remove();
+                            } else {
+                            map[row][col - zombie.getSpeed()].remove(removePlant);
+                        }
                         // could make collisions more efficient
                         //collisionHelper(row, col - zombie.getSpeed());
+
                     }
 
 

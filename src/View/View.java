@@ -5,18 +5,17 @@ import Model.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.PriorityQueue;
-
 
 public class View extends JFrame {
 
     private JButton addSunflower, addPeashooter, save, collect, skip, shovel, exit;
     private Tile[][] buttonGrid;
-    private JPanel backyardPanel,actionPanel,scorePanel;
+    private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
+    private JLabel wave, sun, score, zombieAlive, zombieLeft;
 
-    public View() throws IOException {
+    public View() {
         //Initialize Frame
         this.frame = new JFrame("Plants Vs Zombies");
         frame.setLayout(new BorderLayout());
@@ -54,11 +53,11 @@ public class View extends JFrame {
         scorePanel = new JPanel(new GridLayout());
 
         //Create new text fields
-        JLabel wave = new JLabel("Wave ");
-        JLabel  score = new JLabel ("Score: ");
-        JLabel  sun = new JLabel ("Sun: ");
-        JLabel  zombieAlive = new JLabel ("Zombies Alive: ");
-        JLabel  zombieLeft = new JLabel ("Zombies Left: ");
+        wave = new JLabel("Wave ");
+        score = new JLabel("Score: ");
+        sun = new JLabel("Sun: ");
+        zombieAlive = new JLabel("Zombies Alive: ");
+        zombieLeft = new JLabel("Zombies Left: ");
 
         scorePanel.add(wave);
         scorePanel.add(score);
@@ -79,17 +78,17 @@ public class View extends JFrame {
                 tile.setBorderPainted(true);
                 tile.setFocusPainted(false);
                 //alternate background colors
-                if(row % 2 == 0) {
+                if (row % 2 == 0) {
                     if (col % 2 == 0) {
                         tile.setBackground(new Color(65, 195, 32));
                     } else {
-                        tile.setBackground(new Color(0,153,0));
+                        tile.setBackground(new Color(0, 153, 0));
                     }
-                }else{
-                    if(col % 2 == 0){
-                        tile.setBackground(new Color(102,204,0));
-                    }else{
-                        tile.setBackground(new Color(0,204,0));
+                } else {
+                    if (col % 2 == 0) {
+                        tile.setBackground(new Color(102, 204, 0));
+                    } else {
+                        tile.setBackground(new Color(0, 204, 0));
 
                     }
                 }
@@ -98,24 +97,22 @@ public class View extends JFrame {
             }
         }
         frame.getContentPane().add(backyardPanel, BorderLayout.CENTER);
-        frame.getContentPane().add(actionPanel,BorderLayout.PAGE_START);
-        frame.getContentPane().add(scorePanel,BorderLayout.AFTER_LAST_LINE);
+        frame.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
+        frame.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 1000);
         frame.setVisible(true);
     }
 
-    public void displayBackyard(PriorityQueue[][] map) throws IOException {
+    public void displayBackyard(PriorityQueue[][] map) {
 
         for (int row = 0; row < Backyard.HEIGHT; row++) {
             for (int col = 0; col < Backyard.WIDTH; col++) {
                 try {
-                    if(map[row][col].peek() != null) { //null pointer safeguard
+                    if (map[row][col].peek() != null) { //null pointer safeguard
                         Sprite sprite = (Sprite) map[row][col].peek();
-                        Image spriteImg = sprite.getImage();
-                        Image sizedImage = spriteImg.getScaledInstance(60, 75, java.awt.Image.SCALE_SMOOTH);
-                        buttonGrid[row][col].setImage(new ImageIcon(sizedImage));
-                    }else{
+                        buttonGrid[row][col].setImage(sprite.getImage());
+                    } else {
                         buttonGrid[row][col].setImage(null); // remove image
                     }
                 } catch (Exception e) {
@@ -125,6 +122,33 @@ public class View extends JFrame {
         }
     }
 
+    public void disableCommandBtns() {
+        addSunflower.setEnabled(false);
+        addPeashooter.setEnabled(false);
+        save.setEnabled(false);
+        collect.setEnabled(false);
+        skip.setEnabled(false);
+        shovel.setEnabled(false);
+        exit.setEnabled(false);
+    }
+
+    public void enableCommandBtns() {
+        addSunflower.setEnabled(true);
+        addPeashooter.setEnabled(true);
+        save.setEnabled(true);
+        collect.setEnabled(true);
+        skip.setEnabled(true);
+        shovel.setEnabled(true);
+        exit.setEnabled(true);
+    }
+
+    public void updateScorePanel(int wave, int score, int sun, int zombieAlive, int zombieLeft) {
+        this.wave.setText("Wave: " + wave);
+        this.score.setText("Score: " + score);
+        this.sun.setText("Sun: " + sun);
+        this.zombieAlive.setText("Zombies Alive: " + zombieAlive);
+        this.zombieLeft.setText("Zombies Remaining: " +zombieLeft);
+    }
 
     public JButton getAddSunflower() {
         return addSunflower;

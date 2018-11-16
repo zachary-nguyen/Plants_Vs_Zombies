@@ -4,6 +4,9 @@ import Model.Backyard;
 import Model.Peashooter;
 import Model.Sunflower;
 import View.View;
+import Model.*;
+import View.*;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +15,7 @@ import java.io.IOException;
 
 /**
  * Game class is a controller class in charge of treating user input and the flow of the game.
+ *
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Mathew Smith
  */
 public class Game implements ActionListener {
@@ -21,12 +25,10 @@ public class Game implements ActionListener {
     public static boolean gameOver = false;
     private static final int MAX_NUMBER_OF_WAVES = 2;
     private static int currentWaveNumber;
-    private String currentPlant = "";
-    private int count = 0;
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
-        SUNFLOWER("(S)unflower", 50), PEASHOOTER("(P)eashooter", 100);
+        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100);
         private int cost;
         private String name;
 
@@ -51,14 +53,13 @@ public class Game implements ActionListener {
     /**
      * Constructor for game.
      */
-    public Game() throws IOException {
+    public Game() {
         this.backyard = new Backyard();
         currentWaveNumber = 1;
 
         view = new View();
         addActionListeners();
-        startGame();
-
+        nextTurn();
     }
 
     private void addActionListeners() {
@@ -82,76 +83,127 @@ public class Game implements ActionListener {
      *
      * @param e Event being treated.
      */
+    private AbstractPlant plantToAdd = null;
+    private boolean removePlant = false;
 
-    public void actionPerformed(ActionEvent e){
-        int row = 0;
-        int col = 0;
-        JButton pressedButton = (JButton)e.getSource();
-        if (pressedButton.getActionCommand().equals("peashooter")) {
-
-        } else if ((e.getSource()) == view.getAddSunflower()) {
-            currentPlant = "Sunflower";
-        } else if ((e.getSource()) == view.getSave()) {
-            currentPlant = "Save";
-        } else if (pressedButton.getActionCommand().equals("collect")) {
-            try{
-                this.backyard.collectSun();
-            }catch(IOException e2) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (plantToAdd != null && e.getSource() instanceof Tile) {
+            Tile tile = (Tile) e.getSource();
+            backyard.addSprite(tile.getCol(), tile.getRow(), plantToAdd);
+            plantToAdd = null;
+            view.enableCommandBtns();
+            backyard.updateBackyard();
+            nextTurn();
+        } else if (removePlant && e.getSource() instanceof Tile) {
+            Tile tile = (Tile) e.getSource();
+            if (backyard.removePlant(tile.getCol(), tile.getRow())) {
+                removePlant = false;
+                view.enableCommandBtns();
+                backyard.updateBackyard();
+                nextTurn();
             }
-        } else if ((e.getSource()) == view.getSkip()) {
-            currentPlant = "Skip";
-        } else if ((e.getSource()) == view.getShovel()) {
-            currentPlant = "Shovel";
-        } else if (pressedButton.getActionCommand().equals("exit")) {
-            System.exit(0);
-        }
+        } else if (e.getSource() instanceof JButton) {
+            JButton btn = (JButton) e.getSource();
 
-
-        if (count > 0) {
-            if (currentPlant.equals("Peashooter")) {
-                try {
-                    backyard.addSprite(row, col, new Peashooter());
-                    return;
-                } catch (IOException e2) {
-                }
-            } else if (currentPlant.equals("Sunflower")) {
-                try {
-                    backyard.addSprite(row, col, new Sunflower());
-                    return;
-                } catch (IOException e3) {
-                }
-            } else if (currentPlant.equals("Skip")) {
-                try {
-                    backyard.updateBackyard();
-                    return;
-                } catch (IOException e1) {
-                }
-            } else if (currentPlant.equals("Exit")) {
-                System.exit(0);
-            } else if (currentPlant.equals("Shovel")) {
-                backyard.removePlant(row, col);
-                return;
-            } else if (currentPlant.equals("Collect")) {
-                try {
+            switch (btn.getActionCommand()) {
+                case "peashooter":
+                    plantToAdd = new Peashooter();
+                    view.disableCommandBtns();
+                    backyard.setMoney(backyard.getMoney() - Plants.PEASHOOTER.getCost());
+                    break;
+                case "sunflower":
+                    plantToAdd = new Sunflower();
+                    view.disableCommandBtns();
+                    backyard.setMoney(backyard.getMoney() - Plants.SUNFLOWER.getCost());
+                    break;
+                case "collect":
                     backyard.collectSun();
-                    return;
-                }
-                catch (IOException e4) {}
+                    backyard.updateBackyard();
+                    nextTurn();
+                    break;
+                case "skip":
+                    backyard.updateBackyard();
+                    nextTurn();
+                    break;
+                case "save":
+                    //TODO: implement save (milestone 3)
+                case "shovel":
+                    removePlant = true;
+                    view.disableCommandBtns();
+                    break;
+                case "exit":
+                    System.exit(0);
+                    break;
             }
         }
-        count++;
     }
 
-     /**
-     * This is the main loop for the game. Treats user inputs and determines when game is done.
+    /**
+     * Disbales buttons for adding plants that player cannot afford
      */
-    private void startGame() throws IOException {
-        view.displayBackyard(backyard.getMap());
+    private void disableUnaffordablePlants() {
+        if (backyard.getMoney() < 50) {
+            view.getAddSunflower().setEnabled(false);
+        } else {
+            view.getAddSunflower().setEnabled(true);
+        }
+
+        if (backyard.getMoney() < 100) {
+            view.getAddPeashooter().setEnabled(false);
+        } else {
+            view.getAddPeashooter().setEnabled(true);
+        }
     }
 
 
     /**
+     * This is the main loop for the game. Treats user inputs and determines when game is done.
+     */
+    private void startGame() throws IOException {
+        view.displayBackyard(backyard.getMap());
+        nextTurn();
+    }
+
+    public void nextTurn() {
+        //Prepares new wave
+        backyard.setCurrentWave(5);//initialize the first wave
+        view.displayBackyard(backyard.getMap());
+        view.updateScorePanel(currentWaveNumber, backyard.getScore(), backyard.getMoney(),
+                backyard.getCurrentWave().getNumZombieAlive(), backyard.getCurrentWave().getNumZombiesSpawn());
+
+        disableUnaffordablePlants();
+        if (backyard.getCurrentWave() != null && backyard.getCurrentWave().isComplete()) {
+            currentWaveNumber++;
+            //Check if the level is completed
+            if (currentWaveNumber == MAX_NUMBER_OF_WAVES) {
+                System.out.println("---------------------Level Completed!---------------------");
+
+            }
+            System.out.println("---------------------Wave Complete!---------------------");
+            System.out.println("Type anything to start the next wave:");
+            Scanner scan = new Scanner(System.in);
+            scan.next();
+            backyard.setCurrentWave(5 * currentWaveNumber);//creates a new wave for backyard
+        }
+
+        System.out.println(backyard.getCurrentWave());
+        System.out.println("Score: " + backyard.getScore() + " Money : " + backyard.getMoney());
+
+        view.displayBackyard(backyard.getMap());
+        view.updateScorePanel(currentWaveNumber, backyard.getScore(), backyard.getMoney(),
+                backyard.getCurrentWave().getNumZombieAlive(), backyard.getCurrentWave().getNumZombiesSpawn());
+
+        if (gameOver) {
+            //End game message
+            System.out.println("---------------------Game Over!---------------------");
+            //System.out.println("Your garden has been overrun! Better luck next time!");
+        }
+    }
+
+    /**
      * Determine is a string is Integer
+     *
      * @param str String to check
      * @return Return true if String is integer else return false
      */
@@ -164,7 +216,7 @@ public class Game implements ActionListener {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         //Set up the game
         final Game game = new Game();
     }

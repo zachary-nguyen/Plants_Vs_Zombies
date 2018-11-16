@@ -23,8 +23,8 @@ public class View extends JFrame {
         //Create action Panel
         actionPanel = new JPanel(new GridLayout());
         //Create Action buttons
-        addSunflower = new JButton("Sunflower");
-        addPeashooter = new JButton("Peashooter");
+        addSunflower = new JButton("Sunflower (50)");
+        addPeashooter = new JButton("Peashooter (100)");
         save = new JButton("Save");
         collect = new JButton("Collect");
         skip = new JButton("Skip");
@@ -96,6 +96,7 @@ public class View extends JFrame {
                 backyardPanel.add(buttonGrid[row][col]);
             }
         }
+        this.save.setEnabled(false); //TODO renable save button for milestone3
         frame.getContentPane().add(backyardPanel, BorderLayout.CENTER);
         frame.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
         frame.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
@@ -135,7 +136,7 @@ public class View extends JFrame {
     public void enableCommandBtns() {
         addSunflower.setEnabled(true);
         addPeashooter.setEnabled(true);
-        save.setEnabled(true);
+        //TODO save.setEnabled(true);
         collect.setEnabled(true);
         skip.setEnabled(true);
         shovel.setEnabled(true);
@@ -216,5 +217,69 @@ public class View extends JFrame {
 
     public Tile[][] getButtonGrid() {
         return buttonGrid;
+    }
+
+    public JPanel getBackyardPanel() {
+        return backyardPanel;
+    }
+
+    public void setBackyardPanel(JPanel backyardPanel) {
+        this.backyardPanel = backyardPanel;
+    }
+
+    public JPanel getActionPanel() {
+        return actionPanel;
+    }
+
+    public void setActionPanel(JPanel actionPanel) {
+        this.actionPanel = actionPanel;
+    }
+
+    public JPanel getScorePanel() {
+        return scorePanel;
+    }
+
+    public void setScorePanel(JPanel scorePanel) {
+        this.scorePanel = scorePanel;
+    }
+
+    public JLabel getWave() {
+        return wave;
+    }
+
+    public void setWave(JLabel wave) {
+        this.wave = wave;
+    }
+
+    public JLabel getSun() {
+        return sun;
+    }
+
+    public void setSun(JLabel sun) {
+        this.sun = sun;
+    }
+
+    public JLabel getScore() {
+        return score;
+    }
+
+    public void setScore(JLabel score) {
+        this.score = score;
+    }
+
+    public JLabel getZombieAlive() {
+        return zombieAlive;
+    }
+
+    public void setZombieAlive(JLabel zombieAlive) {
+        this.zombieAlive = zombieAlive;
+    }
+
+    public JLabel getZombieLeft() {
+        return zombieLeft;
+    }
+
+    public void setZombieLeft(JLabel zombieLeft) {
+        this.zombieLeft = zombieLeft;
     }
 }

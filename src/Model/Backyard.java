@@ -150,10 +150,31 @@ public class Backyard {
                         //}
                     } else if (sprite instanceof AbstractZombie) {
                         Zombie zombie = (Zombie) sprite;
-                        map[row][col - zombie.getSpeed()].add(zombie);
-                        iter.remove();
+
+                        AbstractPlant removePlant = null; // plant in next col
+                        boolean moveZombie = true;
+                        for (Iterator<Sprite> iter2 = map[row][col-zombie.getSpeed()].iterator(); iter2.hasNext(); ) {
+                            // for each sprite in the queue
+                            Sprite nextPlant = iter2.next();
+                            if (nextPlant instanceof AbstractPlant) {
+                                moveZombie = false;
+                                AbstractPlant plant = (AbstractPlant) nextPlant;
+                                plant.setHealth(plant.getHealth() - zombie.getDamage());
+                                if (plant.getHealth() < 0) {
+                                    removePlant = plant;
+                                }
+                            }
+                        }
+
+                        if (moveZombie) {
+                            map[row][col - zombie.getSpeed()].add(zombie);
+                            iter.remove();
+                            } else {
+                            map[row][col - zombie.getSpeed()].remove(removePlant);
+                        }
                         // could make collisions more efficient
                         //collisionHelper(row, col - zombie.getSpeed());
+
                     }
 
 

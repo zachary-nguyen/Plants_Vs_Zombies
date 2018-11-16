@@ -91,6 +91,7 @@ public class Game implements ActionListener {
      * @param e Event being treated.
      */
     private AbstractPlant plantToAdd = null;
+    private boolean removePlant = false;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -101,6 +102,14 @@ public class Game implements ActionListener {
             view.enableCommandBtns();
             backyard.updateBackyard();
             nextTurn();
+        } else if (removePlant && e.getSource() instanceof Tile) {
+            Tile tile = (Tile) e.getSource();
+            if (backyard.removePlant(tile.getCol(), tile.getRow())) {
+                removePlant = false;
+                view.enableCommandBtns();
+                backyard.updateBackyard();
+                nextTurn();
+            }
         } else if (e.getSource() instanceof JButton) {
             JButton btn = (JButton) e.getSource();
 
@@ -127,7 +136,8 @@ public class Game implements ActionListener {
                 case "save":
                     //TODO: implement save (milestone 3)
                 case "shovel":
-                    //TODO: implement shovel
+                    removePlant = true;
+                    view.disableCommandBtns();
                     break;
                 case "exit":
                     System.exit(0);

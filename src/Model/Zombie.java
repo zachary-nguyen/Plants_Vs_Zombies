@@ -7,7 +7,7 @@ package Model;
 public class Zombie extends AbstractZombie {
 
     public Zombie() {
-        super("src/images/ZOMBIE.png", 100, 25, 1, 0);
+        super("src/images/ZOMBIE.png", 100, 50, 1, 0);
     }
 
     @Override

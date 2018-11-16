@@ -6,7 +6,7 @@ public class Wave {
     private int numZombieSpawn; // number of zombies to end wave
     private int numZombieAlive; // number of zombies to end wave
     private boolean complete;
-    public static int waveNumber;
+    private static int waveNumber;
 
     public Wave(int numZombieSpawn) {
         this.numZombieSpawn = numZombieSpawn;
@@ -69,13 +69,6 @@ public class Wave {
             complete = true;
 
         }
-    }
-
-    @Override
-    public String toString() {
-        return ("--------------WAVE " + Wave.waveNumber + "---------------") +
-                ("\nNum zombies Spawn : " + numZombieSpawn) +
-                ("\nNum zombies Alive : " + numZombieAlive);
     }
 
     /***********************

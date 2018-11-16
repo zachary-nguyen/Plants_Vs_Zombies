@@ -3,7 +3,7 @@ package Model;
 public class Peashooter extends AbstractPlant {
 
     public Peashooter()  {
-        super("src/images/PEASHOOTER.png", 100, 25, 2,100);
+        super("src/images/PEASHOOTER.png", 100, 35, 2,100);
     }
 
     public boolean canShoot() {

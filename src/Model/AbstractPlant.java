@@ -17,4 +17,11 @@ public abstract class AbstractPlant extends Sprite {
         this.cost  = cost;
     }
 
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
 }

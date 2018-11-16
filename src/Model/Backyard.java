@@ -1,7 +1,7 @@
 package Model;
 
-import java.awt.*;
-import java.io.IOException;
+import Controller.Game;
+
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -39,7 +39,7 @@ public class Backyard {
 
     }
 
-    public static int randomGenerator() {
+    private static int randomGenerator() {
         Random rand = new Random();
         return rand.nextInt(HEIGHT - 1) + 1;
     }
@@ -57,11 +57,9 @@ public class Backyard {
             for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
                 Sprite curr = iter.next();
                 if (curr != null) {
-                    System.out.println("cant add");
-                    return false;
+                    return false; //can't add
                 }
             }
-            System.out.println("adding");
             return map[y][x].add(sprite);
         }
         return false;
@@ -122,11 +120,8 @@ public class Backyard {
                         } else { // move bullet possible collision
                             map[row][col + bullet.getSpeed()].add(bullet);
                             iter.remove();
-                            // could make collisions more efficient
-                            //collisionHelper(row, col + bullet.getSpeed());
                         }
                     }
-
                 }
             }
         }
@@ -139,53 +134,47 @@ public class Backyard {
                 for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
                     // for each sprite in the queue
                     Sprite sprite = iter.next();
+                    sprite.decrementCounter(); //decrement counter for each sprite
                     if (sprite instanceof Sunflower) {
-                        System.out.println("Sun");
                         Sunflower sunflower = (Sunflower) sprite;
-                        sunflower.decrementCounter();
                         sunflower.generateSun();
 
                     } else if (sprite instanceof Peashooter) {
                         Peashooter peashooter = (Peashooter) sprite;
-                        //if (peashooter.canShoot()) {
-                        //boolean spawnBullet = true;
-                        //if (spawnBullet) {
-                        System.out.println("Shooting");
-                        Bullet newBullet = peashooter.shootBullet();
-                        //newBullet.setMove(false);
-                        map[row][col + 1].add(newBullet);
-                        //}
-                        //}
+                        if (peashooter.canShoot()) {
+                            Bullet newBullet = peashooter.shootBullet();
+                            newBullet.setMove(false);
+                            map[row][col + 1].add(newBullet);
+                        }
                     } else if (sprite instanceof AbstractZombie) {
                         Zombie zombie = (Zombie) sprite;
 
                         AbstractPlant removePlant = null; // plant in next col
                         boolean moveZombie = true;
-                        for (Iterator<Sprite> iter2 = map[row][col-zombie.getSpeed()].iterator(); iter2.hasNext(); ) {
-                            // for each sprite in the queue
-                            Sprite nextPlant = iter2.next();
-                            if (nextPlant instanceof AbstractPlant) {
-                                moveZombie = false;
-                                AbstractPlant plant = (AbstractPlant) nextPlant;
-                                plant.setHealth(plant.getHealth() - zombie.getDamage());
-                                if (plant.getHealth() < 0) {
-                                    removePlant = plant;
+                        if(col-zombie.getSpeed() <= -1 ){
+                            Game.gameOver = true;
+                        }else {
+                            for (Iterator<Sprite> iter2 = map[row][col - zombie.getSpeed()].iterator(); iter2.hasNext(); ) {
+                                // for each sprite in the queue
+                                Sprite nextPlant = iter2.next();
+                                if (nextPlant instanceof AbstractPlant) {
+                                    moveZombie = false;
+                                    AbstractPlant plant = (AbstractPlant) nextPlant;
+                                    plant.setHealth(plant.getHealth() - zombie.getDamage());
+                                    if (plant.getHealth() < 0) {
+                                        removePlant = plant;
+                                    }
                                 }
                             }
-                        }
 
-                        if (moveZombie) {
-                            map[row][col - zombie.getSpeed()].add(zombie);
-                            iter.remove();
+                            if (moveZombie) {
+                                map[row][col - zombie.getSpeed()].add(zombie);
+                                iter.remove();
                             } else {
-                            map[row][col - zombie.getSpeed()].remove(removePlant);
+                                map[row][col - zombie.getSpeed()].remove(removePlant);
+                            }
                         }
-                        // could make collisions more efficient
-                        //collisionHelper(row, col - zombie.getSpeed());
-
                     }
-
-
                 }
             }
         }
@@ -232,11 +221,8 @@ public class Backyard {
                                 }
                             }
                         }
-
                     }
-
                 }
-
                 map[row][col].remove(deadZombie);
             }
         }

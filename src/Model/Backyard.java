@@ -67,15 +67,18 @@ public class Backyard {
      *
      * @param x x coordinate of plant to remove
      * @param y y coordinate of plant to remove
+     *
+     * @return Return true if plant removed successfully else false
      */
-    public void removePlant(int x, int y) {
+    public boolean removePlant(int x, int y) {
         // check if plant is in queue
-        for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
-            Sprite curr = iter.next();
+        for (Sprite curr : map[y][x]) {
             if (curr instanceof AbstractPlant) {
                 map[y][x].remove(curr);
+                return true;
             }
         }
+        return false;
     }
 
     /**

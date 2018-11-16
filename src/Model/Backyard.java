@@ -1,7 +1,5 @@
 package Model;
 
-import Controller.Game;
-
 import java.awt.*;
 import java.io.IOException;
 import java.util.Iterator;
@@ -57,15 +55,18 @@ public class Backyard {
      * @return Return true if sprite was added successfully else false
      */
     public boolean addSprite(int x, int y, Sprite sprite) {
-        for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
-            Sprite curr = iter.next();
-            if (curr instanceof AbstractPlant) {
-                System.out.println("cant add");
-                return false;
+        if(x >= 0 && x<Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT && sprite != null) {
+            for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
+                Sprite curr = iter.next();
+                if (curr != null) {
+                    System.out.println("cant add");
+                    return false;
+                }
             }
+            System.out.println("adding");
+            return map[y][x].add(sprite);
         }
-        System.out.println("adding");
-        return map[y][x].add(sprite);
+        return false;
     }
 
     /**
@@ -73,15 +74,18 @@ public class Backyard {
      *
      * @param x x coordinate of plant to remove
      * @param y y coordinate of plant to remove
+     * @return Return true if plant was successfully removed
      */
-    public void removePlant(int x, int y) {
-        // check if plant is in queue
-        for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
-            Sprite curr = iter.next();
-            if (curr instanceof AbstractPlant) {
-                map[y][x].remove(curr);
+    public boolean removePlant(int x, int y) {
+        if(x >= 0 && x<Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT) {
+            for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
+                Sprite curr = iter.next();
+                if (curr instanceof AbstractPlant) {
+                    return map[y][x].remove(curr);
+                }
             }
         }
+        return false;
     }
 
     /**
@@ -237,22 +241,6 @@ public class Backyard {
         int currentScore = getScore();
         currentScore++;
         setScore(currentScore);
-    }
-
-    /**
-     * Prints the current state of the map for the player to see.
-     */
-    public void print() {
-        for (int row = 0; row < HEIGHT; row++) {
-            for (int col = 0; col < WIDTH; col++) {
-                if (map[row][col] == null) {
-                    System.out.print("- ");
-                } else {
-                    System.out.print(map[row][col].toString() + " ");
-                }
-            }
-            System.out.println();
-        }
     }
 
     /***********************

@@ -41,7 +41,7 @@ public class Backyard {
 
     private static int randomGenerator() {
         Random rand = new Random();
-        return rand.nextInt(HEIGHT - 1) + 1;
+        return rand.nextInt(HEIGHT) ;
     }
 
     /**
@@ -54,10 +54,9 @@ public class Backyard {
      */
     public boolean addSprite(int x, int y, Sprite sprite) {
         if(x >= 0 && x<Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT && sprite != null) {
-            for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
-                Sprite curr = iter.next();
-                if (curr != null) {
-                    return false; //can't add
+            for (Sprite curr : map[y][x]) {
+                if (curr instanceof AbstractPlant || curr instanceof AbstractZombie) {
+                    return false; //the tile has a plant or zombie so can't add(adding on bullets is fine)
                 }
             }
             return map[y][x].add(sprite);
@@ -74,8 +73,7 @@ public class Backyard {
      */
     public boolean removePlant(int x, int y) {
         if(x >= 0 && x<Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT) {
-            for (Iterator<Sprite> iter = map[y][x].iterator(); iter.hasNext(); ) {
-                Sprite curr = iter.next();
+            for (Sprite curr : map[y][x]) {
                 if (curr instanceof AbstractPlant) {
                     return map[y][x].remove(curr);
                 }
@@ -127,7 +125,7 @@ public class Backyard {
         }
 
         // checks for bullets hitting zombies
-        collisionHelper(0,0);
+        collisionHelper();
         // all plants and zombies
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
@@ -154,9 +152,8 @@ public class Backyard {
                         if(col-zombie.getSpeed() <= -1 ){
                             Game.gameOver = true;
                         }else {
-                            for (Iterator<Sprite> iter2 = map[row][col - zombie.getSpeed()].iterator(); iter2.hasNext(); ) {
+                            for (Sprite nextPlant : map[row][col - zombie.getSpeed()]) {
                                 // for each sprite in the queue
-                                Sprite nextPlant = iter2.next();
                                 if (nextPlant instanceof AbstractPlant) {
                                     moveZombie = false;
                                     AbstractPlant plant = (AbstractPlant) nextPlant;
@@ -180,20 +177,17 @@ public class Backyard {
         }
 
         // checks for zombie hits bullet
-        collisionHelper(0,0);
+        collisionHelper();
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());
         }
-
     }
     /**
      * Method that treats collision between bullets and zombies.
      * Currently checks all board positions for collision
-     * @param row1    Row of collision
-     * @param col1    Col of collision
      */
-    private void collisionHelper(int row1, int col1){
+    private void collisionHelper(){
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 Zombie deadZombie = null; // zombie to be removed
@@ -202,8 +196,7 @@ public class Backyard {
                 for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
                     Sprite ent1 = sprite1.next();
                     if (ent1 instanceof Bullet) {
-                        for (Iterator<Sprite> sprite2 = map[row][col].iterator(); sprite2.hasNext(); ) {
-                            Sprite ent2 = sprite2.next();
+                        for (Sprite ent2 : map[row][col]) {
                             // zombie on same tile
                             if (ent2 instanceof Zombie) {
                                 Bullet bullet = (Bullet) ent1;

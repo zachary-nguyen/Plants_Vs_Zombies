@@ -35,6 +35,15 @@ public abstract class Sprite implements Comparable {
         this.counter = counter;
     }
 
+    public Sprite(Sprite sprite){
+        this.image = sprite.image;
+        this.health = sprite.health;
+        this.damage = sprite.damage;
+        this.counter = sprite.counter;
+        this.x = sprite.x;
+        this.y = sprite.y;
+    }
+
     /***********************
      * GETTERS and SETTERS
      ***********************/

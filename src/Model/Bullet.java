@@ -15,6 +15,12 @@ public class Bullet extends Sprite {
         move = false;
     }
 
+    public Bullet(Bullet bullet){
+        super(bullet);
+        this.move = bullet.move;
+        this.speed = bullet.speed;
+    }
+
     /***********************
      * GETTERS and SETTERS
      ***********************/

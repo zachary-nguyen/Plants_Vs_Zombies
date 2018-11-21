@@ -18,6 +18,11 @@ public abstract class AbstractZombie extends Sprite {
         this.speed = speed;
     }
 
+    public AbstractZombie(AbstractZombie abstractZombie){
+        super(abstractZombie);
+        this.speed = abstractZombie.speed;
+    }
+
     public int getSpeed() {
         return speed;
     }

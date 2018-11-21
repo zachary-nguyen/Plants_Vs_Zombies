@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 
 public class View extends JFrame {
 
-    private JButton addSunflower, addPeashooter, save, collect, skip, shovel, exit;
+    private JButton addSunflower, addPeashooter, save, collect, skip, shovel, exit,undo,redo;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
@@ -29,6 +29,8 @@ public class View extends JFrame {
         collect = new JButton("Collect");
         skip = new JButton("Skip");
         shovel = new JButton("Shovel");
+        undo = new JButton("Undo");
+        redo = new JButton("Redo");
         exit = new JButton("Exit");
 
         //Set action commands
@@ -39,6 +41,8 @@ public class View extends JFrame {
         skip.setActionCommand("skip");
         shovel.setActionCommand("shovel");
         exit.setActionCommand("exit");
+        undo.setActionCommand("undo");
+        redo.setActionCommand("redo");
 
         //Add buttons to action panel
         actionPanel.add(addSunflower);
@@ -47,7 +51,10 @@ public class View extends JFrame {
         actionPanel.add(collect);
         actionPanel.add(skip);
         actionPanel.add(shovel);
+        actionPanel.add(undo);
+        actionPanel.add(redo);
         actionPanel.add(exit);
+
 
         //Create score panel
         scorePanel = new JPanel(new GridLayout());
@@ -130,6 +137,8 @@ public class View extends JFrame {
         collect.setEnabled(false);
         skip.setEnabled(false);
         shovel.setEnabled(false);
+        undo.setEnabled(false);
+        redo.setEnabled(false);
         exit.setEnabled(false);
     }
 
@@ -140,6 +149,8 @@ public class View extends JFrame {
         collect.setEnabled(true);
         skip.setEnabled(true);
         shovel.setEnabled(true);
+        undo.setEnabled(true);
+        redo.setEnabled(true);
         exit.setEnabled(true);
     }
 
@@ -281,5 +292,21 @@ public class View extends JFrame {
 
     public void setZombieLeft(JLabel zombieLeft) {
         this.zombieLeft = zombieLeft;
+    }
+
+    public JButton getUndo() {
+        return undo;
+    }
+
+    public void setUndo(JButton undo) {
+        this.undo = undo;
+    }
+
+    public JButton getRedo() {
+        return redo;
+    }
+
+    public void setRedo(JButton redo) {
+        this.redo = redo;
     }
 }

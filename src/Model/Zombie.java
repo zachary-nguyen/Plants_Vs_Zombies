@@ -10,6 +10,10 @@ public class Zombie extends AbstractZombie {
         super("src/images/ZOMBIE.png", 100, 50, 1, 0);
     }
 
+    public Zombie(Zombie zombie){
+        super(zombie);
+    }
+
     @Override
     public int compareTo(Object o) {
         return 0;

@@ -103,6 +103,25 @@ public class Wave {
         return numZombieSpawn ;
     }
 
+    public int getNumZombieSpawn() {
+        return numZombieSpawn;
+    }
+
+    public void setNumZombieAlive(int numZombieAlive) {
+        this.numZombieAlive = numZombieAlive;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    public static int getWaveNumber() {
+        return waveNumber;
+    }
+
+    public static void setWaveNumber(int waveNumber) {
+        Wave.waveNumber = waveNumber;
+    }
 
     /**
      * @return true if wave is complete

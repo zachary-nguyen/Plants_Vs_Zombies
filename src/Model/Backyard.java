@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Mathew Smith
  */
-public class Backyard {
+public class Backyard implements Cloneable {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 9;
@@ -22,6 +22,7 @@ public class Backyard {
     private int score;
 
     private PriorityQueue<Sprite>[][] map;
+
 
     /**
      * Constructor for Backyard class
@@ -36,7 +37,6 @@ public class Backyard {
                 map[row][col] = new PriorityQueue<Sprite>();
             }
         }
-
     }
 
     private static int randomGenerator() {
@@ -221,6 +221,54 @@ public class Backyard {
         }
     }
 
+    /**
+     * Clone the backyard to use for undo/redo functionality.
+     * @return Return the cloned backyard.
+     */
+    public Backyard cloneBackyard(){
+        Backyard backyard = new Backyard();
+        backyard.money = this.money;
+        backyard.score = this.score;
+
+        PriorityQueue<Sprite>[][] newMap = new PriorityQueue[HEIGHT][WIDTH];
+
+        //Create new map
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                newMap[row][col] = new PriorityQueue<>();
+            }
+        }
+
+        //repopulate the new map with clones of sprites
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                if(this.map[row][col].peek() != null){
+                    Sprite sprite = this.map[row][col].peek();
+                    if(sprite instanceof Sunflower){
+                        newMap[row][col].add(new Sunflower((Sunflower)sprite));
+                    }else if(sprite instanceof Peashooter){
+                        newMap[row][col].add(new Peashooter((Peashooter) sprite));
+                    }else if(sprite instanceof Bullet){
+                        newMap[row][col].add(new Bullet((Bullet) sprite));
+                    }else if(sprite instanceof Zombie){
+                        newMap[row][col].add(new Zombie((Zombie)sprite));
+                    }
+                }
+            }
+        }
+
+        //clone the current wave
+        Wave wave = new Wave(this.currentWave.getNumZombiesSpawn());
+        wave.setComplete(this.currentWave.isComplete());
+        wave.setNumZombieAlive(this.currentWave.getNumZombieAlive());
+        wave.setNumZombiesSpawn(this.currentWave.getNumZombiesSpawn());
+        Wave.setWaveNumber(Wave.getWaveNumber());
+
+        backyard.setMap(newMap);
+        backyard.setCurrentWave(wave);
+
+        return backyard;
+    }
 
     /**
      * Updates the player's money after each zombie killed.
@@ -272,5 +320,13 @@ public class Backyard {
 
     public void setCurrentWave(int numOfZombies) {
         this.currentWave = new Wave(numOfZombies);
+    }
+
+    public void setCurrentWave(Wave currentWave) {
+        this.currentWave = currentWave;
+    }
+
+    public void setMap(PriorityQueue<Sprite>[][] map) {
+        this.map = map;
     }
 }

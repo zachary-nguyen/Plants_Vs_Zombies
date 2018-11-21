@@ -15,6 +15,14 @@ public class Sunflower extends AbstractPlant {
     }
 
     /**
+     * Clone constructor
+     * @param sunflower Sunflower to be cloned
+     */
+    public Sunflower(Sunflower sunflower){
+        super(sunflower);
+    }
+
+    /**
      * Generate sun after the counter is 0
      */
     public void generateSun() {

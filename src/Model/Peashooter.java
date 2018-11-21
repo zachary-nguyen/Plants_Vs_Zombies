@@ -6,6 +6,14 @@ public class Peashooter extends AbstractPlant {
         super("src/images/PEASHOOTER.png", 100, 35, 2,100);
     }
 
+    /**
+     * Clone constructor
+     * @param peashooter Peashooter to be cloned
+     */
+    public Peashooter(Peashooter peashooter){
+        super(peashooter);
+    }
+
     public boolean canShoot() {
         if (this.getCounter() == 0) {
             this.setCounter(2);

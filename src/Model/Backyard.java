@@ -41,7 +41,7 @@ public class Backyard implements Cloneable {
 
     private static int randomGenerator() {
         Random rand = new Random();
-        return rand.nextInt(HEIGHT) ;
+        return rand.nextInt(HEIGHT);
     }
 
     /**
@@ -53,7 +53,7 @@ public class Backyard implements Cloneable {
      * @return Return true if sprite was added successfully else false
      */
     public boolean addSprite(int x, int y, Sprite sprite) {
-        if(x >= 0 && x<Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT && sprite != null) {
+        if (x >= 0 && x < Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT && sprite != null) {
             for (Sprite curr : map[y][x]) {
                 if (curr instanceof AbstractPlant || curr instanceof AbstractZombie) {
                     return false; //the tile has a plant or zombie so can't add(adding on bullets is fine)
@@ -72,7 +72,7 @@ public class Backyard implements Cloneable {
      * @return Return true if plant was successfully removed
      */
     public boolean removePlant(int x, int y) {
-        if(x >= 0 && x<Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT) {
+        if (x >= 0 && x < Backyard.WIDTH && y >= 0 && y < Backyard.HEIGHT) {
             for (Sprite curr : map[y][x]) {
                 if (curr instanceof AbstractPlant) {
                     return map[y][x].remove(curr);
@@ -83,21 +83,18 @@ public class Backyard implements Cloneable {
     }
 
     /**
-     * Collects all the sun on the map
+     * Collects sun from tile that was clicked
      */
-    public void collectSun() {
-        for (int row = 0; row < HEIGHT; row++) {
-            for (int col = 0; col < WIDTH; col++) {
-                for (Sprite sprite : map[row][col]) {
-                    if ((sprite instanceof Sunflower)) {
-                        Sunflower sunflower = (Sunflower) sprite;
-                        if (sunflower.isCollect()) {
-                            money += sunflower.collectSun();
-                        }
-                    }
+    public void collectSun(int row, int col) {
+        for (Sprite sprite : map[row][col]) {
+            if ((sprite instanceof Sunflower)) {
+                Sunflower sunflower = (Sunflower) sprite;
+                if (sunflower.isCollect()) {
+                    money += sunflower.collectSun();
                 }
             }
         }
+
     }
 
     /**
@@ -105,8 +102,8 @@ public class Backyard implements Cloneable {
      */
     public void updateBackyard() {
         // moves bullets
-        for (int row = HEIGHT -1; row >= 0; row--) {
-            for (int col = WIDTH -1; col >= 0; col--) {
+        for (int row = HEIGHT - 1; row >= 0; row--) {
+            for (int col = WIDTH - 1; col >= 0; col--) {
 
                 for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
                     Sprite sprite = iter.next();
@@ -149,9 +146,9 @@ public class Backyard implements Cloneable {
 
                         AbstractPlant removePlant = null; // plant in next col
                         boolean moveZombie = true;
-                        if(col-zombie.getSpeed() <= -1 ){
+                        if (col - zombie.getSpeed() <= -1) {
                             Game.gameOver = true;
-                        }else {
+                        } else {
                             for (Sprite nextPlant : map[row][col - zombie.getSpeed()]) {
                                 // for each sprite in the queue
                                 if (nextPlant instanceof AbstractPlant) {
@@ -183,11 +180,12 @@ public class Backyard implements Cloneable {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());
         }
     }
+
     /**
      * Method that treats collision between bullets and zombies.
      * Currently checks all board positions for collision
      */
-    private void collisionHelper(){
+    private void collisionHelper() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 Zombie deadZombie = null; // zombie to be removed
@@ -223,9 +221,10 @@ public class Backyard implements Cloneable {
 
     /**
      * Clone the backyard to use for undo/redo functionality.
+     *
      * @return Return the cloned backyard.
      */
-    public Backyard cloneBackyard(){
+    public Backyard cloneBackyard() {
         Backyard backyard = new Backyard();
         backyard.money = this.money;
         backyard.score = this.score;
@@ -242,16 +241,16 @@ public class Backyard implements Cloneable {
         //repopulate the new map with clones of sprites
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
-                if(this.map[row][col].peek() != null){
+                if (this.map[row][col].peek() != null) {
                     Sprite sprite = this.map[row][col].peek();
-                    if(sprite instanceof Sunflower){
-                        newMap[row][col].add(new Sunflower((Sunflower)sprite));
-                    }else if(sprite instanceof Peashooter){
+                    if (sprite instanceof Sunflower) {
+                        newMap[row][col].add(new Sunflower((Sunflower) sprite));
+                    } else if (sprite instanceof Peashooter) {
                         newMap[row][col].add(new Peashooter((Peashooter) sprite));
-                    }else if(sprite instanceof Bullet){
+                    } else if (sprite instanceof Bullet) {
                         newMap[row][col].add(new Bullet((Bullet) sprite));
-                    }else if(sprite instanceof Zombie){
-                        newMap[row][col].add(new Zombie((Zombie)sprite));
+                    } else if (sprite instanceof Zombie) {
+                        newMap[row][col].add(new Zombie((Zombie) sprite));
                     }
                 }
             }

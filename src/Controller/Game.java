@@ -31,6 +31,7 @@ public class Game implements ActionListener {
 
     private Stack<Backyard> undo;
     private Stack<Backyard> redo;
+
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
         SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100);
@@ -75,13 +76,11 @@ public class Game implements ActionListener {
         view.getAddSunflower().addActionListener(this);
         view.getAddPeashooter().addActionListener(this);
         view.getSave().addActionListener(this);
-        view.getCollect().addActionListener(this);
         view.getSkip().addActionListener(this);
         view.getShovel().addActionListener(this);
         view.getExit().addActionListener(this);
         view.getUndo().addActionListener(this);
         view.getRedo().addActionListener(this);
-
 
         for (int i = 0; i < Backyard.HEIGHT; i++) {
             for (int j = 0; j < Backyard.WIDTH; j++) {
@@ -97,22 +96,28 @@ public class Game implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        if (plantToAdd != null && e.getSource() instanceof Tile) {
+        if (e.getSource() instanceof Tile) {
             Tile tile = (Tile) e.getSource();
-            if(backyard.addSprite(tile.getCol(), tile.getRow(), plantToAdd)) { //make sure we're not trying to add on an existing sprite
+
+            if (plantToAdd != null && backyard.addSprite(tile.getCol(), tile.getRow(), plantToAdd)) { //make sure we're not trying to add on an existing sprite
                 plantToAdd = null;
                 view.enableCommandBtns();
                 backyard.updateBackyard();
                 nextTurn();
-            }
-        } else if (removePlant && e.getSource() instanceof Tile) {
-            Tile tile = (Tile) e.getSource();
-            if (backyard.removePlant(tile.getCol(), tile.getRow())) {
+
+            } else if (removePlant && backyard.removePlant(tile.getCol(), tile.getRow())) {
                 removePlant = false;
                 view.enableCommandBtns();
                 backyard.updateBackyard();
                 nextTurn();
+
+            }else{
+                this.undo.push(this.backyard.cloneBackyard());
+                backyard.collectSun(tile.getRow(),tile.getCol());
+                view.displayBackyard(backyard.getMap());
+                view.updateScorePanel(currentWaveNumber, backyard.getScore(), backyard.getMoney(),
+                        backyard.getCurrentWave().getNumZombieAlive(), backyard.getCurrentWave().getNumZombiesSpawn());
+                disableUnaffordablePlants();
             }
         } else if (e.getSource() instanceof JButton) {
             JButton btn = (JButton) e.getSource();
@@ -132,13 +137,6 @@ public class Game implements ActionListener {
                     view.disableCommandBtns();
                     backyard.setMoney(backyard.getMoney() - Plants.SUNFLOWER.getCost());
                     break;
-                case "collect":
-                    //Before an action is performed add it to the undo stack
-                    this.undo.push(this.backyard.cloneBackyard());
-                    backyard.collectSun();
-                    backyard.updateBackyard();
-                    nextTurn();
-                    break;
                 case "skip":
                     //Before an action is performed add it to the undo stack
                     this.undo.push(this.backyard.cloneBackyard());
@@ -154,14 +152,14 @@ public class Game implements ActionListener {
                     view.disableCommandBtns();
                     break;
                 case "undo":
-                    if(this.undo.size() > 0) {
+                    if (this.undo.size() > 0) {
                         this.redo.push(this.backyard.cloneBackyard()); //add turn to redo stack
                         this.backyard = this.undo.pop(); //set current model to top of undo stack
                         nextTurn();
                     }
                     break;
                 case "redo":
-                    if(this.redo.size() > 0){
+                    if (this.redo.size() > 0) {
                         this.undo.push(this.backyard.cloneBackyard()); //add the turn to the undo stack
                         this.backyard = this.redo.pop(); //set current model to top of redo stack
                         nextTurn();
@@ -192,8 +190,8 @@ public class Game implements ActionListener {
     }
 
     private void nextTurn() {
-        if(gameOver){
-            JOptionPane.showMessageDialog(this.view.getFrame(),"Your backyard has been overrun!");
+        if (gameOver) {
+            JOptionPane.showMessageDialog(this.view.getFrame(), "Your backyard has been overrun!");
             System.exit(0);
         }
         view.displayBackyard(backyard.getMap());
@@ -205,10 +203,10 @@ public class Game implements ActionListener {
             currentWaveNumber++;
             //Check if the level is completed
             if (currentWaveNumber == MAX_NUMBER_OF_WAVES) {
-                JOptionPane.showMessageDialog(this.view.getFrame(),"YOU HAVE WON THE GAME!!!");
+                JOptionPane.showMessageDialog(this.view.getFrame(), "YOU HAVE WON THE GAME!!!");
                 System.exit(0);
             }
-            JOptionPane.showMessageDialog(this.view.getFrame(),"WAVE COMPLETE!!!");
+            JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
             backyard.setCurrentWave(5 * currentWaveNumber);//creates a new wave for backyard
         }
 
@@ -222,6 +220,7 @@ public class Game implements ActionListener {
         //Set up the game
         final Game game = new Game();
     }
+
     /***********************
      * GETTERS and SETTERS
      ***********************/

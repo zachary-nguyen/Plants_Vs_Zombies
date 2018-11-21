@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 
 public class View extends JFrame {
 
-    private JButton addSunflower, addPeashooter, save, collect, skip, shovel, exit,undo,redo;
+    private JButton addSunflower, addPeashooter, save,  skip, shovel, exit,undo,redo;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
@@ -26,7 +26,6 @@ public class View extends JFrame {
         addSunflower = new JButton("Sunflower (50)");
         addPeashooter = new JButton("Peashooter (100)");
         save = new JButton("Save");
-        collect = new JButton("Collect");
         skip = new JButton("Skip");
         shovel = new JButton("Shovel");
         undo = new JButton("Undo");
@@ -37,7 +36,6 @@ public class View extends JFrame {
         addSunflower.setActionCommand("sunflower");
         addPeashooter.setActionCommand("peashooter");
         save.setActionCommand("save");
-        collect.setActionCommand("collect");
         skip.setActionCommand("skip");
         shovel.setActionCommand("shovel");
         exit.setActionCommand("exit");
@@ -48,7 +46,6 @@ public class View extends JFrame {
         actionPanel.add(addSunflower);
         actionPanel.add(addPeashooter);
         actionPanel.add(save);
-        actionPanel.add(collect);
         actionPanel.add(skip);
         actionPanel.add(shovel);
         actionPanel.add(undo);
@@ -134,7 +131,6 @@ public class View extends JFrame {
         addSunflower.setEnabled(false);
         addPeashooter.setEnabled(false);
         save.setEnabled(false);
-        collect.setEnabled(false);
         skip.setEnabled(false);
         shovel.setEnabled(false);
         undo.setEnabled(false);
@@ -146,7 +142,6 @@ public class View extends JFrame {
         addSunflower.setEnabled(true);
         addPeashooter.setEnabled(true);
         //TODO save.setEnabled(true);
-        collect.setEnabled(true);
         skip.setEnabled(true);
         shovel.setEnabled(true);
         undo.setEnabled(true);
@@ -184,14 +179,6 @@ public class View extends JFrame {
 
     public void setSave(JButton save) {
         this.save = save;
-    }
-
-    public JButton getCollect() {
-        return collect;
-    }
-
-    public void setCollect(JButton collect) {
-        this.collect = collect;
     }
 
     public JButton getSkip() {

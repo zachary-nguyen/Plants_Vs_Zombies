@@ -56,7 +56,8 @@ public class TestBackyard extends TestCase {
         this.sunflower2.generateSun();
         //try collecting before sun is ready
 
-        this.backyard.collectSun();
+        this.backyard.collectSun(0,0);
+        this.backyard.collectSun(1,0);
         assertEquals(300,this.backyard.getMoney());
         //decrement the counters for them to be ready to collect
         this.sunflower.decrementCounter();
@@ -70,7 +71,8 @@ public class TestBackyard extends TestCase {
 
         this.sunflower.generateSun();
         this.sunflower2.generateSun();
-        this.backyard.collectSun();
+        this.backyard.collectSun(0,0);
+        this.backyard.collectSun(1,0);
         assertEquals(350,this.backyard.getMoney()); //check if suns are successfully collected if balance goes up.
     }
 

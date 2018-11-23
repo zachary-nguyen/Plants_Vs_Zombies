@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.AbstractPlant;
-import Model.Backyard;
-import Model.Peashooter;
-import Model.Sunflower;
+import Model.*;
 import View.Tile;
 import View.View;
 
@@ -34,7 +31,7 @@ public class Game implements ActionListener {
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
-        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100);
+        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100), REPEATER("repeater", 100), WALLNUT("wallnut", 50);
         private int cost;
         private String name;
 
@@ -75,6 +72,8 @@ public class Game implements ActionListener {
     private void addActionListeners() {
         view.getAddSunflower().addActionListener(this);
         view.getAddPeashooter().addActionListener(this);
+        view.getAddRepeater().addActionListener(this);
+        view.getAddWallnut().addActionListener(this);
         view.getSave().addActionListener(this);
         view.getSkip().addActionListener(this);
         view.getShovel().addActionListener(this);
@@ -137,6 +136,20 @@ public class Game implements ActionListener {
                     view.disableCommandBtns();
                     backyard.setMoney(backyard.getMoney() - Plants.SUNFLOWER.getCost());
                     break;
+                case "repeater":
+                    //Before an action is performed add it to the undo stack
+                    this.undo.push(this.backyard.cloneBackyard());
+                    plantToAdd = new Repeater();
+                    view.disableCommandBtns();
+                    backyard.setMoney(backyard.getMoney() - Plants.REPEATER.getCost());
+                    break;
+                case "wallnut":
+                    //Before an action is performed add it to the undo stack
+                    this.undo.push(this.backyard.cloneBackyard());
+                    plantToAdd = new Wallnut();
+                    view.disableCommandBtns();
+                    backyard.setMoney(backyard.getMoney() - Plants.WALLNUT.getCost());
+                    break;
                 case "skip":
                     //Before an action is performed add it to the undo stack
                     this.undo.push(this.backyard.cloneBackyard());
@@ -178,14 +191,19 @@ public class Game implements ActionListener {
     private void disableUnaffordablePlants() {
         if (backyard.getMoney() < 50) {
             view.getAddSunflower().setEnabled(false);
+            view.getAddWallnut().setEnabled(false);
         } else {
             view.getAddSunflower().setEnabled(true);
+            view.getAddWallnut().setEnabled(true);
         }
 
         if (backyard.getMoney() < 100) {
             view.getAddPeashooter().setEnabled(false);
+            view.getAddRepeater().setEnabled(false);
         } else {
             view.getAddPeashooter().setEnabled(true);
+            view.getAddRepeater().setEnabled(true);
+
         }
     }
 

@@ -31,7 +31,7 @@ public class Game implements ActionListener {
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
-        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100), REPEATER("repeater", 100), WALLNUT("wallnut", 50);
+        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100), REPEATER("repeater", 200), WALLNUT("wallnut", 50);
         private int cost;
         private String name;
 
@@ -204,6 +204,12 @@ public class Game implements ActionListener {
             view.getAddPeashooter().setEnabled(true);
             view.getAddRepeater().setEnabled(true);
 
+        }
+
+        if(backyard.getMoney() < 200){
+            view.getAddRepeater().setEnabled(false);
+        } else {
+            view.getAddRepeater().setEnabled(true);
         }
     }
 

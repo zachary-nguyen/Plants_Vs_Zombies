@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 
 public class View extends JFrame {
 
-    private JButton addSunflower, addPeashooter, save,  skip, shovel, exit,undo,redo;
+    private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo,redo;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
@@ -25,6 +25,8 @@ public class View extends JFrame {
         //Create Action buttons
         addSunflower = new JButton("Sunflower (50)");
         addPeashooter = new JButton("Peashooter (100)");
+        addRepeater = new JButton("Repeater (100)");
+        addWallnut = new JButton("Wallnut (50)");
         save = new JButton("Save");
         skip = new JButton("Skip");
         shovel = new JButton("Shovel");
@@ -35,6 +37,8 @@ public class View extends JFrame {
         //Set action commands
         addSunflower.setActionCommand("sunflower");
         addPeashooter.setActionCommand("peashooter");
+        addRepeater.setActionCommand("repeater");
+        addWallnut.setActionCommand("wallnut");
         save.setActionCommand("save");
         skip.setActionCommand("skip");
         shovel.setActionCommand("shovel");
@@ -45,6 +49,8 @@ public class View extends JFrame {
         //Add buttons to action panel
         actionPanel.add(addSunflower);
         actionPanel.add(addPeashooter);
+        actionPanel.add(addRepeater);
+        actionPanel.add(addWallnut);
         actionPanel.add(save);
         actionPanel.add(skip);
         actionPanel.add(shovel);
@@ -130,6 +136,8 @@ public class View extends JFrame {
     public void disableCommandBtns() {
         addSunflower.setEnabled(false);
         addPeashooter.setEnabled(false);
+        addRepeater.setEnabled(false);
+        addWallnut.setEnabled(false);
         save.setEnabled(false);
         skip.setEnabled(false);
         shovel.setEnabled(false);
@@ -141,6 +149,8 @@ public class View extends JFrame {
     public void enableCommandBtns() {
         addSunflower.setEnabled(true);
         addPeashooter.setEnabled(true);
+        addRepeater.setEnabled(true);
+        addWallnut.setEnabled(true);
         //TODO save.setEnabled(true);
         skip.setEnabled(true);
         shovel.setEnabled(true);
@@ -171,6 +181,22 @@ public class View extends JFrame {
 
     public void setAddPeashooter(JButton addPeashooter) {
         this.addPeashooter = addPeashooter;
+    }
+
+    public JButton getAddRepeater() {
+        return addRepeater;
+    }
+
+    public void setAddRepeater(JButton addRepeater) {
+        this.addRepeater = addRepeater;
+    }
+
+    public JButton getAddWallnut() {
+        return addWallnut;
+    }
+
+    public void setAddWallnut(JButton addWallnut) {
+        this.addWallnut = addWallnut;
     }
 
     public JButton getSave() {

@@ -141,8 +141,21 @@ public class Backyard implements Cloneable {
                             newBullet.setMove(false);
                             map[row][col + 1].add(newBullet);
                         }
+
+                    } else if (sprite instanceof Repeater) {
+                        Repeater repeater = (Repeater) sprite;
+                        if (repeater.canShoot()) {
+                            Bullet newBullet = repeater.shootBullet();
+                            newBullet.setMove(false);
+                            map[row][col + 1].add(newBullet);
+                            // twice for 2 bullets
+                            Bullet newBullet2 = repeater.shootBullet();
+                            newBullet2.setMove(false);
+                            // twice for 2 bullets
+                            map[row][col + 1].add(newBullet2);
+                        }
                     } else if (sprite instanceof AbstractZombie) {
-                        Zombie zombie = (Zombie) sprite;
+                        AbstractZombie zombie = (AbstractZombie) sprite;
 
                         AbstractPlant removePlant = null; // plant in next col
                         boolean moveZombie = true;
@@ -188,7 +201,7 @@ public class Backyard implements Cloneable {
     private void collisionHelper() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
-                Zombie deadZombie = null; // zombie to be removed
+                AbstractZombie deadZombie = null; // zombie to be removed
 
                 // if the tile contains a bullet and zombie
                 for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
@@ -196,9 +209,9 @@ public class Backyard implements Cloneable {
                     if (ent1 instanceof Bullet) {
                         for (Sprite ent2 : map[row][col]) {
                             // zombie on same tile
-                            if (ent2 instanceof Zombie) {
+                            if (ent2 instanceof AbstractZombie) {
                                 Bullet bullet = (Bullet) ent1;
-                                Zombie zombie = (Zombie) ent2;
+                                AbstractZombie zombie = (AbstractZombie) ent2;
 
                                 zombie.setHealth(zombie.getHealth() - bullet.getDamage());
                                 sprite1.remove();

@@ -264,6 +264,14 @@ public class Backyard implements Cloneable {
                         newMap[row][col].add(new Bullet((Bullet) sprite));
                     } else if (sprite instanceof Zombie) {
                         newMap[row][col].add(new Zombie((Zombie) sprite));
+                    } else if (sprite instanceof Wallnut) {
+                        newMap[row][col].add(new Wallnut((Wallnut) sprite));
+                    } else if (sprite instanceof Repeater) {
+                        newMap[row][col].add(new Repeater((Repeater) sprite));
+                    } else if (sprite instanceof ConeheadZombie) {
+                        newMap[row][col].add(new ConeheadZombie((ConeheadZombie) sprite));
+                    } else if (sprite instanceof FlagZombie) {
+                        newMap[row][col].add(new FlagZombie((FlagZombie) sprite));
                     }
                 }
             }

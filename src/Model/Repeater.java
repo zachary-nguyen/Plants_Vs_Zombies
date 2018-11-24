@@ -5,7 +5,7 @@ public class Repeater extends AbstractPlant {
     //Same as Peashooter, except it shoots two bullets at once. Lowered bullet damage.
 
     public Repeater()  {
-        super("src/images/REPEATER.png", 100, 20, 2,100);
+        super("src/images/REPEATER.png", 100, 20, 3,200);
     }
 
     /**
@@ -17,11 +17,12 @@ public class Repeater extends AbstractPlant {
     }
 
     public boolean canShoot() {
-        if (this.getCounter() != 0) {
-            this.decrementCounter();
+        if (this.getCounter() == 0) {
+            this.setCounter(3);
             return true;
-        }
-        else {
+        }else if(this.getCounter() == 1){
+            return true;
+        } else {
             return false;
         }
     }

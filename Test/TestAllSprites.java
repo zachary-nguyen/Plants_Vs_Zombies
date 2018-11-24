@@ -1,7 +1,4 @@
-import Model.Bullet;
-import Model.Peashooter;
-import Model.Sunflower;
-import Model.Zombie;
+import Model.*;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +9,10 @@ public class TestAllSprites extends TestCase {
     private Zombie zombie;
     private Sunflower sunflower;
     private Peashooter peashooter;
+    private Wallnut wallnut;
+    private Repeater repeater;
+    private FlagZombie flagZombie;
+    private ConeheadZombie coneheadZombie;
 
     /**
      * Set up test data
@@ -22,6 +23,10 @@ public class TestAllSprites extends TestCase {
        this.zombie = new Zombie();
        this.sunflower = new Sunflower();
        this.peashooter = new Peashooter();
+       this.wallnut = new Wallnut();
+       this.repeater = new Repeater();
+       this.flagZombie = new FlagZombie();
+       this.coneheadZombie = new ConeheadZombie();
     }
 
     /**
@@ -69,6 +74,54 @@ public class TestAllSprites extends TestCase {
         assertEquals(100,this.peashooter.getHealth());
         assertEquals(3,this.peashooter.getCounter());
         assertEquals(100,this.peashooter.getCost());
+    }
+
+    /**
+     * Test ConeHeadZombie is created properly
+     */
+    @Test
+    public void testConeHeadZombieCreation(){
+        assertNotNull(this.coneheadZombie);
+        assertEquals(0,this.coneheadZombie.getCounter());
+        assertEquals(75,this.coneheadZombie.getDamage());
+        assertEquals(1,this.coneheadZombie.getSpeed());
+        assertEquals(200,this.coneheadZombie.getHealth());
+    }
+
+    /**
+     * Test Wallnut is created properly
+     */
+    @Test
+    public void testWallnutCreation(){
+        assertNotNull(this.wallnut);
+        assertEquals(0,this.wallnut.getDamage());
+        assertEquals(300,this.wallnut.getHealth());
+        assertEquals(0,this.wallnut.getCounter());
+        assertEquals(50,this.wallnut.getCost());
+    }
+
+    /**
+     * Test repeater is created properly
+     */
+    @Test
+    public void testRepeaterCreation(){
+        assertNotNull(this.repeater);
+        assertEquals(35,this.repeater.getDamage());
+        assertEquals(100,this.repeater.getHealth());
+        assertEquals(3,this.repeater.getCounter());
+        assertEquals(200,this.repeater.getCost());
+    }
+
+    /**
+     * Test FlagZombie is created properly
+     */
+    @Test
+    public void testFlagZombieCreation(){
+        assertNotNull(this.flagZombie);
+        assertEquals(0,this.flagZombie.getCounter());
+        assertEquals(25,this.flagZombie.getDamage());
+        assertEquals(2,this.flagZombie.getSpeed());
+        assertEquals(50,this.flagZombie.getHealth());
     }
 
     public static void main(String[] args) {

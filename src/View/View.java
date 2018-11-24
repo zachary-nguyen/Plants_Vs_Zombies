@@ -25,8 +25,9 @@ public class View extends JFrame {
         //Create Action buttons
         addSunflower = new JButton("Sunflower (50)");
         addPeashooter = new JButton("Peashooter (100)");
-        addRepeater = new JButton("Repeater (100)");
+        addRepeater = new JButton("Repeater (200)");
         addWallnut = new JButton("Wallnut (50)");
+
         save = new JButton("Save");
         skip = new JButton("Skip");
         shovel = new JButton("Shovel");
@@ -111,7 +112,7 @@ public class View extends JFrame {
         frame.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
         frame.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1280, 1000);
+        frame.setSize(1400, 1000);
         frame.setVisible(true);
     }
 

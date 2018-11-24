@@ -101,28 +101,11 @@ public class Backyard implements Cloneable {
      * Method that updates all the objects in the backyard and makes them perform actions
      */
     public void updateBackyard() {
-        // moves bullets
-        for (int row = HEIGHT - 1; row >= 0; row--) {
-            for (int col = WIDTH - 1; col >= 0; col--) {
 
-                for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
-                    Sprite sprite = iter.next();
-                    if (sprite instanceof Bullet) {
-                        Bullet bullet = (Bullet) sprite;
-                        // bullet goes off map
-                        if (col + bullet.getSpeed() > WIDTH - 1) {
-                            iter.remove();
-                        } else { // move bullet possible collision
-                            map[row][col + bullet.getSpeed()].add(bullet);
-                            iter.remove();
-                        }
-                    }
-                }
-            }
-        }
-
+        this.moveBullets(); //move all the bullets
         // checks for bullets hitting zombies
-        collisionHelper();
+        this.collisionHelper();
+
         // all plants and zombies
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
@@ -148,18 +131,13 @@ public class Backyard implements Cloneable {
                             Bullet newBullet = repeater.shootBullet();
                             newBullet.setMove(false);
                             map[row][col + 1].add(newBullet);
-                            // twice for 2 bullets
-                            Bullet newBullet2 = repeater.shootBullet();
-                            newBullet2.setMove(false);
-                            // twice for 2 bullets
-                            map[row][col + 1].add(newBullet2);
                         }
                     } else if (sprite instanceof AbstractZombie) {
                         AbstractZombie zombie = (AbstractZombie) sprite;
 
                         AbstractPlant removePlant = null; // plant in next col
                         boolean moveZombie = true;
-                        if (col - zombie.getSpeed() <= -1) {
+                        if (col - zombie.getSpeed() <= -1) { //end game if zombie reaches the end
                             Game.gameOver = true;
                         } else {
                             for (Sprite nextPlant : map[row][col - zombie.getSpeed()]) {
@@ -187,7 +165,7 @@ public class Backyard implements Cloneable {
         }
 
         // checks for zombie hits bullet
-        collisionHelper();
+        this.collisionHelper();
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
             addSprite(WIDTH - 1, randomGenerator(), new Zombie());
@@ -203,17 +181,17 @@ public class Backyard implements Cloneable {
             for (int col = 0; col < WIDTH; col++) {
                 AbstractZombie deadZombie = null; // zombie to be removed
 
-                // if the tile contains a bullet and zombie
+          //   if the tile contains a bullet and zombie
                 for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
                     Sprite ent1 = sprite1.next();
                     if (ent1 instanceof Bullet) {
-                        for (Sprite ent2 : map[row][col]) {
+                        for (Sprite ent2 : map[row][col]) { //iterate the priority queue
                             // zombie on same tile
                             if (ent2 instanceof AbstractZombie) {
                                 Bullet bullet = (Bullet) ent1;
                                 AbstractZombie zombie = (AbstractZombie) ent2;
 
-                                zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                                zombie.setHealth(zombie.getHealth() - bullet.getDamage()); //reduce zombie health
                                 sprite1.remove();
                                 if (zombie.getHealth() <= 0) {
                                     currentWave.decrementZombiesAlive();
@@ -221,7 +199,6 @@ public class Backyard implements Cloneable {
                                     updateMoney();
                                     deadZombie = zombie;
                                     break;
-
                                 }
                             }
                         }
@@ -232,6 +209,30 @@ public class Backyard implements Cloneable {
         }
     }
 
+    /**
+     * Helper method for updateBackyard to move all the bullets on the map
+     */
+    private void moveBullets(){
+        // moves bullets
+        for (int row = HEIGHT - 1; row >= 0; row--) {
+            for (int col = WIDTH - 1; col >= 0; col--) {
+
+                for (Iterator<Sprite> iter = map[row][col].iterator(); iter.hasNext(); ) {
+                    Sprite sprite = iter.next();
+                    if (sprite instanceof Bullet) {
+                        Bullet bullet = (Bullet) sprite;
+                        // bullet goes off map
+                        if (col + bullet.getSpeed() > WIDTH - 1) {
+                            iter.remove();
+                        } else { // move bullet possible collision
+                            map[row][col + bullet.getSpeed()].add(bullet);
+                            iter.remove();
+                        }
+                    }
+                }
+            }
+        }
+    }
     /**
      * Clone the backyard to use for undo/redo functionality.
      *

@@ -12,7 +12,7 @@ public class ConeheadZombie extends AbstractZombie {
         super("src/images/CONEHEAD.png", 200, 75, 1, 0);
     }
 
-    public ConeheadZombie(Zombie zombie){
+    public ConeheadZombie(ConeheadZombie zombie){
         super(zombie);
     }
 

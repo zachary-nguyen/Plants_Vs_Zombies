@@ -12,7 +12,7 @@ public class FlagZombie extends AbstractZombie {
         super("src/images/FLAGZOMBIE.png", 50, 25, 2, 0);
     }
 
-    public FlagZombie(Zombie zombie){
+    public FlagZombie(FlagZombie zombie){
         super(zombie);
     }
 

@@ -5,7 +5,7 @@ public class Repeater extends AbstractPlant {
     //Same as Peashooter, except it shoots two bullets at once. Lowered bullet damage.
 
     public Repeater()  {
-        super("src/images/REPEATER.png", 100, 20, 3,200);
+        super("src/images/REPEATER.png", 100, 25, 3,200);
     }
 
     /**

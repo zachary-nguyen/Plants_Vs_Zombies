@@ -26,33 +26,13 @@ public class Wave {
         }
 
         int spawnProbability = rand.nextInt(101);
-        if (spawnProbability > 85 || spawnProbability < 15) {
+        if (spawnProbability > 90 || spawnProbability < 10) {
             numZombieSpawn--;
             numZombieAlive++;
             return true;
         }
 
         return false;
-    }
-
-
-    /**
-     * Generates a random delay number based on the current wave for use in
-     * spawnZombieComplexity() method.
-     *
-     * @param wave Current wave number
-     * @return int delay number
-     */
-    private int delayGenerator(int wave) {
-        Random rand = new Random();
-
-        int newWave = wave % 5;
-
-        if (newWave != 1) {
-            return rand.nextInt(newWave) + 1;
-        } else {
-            return delayGenerator(newWave + 1);
-        }
     }
 
     public void decrementZombiesRemaining() {
@@ -68,6 +48,19 @@ public class Wave {
         if (numZombieAlive == 0 && this.numZombieSpawn == 0) {
             complete = true;
 
+        }
+    }
+
+    public AbstractZombie getZombie(){
+        Random rand = new Random();
+        int zombieSpawn = rand.nextInt(101);
+
+        if(zombieSpawn <= 60){
+            return new Zombie();
+        }else if (zombieSpawn <= 80){
+            return new FlagZombie();
+        }else{
+            return new ConeheadZombie();
         }
     }
 

@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Mathew Smith
  */
-public class Backyard implements Cloneable {
+public class Backyard {
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 9;
@@ -265,8 +265,8 @@ public class Backyard implements Cloneable {
                         newMap[row][col].add(new Bullet((Bullet) sprite));
                     } else if (sprite instanceof Zombie) {
                         newMap[row][col].add(new Zombie((Zombie) sprite));
-                    } else if (sprite instanceof Wallnut) {
-                        newMap[row][col].add(new Wallnut((Wallnut) sprite));
+                    } else if (sprite instanceof Walnut) {
+                        newMap[row][col].add(new Walnut((Walnut) sprite));
                     } else if (sprite instanceof Repeater) {
                         newMap[row][col].add(new Repeater((Repeater) sprite));
                     } else if (sprite instanceof ConeheadZombie) {
@@ -339,7 +339,7 @@ public class Backyard implements Cloneable {
         return currentWave;
     }
 
-    public void setCurrentWave(int numOfZombies) {
+    public void setCurrentWaveAmountOfZombies(int numOfZombies) {
         this.currentWave = new Wave(numOfZombies);
     }
 

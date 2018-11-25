@@ -26,7 +26,7 @@ public class View extends JFrame {
         addSunflower = new JButton("Sunflower (50)");
         addPeashooter = new JButton("Peashooter (100)");
         addRepeater = new JButton("Repeater (200)");
-        addWallnut = new JButton("Wallnut (50)");
+        addWallnut = new JButton("Walnut (50)");
 
         save = new JButton("Save");
         skip = new JButton("Skip");

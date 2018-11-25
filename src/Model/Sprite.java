@@ -18,9 +18,6 @@ public abstract class Sprite implements Comparable {
     private int counter;
     private ImageIcon image;
 
-    private int x;
-    private int y;
-
     public Sprite() {
         image = null;
         health = 0;
@@ -40,8 +37,6 @@ public abstract class Sprite implements Comparable {
         this.health = sprite.health;
         this.damage = sprite.damage;
         this.counter = sprite.counter;
-        this.x = sprite.x;
-        this.y = sprite.y;
     }
 
     /***********************
@@ -61,6 +56,9 @@ public abstract class Sprite implements Comparable {
         }
     }
 
+    /***********************
+     * GETTERS and SETTERS
+     ***********************/
 
     public int getHealth() {
         return health;
@@ -84,22 +82,6 @@ public abstract class Sprite implements Comparable {
 
     public void setCounter(int counter) {
         this.counter = counter;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     /**

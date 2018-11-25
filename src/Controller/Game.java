@@ -233,11 +233,6 @@ public class Game implements ActionListener {
             JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
             backyard.setCurrentWave(5 * currentWaveNumber);//creates a new wave for backyard
         }
-
-        view.displayBackyard(backyard.getMap());
-        view.updateScorePanel(currentWaveNumber, backyard.getScore(), backyard.getMoney(),
-                backyard.getCurrentWave().getNumZombieAlive(), backyard.getCurrentWave().getNumZombiesSpawn());
-
     }
 
     public static void main(String[] args) {

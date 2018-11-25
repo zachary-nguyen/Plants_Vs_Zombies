@@ -168,7 +168,7 @@ public class Backyard implements Cloneable {
         this.collisionHelper();
         //Spawn zombie if required and current wave is not complete
         if (!currentWave.isComplete() && currentWave.spawnZombie()) {
-            addSprite(WIDTH - 1, randomGenerator(), new Zombie());
+            addSprite(WIDTH - 1, randomGenerator(), currentWave.getZombie());
         }
     }
 

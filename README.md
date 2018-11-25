@@ -1,6 +1,6 @@
-## Plants_Vs_Zombies
+## Plants VS Zombies
 
-SYSC 3110 Group Project.
+SYSC 3110 Group Project
 
 Section: L1 
 
@@ -12,9 +12,19 @@ Group: 11
 
 - Fareed Ahmad
 
-- Mathew Smith
+- Mathew Smith 
 
-- Eric Cosoreanu (#101041744)
+- Eric Cosoreanu 
+
+### Contributions:
+
+- Zachary: Implemented Serialization, JUnit Test Development, General Refactoring, General Documentation.
+
+- Fareed: In-Game Logic Refactoring, General Refactoring, Sequence Diagram Documentation. 
+
+- Mathew: Optimized/Refactored In-Game Logic and Sprite Interactions, General Refactoring, UML Diagram Documentation.
+
+- Eric: Implemented and Configured New Sprites, Implemented Additional GUI Elements, General Refactoring, README Project Documentation.
 
 ### Deliverables:
 
@@ -32,6 +42,10 @@ Group: 11
         - Sunflower.java
         - Zombie.java
         - Backyard.java
+        - ConeheadZombie.java
+        - FlagZombie.java
+        - Repeater.java
+        - Wallnut.java
     
     - View:
         - Tile.java
@@ -44,16 +58,26 @@ Group: 11
         - Sun.png
         - Sunflower.png
         - ZOMBIE.png
+        - CONEHEAD.png
+        - FLAGZOMBIE.png
+        - REPEATER.png
+        - WALLNUT.png
         
-  * UML Diagrams
+  * UML/Sequence Diagrams
   
   * Other Documentation
 
 ### Known Issues:
 
-- Wave logic is not fully implemented. Games are intended to have a maximum wave limit in order for the player to be able to win the game. 
+- Minimal general movement issues with newly added sprites. Especially newly added Zombies due to them having different movement statistics when compared to the original sprites in the game. 
 
-- Need to fix end game logic, currently the game has an issue where zombies "overrunning" the playing field does not end the game. In future versions of the game, the game will be able to recognize when the zombies have beaten the player. 
+- Minimal general collision issues with sprites. Specifically new Zombie additions.
+
+- General sprite spawn balancing issues. Sprites may spawn in such a way that is overwhelming to the player.
+
+- If two sprite occupy the same tile backyard tile, only one of said sprites will be shown based on their priority level. Can cause confusion for the player. 
+
+- Issues with Zombies still being alive at the End Game.
 
 ### Roadmap:
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Our next steps regarding this project are to first fix the remaining issues with the game mechanics, such as those listed in the “known issues” section. Additionally, we will be focussing on adding features such as a drop-down menu for plant selections, introducing new GUI imagery for various events occuring during gameplay (I.E. different images for collisions), and introducing an option pane that lets the player know the current status of the game. We will also be focussing on including a cancel feature for game moves, and an undo and redo feature to allow a player more control over their gameplay. Finally, the end milestones for the project as a whole include: have a refined working game design with no “smells”, having the implementation of a save and load feature, and a working implementation of a game level builder. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Our next steps regarding this project are to first fix the remaining issues with the game mechanics, such as those listed in the “known issues” section. Additionally, we would like to experiment with an increased Zombie spawn complexity algorithm which will allow players to experience a more balanced and immersive experience while playing the game. We will also be focussing on including a cancel feature for game moves, and a save feature to allow a player to continue their gameplay at a later date. Finally, the end milestones for the project as a whole include: have a refined working game design with no “smells”, having the implementation of a save and load feature, and a working implementation of a game level builder. 

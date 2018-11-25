@@ -140,18 +140,19 @@ public class Backyard implements Cloneable {
                         if (col - zombie.getSpeed() <= -1) { //end game if zombie reaches the end
                             Game.gameOver = true;
                         } else {
-                            for (Sprite nextPlant : map[row][col - zombie.getSpeed()]) {
-                                // for each sprite in the queue
-                                if (nextPlant instanceof AbstractPlant) {
-                                    moveZombie = false;
-                                    AbstractPlant plant = (AbstractPlant) nextPlant;
-                                    plant.setHealth(plant.getHealth() - zombie.getDamage());
-                                    if (plant.getHealth() < 0) {
-                                        removePlant = plant;
+                            for (int i = 1; i <=zombie.getSpeed(); i++) {
+                                for (Sprite nextPlant : map[row][col - i]) {
+                                    // for each sprite in the queue
+                                    if (nextPlant instanceof AbstractPlant) {
+                                        moveZombie = false;
+                                        AbstractPlant plant = (AbstractPlant) nextPlant;
+                                        plant.setHealth(plant.getHealth() - zombie.getDamage());
+                                        if (plant.getHealth() < 0) {
+                                            removePlant = plant;
+                                        }
                                     }
                                 }
                             }
-
                             if (moveZombie) {
                                 map[row][col - zombie.getSpeed()].add(zombie);
                                 iter.remove();

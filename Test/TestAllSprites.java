@@ -85,7 +85,7 @@ public class TestAllSprites extends TestCase {
         assertEquals(0,this.coneheadZombie.getCounter());
         assertEquals(75,this.coneheadZombie.getDamage());
         assertEquals(1,this.coneheadZombie.getSpeed());
-        assertEquals(200,this.coneheadZombie.getHealth());
+        assertEquals(150,this.coneheadZombie.getHealth());
     }
 
     /**
@@ -106,7 +106,7 @@ public class TestAllSprites extends TestCase {
     @Test
     public void testRepeaterCreation(){
         assertNotNull(this.repeater);
-        assertEquals(20,this.repeater.getDamage());
+        assertEquals(25,this.repeater.getDamage());
         assertEquals(100,this.repeater.getHealth());
         assertEquals(3,this.repeater.getCounter());
         assertEquals(200,this.repeater.getCost());
@@ -120,7 +120,7 @@ public class TestAllSprites extends TestCase {
         assertNotNull(this.flagZombie);
         assertEquals(0,this.flagZombie.getCounter());
         assertEquals(25,this.flagZombie.getDamage());
-        assertEquals(2,this.flagZombie.getSpeed());
+        assertEquals(1,this.flagZombie.getSpeed());
         assertEquals(50,this.flagZombie.getHealth());
     }
 

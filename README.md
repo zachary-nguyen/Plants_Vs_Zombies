@@ -69,15 +69,10 @@ Group: 11
 
 ### Known Issues:
 
-- Minimal general movement issues with newly added sprites. Especially newly added Zombies due to them having different movement statistics when compared to the original sprites in the game. 
-
-- Minimal general collision issues with sprites. Specifically new Zombie additions.
-
 - General sprite spawn balancing issues. Sprites may spawn in such a way that is overwhelming to the player.
 
 - If two sprite occupy the same tile backyard tile, only one of said sprites will be shown based on their priority level. Can cause confusion for the player. 
 
-- Issues with Zombies still being alive at the End Game.
 
 ### Roadmap:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Our next steps regarding this project are to first fix the remaining issues with the game mechanics, such as those listed in the “known issues” section. Additionally, we would like to experiment with an increased Zombie spawn complexity algorithm which will allow players to experience a more balanced and immersive experience while playing the game. We will also be focussing on including a cancel feature for game moves, and a save feature to allow a player to continue their gameplay at a later date. Finally, the end milestones for the project as a whole include: have a refined working game design with no “smells”, having the implementation of a save and load feature, and a working implementation of a game level builder. 

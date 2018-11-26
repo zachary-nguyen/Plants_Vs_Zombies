@@ -78,7 +78,7 @@ public class TestBackyard extends TestCase {
 
     @Test
     public void testUpdateBackyardZombieMoving(){
-        this.backyard.setCurrentWave(1);
+        this.backyard.setCurrentWaveAmountOfZombies(1);
         //test if zombie is moving properly
         this.backyard.addSprite(5,0, this.zombie);
         this.backyard.updateBackyard();
@@ -87,7 +87,7 @@ public class TestBackyard extends TestCase {
 
     @Test
     public void testUpdateBackyardZombieKillPlant(){
-        this.backyard.setCurrentWave(1);
+        this.backyard.setCurrentWaveAmountOfZombies(1);
         this.backyard.addSprite(1,0,this.zombie);
         this.backyard.addSprite(0,0,this.sunflower);
         this.backyard.updateBackyard();
@@ -104,7 +104,7 @@ public class TestBackyard extends TestCase {
 
     @Test
     public void testUpdateBackyardPlantKillZombie(){
-        this.backyard.setCurrentWave(1);
+        this.backyard.setCurrentWaveAmountOfZombies(1);
 
         this.backyard.addSprite(0,0,this.peashooter);
         this.backyard.addSprite(7,0,this.zombie);

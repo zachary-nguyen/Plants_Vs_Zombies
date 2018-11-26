@@ -31,7 +31,7 @@ public class Game implements ActionListener {
 
     //keeps track of plants to avoid hardcoded values and make it easier to add new plants
     enum Plants {
-        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100), REPEATER("repeater", 200), WALLNUT("wallnut", 50);
+        SUNFLOWER("sunflower", 50), PEASHOOTER("peashooter", 100), REPEATER("repeater", 200), WALNUT("walnut", 50);
         private int cost;
         private String name;
 
@@ -58,7 +58,7 @@ public class Game implements ActionListener {
      */
     public Game() {
         this.backyard = new Backyard();
-        this.backyard.setCurrentWave(5);
+        this.backyard.setCurrentWaveAmountOfZombies(5);
 
         currentWaveNumber = 1;
         this.view = new View();
@@ -146,9 +146,9 @@ public class Game implements ActionListener {
                 case "wallnut":
                     //Before an action is performed add it to the undo stack
                     this.undo.push(this.backyard.cloneBackyard());
-                    plantToAdd = new Wallnut();
+                    plantToAdd = new Walnut();
                     view.disableCommandBtns();
-                    backyard.setMoney(backyard.getMoney() - Plants.WALLNUT.getCost());
+                    backyard.setMoney(backyard.getMoney() - Plants.WALNUT.getCost());
                     break;
                 case "skip":
                     //Before an action is performed add it to the undo stack
@@ -231,7 +231,7 @@ public class Game implements ActionListener {
                 System.exit(0);
             }
             JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
-            backyard.setCurrentWave(5 * currentWaveNumber);//creates a new wave for backyard
+            backyard.setCurrentWaveAmountOfZombies(5 * currentWaveNumber);//creates a new wave for backyard
         }
     }
 

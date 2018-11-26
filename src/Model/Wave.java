@@ -26,7 +26,7 @@ public class Wave {
         }
 
         int spawnProbability = rand.nextInt(101);
-        if (spawnProbability > 90 || spawnProbability < 10) {
+        if (spawnProbability > 80 || spawnProbability < 10) {
             numZombieSpawn--;
             numZombieAlive++;
             return true;
@@ -51,6 +51,10 @@ public class Wave {
         }
     }
 
+    /**
+     * Returns a zombie to return based on a random probability
+     * @return Return the new zombie to be added
+     */
     public AbstractZombie getZombie(){
         Random rand = new Random();
         int zombieSpawn = rand.nextInt(101);

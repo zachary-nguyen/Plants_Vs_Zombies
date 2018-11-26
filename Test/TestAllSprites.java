@@ -9,7 +9,7 @@ public class TestAllSprites extends TestCase {
     private Zombie zombie;
     private Sunflower sunflower;
     private Peashooter peashooter;
-    private Wallnut wallnut;
+    private Walnut walnut;
     private Repeater repeater;
     private FlagZombie flagZombie;
     private ConeheadZombie coneheadZombie;
@@ -23,7 +23,7 @@ public class TestAllSprites extends TestCase {
        this.zombie = new Zombie();
        this.sunflower = new Sunflower();
        this.peashooter = new Peashooter();
-       this.wallnut = new Wallnut();
+       this.walnut = new Walnut();
        this.repeater = new Repeater();
        this.flagZombie = new FlagZombie();
        this.coneheadZombie = new ConeheadZombie();
@@ -72,7 +72,7 @@ public class TestAllSprites extends TestCase {
         assertNotNull(this.peashooter);
         assertEquals(35,this.peashooter.getDamage());
         assertEquals(100,this.peashooter.getHealth());
-        assertEquals(3,this.peashooter.getCounter());
+        assertEquals(2,this.peashooter.getCounter());
         assertEquals(100,this.peashooter.getCost());
     }
 
@@ -89,15 +89,15 @@ public class TestAllSprites extends TestCase {
     }
 
     /**
-     * Test Wallnut is created properly
+     * Test Walnut is created properly
      */
     @Test
     public void testWallnutCreation(){
-        assertNotNull(this.wallnut);
-        assertEquals(0,this.wallnut.getDamage());
-        assertEquals(300,this.wallnut.getHealth());
-        assertEquals(0,this.wallnut.getCounter());
-        assertEquals(50,this.wallnut.getCost());
+        assertNotNull(this.walnut);
+        assertEquals(0,this.walnut.getDamage());
+        assertEquals(300,this.walnut.getHealth());
+        assertEquals(0,this.walnut.getCounter());
+        assertEquals(50,this.walnut.getCost());
     }
 
     /**
@@ -106,7 +106,7 @@ public class TestAllSprites extends TestCase {
     @Test
     public void testRepeaterCreation(){
         assertNotNull(this.repeater);
-        assertEquals(35,this.repeater.getDamage());
+        assertEquals(20,this.repeater.getDamage());
         assertEquals(100,this.repeater.getHealth());
         assertEquals(3,this.repeater.getCounter());
         assertEquals(200,this.repeater.getCost());
@@ -125,6 +125,6 @@ public class TestAllSprites extends TestCase {
     }
 
     public static void main(String[] args) {
-        junit.textui.TestRunner.run(TestBackyard.class);
+        junit.textui.TestRunner.run(TestAllSprites.class);
     }
 }

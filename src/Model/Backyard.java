@@ -39,7 +39,11 @@ public class Backyard {
         }
     }
 
-    private  int randomGenerator() {
+    /**
+     * Returns a value between 0-4 to randomly select where to place the next zombie
+     * @return Return a number between 0-4
+     */
+    private int randomGenerator() {
         Random rand = new Random();
         return rand.nextInt(HEIGHT);
     }
@@ -234,6 +238,7 @@ public class Backyard {
             }
         }
     }
+
     /**
      * Clone the backyard to use for undo/redo functionality.
      *

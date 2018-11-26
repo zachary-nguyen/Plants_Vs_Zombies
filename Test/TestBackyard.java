@@ -13,7 +13,14 @@ public class TestBackyard extends TestCase {
     private Zombie zombie;
     private Peashooter peashooter;
     private PriorityQueue<Sprite>[][] map;
+    private Walnut walnut;
+    private ConeheadZombie coneheadZombie;
+    private FlagZombie flagZombie;
+    private Repeater repeater;
 
+    /**
+     * Set up test data
+     */
     @Before
     public void setUp(){
         this.backyard = new Backyard();
@@ -22,6 +29,11 @@ public class TestBackyard extends TestCase {
         this.peashooter = new Peashooter();
         this.map = this.backyard.getMap();
         this.sunflower2 = new Sunflower();
+        this.walnut = new Walnut();
+        this.coneheadZombie = new ConeheadZombie();
+        this.flagZombie = new FlagZombie();
+        this.repeater = new Repeater();
+
     }
 
     /**
@@ -39,6 +51,9 @@ public class TestBackyard extends TestCase {
     }
 
 
+    /**
+     * Test if we can remove a plant
+     */
     @Test
     public void testRemovePlant() {
         this.backyard.addSprite(0, 0, this.zombie);
@@ -47,6 +62,9 @@ public class TestBackyard extends TestCase {
         assertFalse(this.backyard.removePlant(0, 0)); // try removing zombie
     }
 
+    /**
+     * Test if we can collect suns
+     */
     @Test
     public void testCollectSun(){
         //Add suns
@@ -76,6 +94,9 @@ public class TestBackyard extends TestCase {
         assertEquals(350,this.backyard.getMoney()); //check if suns are successfully collected if balance goes up.
     }
 
+    /**
+     * Test if zombies are properly moving
+     */
     @Test
     public void testUpdateBackyardZombieMoving(){
         this.backyard.setCurrentWaveAmountOfZombies(1);
@@ -85,39 +106,78 @@ public class TestBackyard extends TestCase {
         assertEquals(this.zombie,this.backyard.getMap()[0][4].peek()); //verify zombie moved one index
     }
 
+    /**
+     * Test if zombies can successfully kill a plant.
+     */
     @Test
     public void testUpdateBackyardZombieKillPlant(){
-        this.backyard.setCurrentWaveAmountOfZombies(1);
+        this.backyard.setCurrentWaveAmountOfZombies(3);
+        //add all plants and zombies
         this.backyard.addSprite(1,0,this.zombie);
         this.backyard.addSprite(0,0,this.sunflower);
+        this.backyard.addSprite(0,2,this.walnut);
+        this.backyard.addSprite(1,2,this.coneheadZombie);
+        this.backyard.addSprite(1,3,this.flagZombie);
+        this.backyard.addSprite(0,3,this.sunflower2);
+
         this.backyard.updateBackyard();
         //check plants health
         assertEquals(50,this.sunflower.getHealth());
+        assertEquals(225,this.walnut.getHealth());
+        assertEquals(75,this.sunflower2.getHealth());
+
         this.backyard.updateBackyard();
-        //check if plant dies
+        //check if sunflower dies and verify health for others
         assertEquals(0,this.sunflower.getHealth());
+        assertEquals(50,this.sunflower2.getHealth());
+        assertEquals(150,this.walnut.getHealth());
+
         this.backyard.updateBackyard();
         this.backyard.updateBackyard();
-        //see if zombie keeps walking
-        assertEquals(this.zombie,this.backyard.getMap()[0][0].peek());
+        assertEquals(0,this.sunflower2.getHealth());
+        assertEquals(0,this.walnut.getHealth());
+
+        //verify plants are removed from map after dying
+        assertNotSame(this.sunflower,map[0][0].peek());
+        assertNull(map[0][2].peek());
+        assertNull(map[0][3].peek());
+
     }
 
+    /**
+     * Test if plant kills zombies
+     */
     @Test
     public void testUpdateBackyardPlantKillZombie(){
-        this.backyard.setCurrentWaveAmountOfZombies(1);
+        this.backyard.setCurrentWaveAmountOfZombies(2);
 
         this.backyard.addSprite(0,0,this.peashooter);
+        this.backyard.addSprite(0,1,this.repeater);
+
+        this.backyard.addSprite(7,1,this.flagZombie);
         this.backyard.addSprite(7,0,this.zombie);
         for(int i =0; i<4;i++){
             this.backyard.updateBackyard();
         }
+        //check health
         assertEquals(65,this.zombie.getHealth());
+        assertEquals(25,this.flagZombie.getHealth());
+
         this.backyard.updateBackyard();
+        //check health
         assertEquals(30,this.zombie.getHealth());
+        assertEquals(0,this.flagZombie.getHealth());
+
         this.backyard.updateBackyard();
+        //check health
         assertEquals(-5,this.zombie.getHealth());
+        assertEquals(0,this.flagZombie.getHealth());
+
         this.backyard.updateBackyard();
-        assertNull(this.map[0][1].peek());//verify zombie is removed
+
+        //verify zombie is removed
+        assertNull(this.map[0][3].peek());
+        assertNull(this.map[0][1].peek());
     }
 
 

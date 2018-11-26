@@ -39,7 +39,7 @@ public class Backyard {
         }
     }
 
-    private static int randomGenerator() {
+    private  int randomGenerator() {
         Random rand = new Random();
         return rand.nextInt(HEIGHT);
     }
@@ -200,6 +200,7 @@ public class Backyard {
                                     deadZombie = zombie;
                                     break;
                                 }
+                                break;
                             }
                         }
                     }

@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 
 public class View extends JFrame {
 
-    private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo,redo;
+    private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo,redo,genWave;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
@@ -34,6 +34,7 @@ public class View extends JFrame {
         undo = new JButton("Undo");
         redo = new JButton("Redo");
         exit = new JButton("Exit");
+        genWave = new JButton("GenWave");
 
         //Set action commands
         addSunflower.setActionCommand("sunflower");
@@ -46,6 +47,7 @@ public class View extends JFrame {
         exit.setActionCommand("exit");
         undo.setActionCommand("undo");
         redo.setActionCommand("redo");
+        genWave.setActionCommand("genWave");
 
         //Add buttons to action panel
         actionPanel.add(addSunflower);
@@ -58,7 +60,7 @@ public class View extends JFrame {
         actionPanel.add(undo);
         actionPanel.add(redo);
         actionPanel.add(exit);
-
+        actionPanel.add(genWave);
 
         //Create score panel
         scorePanel = new JPanel(new GridLayout());
@@ -112,7 +114,7 @@ public class View extends JFrame {
         frame.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
         frame.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1400, 1000);
+        frame.setSize(1500, 1000);
         frame.setVisible(true);
     }
 
@@ -316,11 +318,11 @@ public class View extends JFrame {
         this.undo = undo;
     }
 
-    public JButton getRedo() {
-        return redo;
-    }
+    public JButton getRedo() {return redo;}
 
-    public void setRedo(JButton redo) {
-        this.redo = redo;
-    }
+    public void setRedo(JButton redo) {this.redo = redo;}
+
+    public JButton getGenWave() {return genWave;}
+
+    public void setGenWave(JButton genWave) {this.genWave = genWave;}
 }

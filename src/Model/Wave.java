@@ -25,17 +25,17 @@ public class Wave {
         Wave.waveNumber += 1;
         this.zombieSpawn = new ArrayList<>();
         //need to fill arrraylist with zombies
-        while (zombies != 0 && flagZombies != 0 && coneZombies != 0){
+        while (zombies != 0 || flagZombies != 0 || coneZombies != 0){
             if (flagZombies != 0){
-                zombieSpawn.add(new FlagZombie());
+                this.zombieSpawn.add(new FlagZombie());
                 flagZombies--;
             }
             if (zombies != 0){
-                zombieSpawn.add(new Zombie());
+                this.zombieSpawn.add(new Zombie());
                 zombies--;
             }
             if (coneZombies != 0){
-                zombieSpawn.add(new ConeheadZombie());
+                this.zombieSpawn.add(new ConeheadZombie());
                 coneZombies--;
             }
         }

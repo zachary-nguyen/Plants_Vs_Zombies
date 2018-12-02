@@ -78,7 +78,7 @@ public class Wave {
     }
 
     /**
-     * Returns a zombie to return based on a random probability
+     * Returns a zombie to add to the game
      * @return Return the new zombie to be added
      */
     public AbstractZombie getZombie(){
@@ -89,6 +89,7 @@ public class Wave {
 
     /**
      * Generates the zombies to spawn in this wave
+     * based of random probability
      */
     public void generateZombies(){
         Random rand = new Random();

@@ -66,6 +66,7 @@ public class Game implements ActionListener {
         this.redo = new Stack<>();
 
         addActionListeners();
+        backyard.getCurrentWave().generateZombies();
         nextTurn();
     }
 
@@ -232,6 +233,7 @@ public class Game implements ActionListener {
             }
             JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
             backyard.setCurrentWaveAmountOfZombies(5 * currentWaveNumber);//creates a new wave for backyard
+            backyard.getCurrentWave().generateZombies();
         }
     }
 

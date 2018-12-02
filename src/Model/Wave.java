@@ -15,8 +15,7 @@ public class Wave {
         this.numZombieAlive = 0;
         complete = false;
         Wave.waveNumber += 1;
-        zombieSpawn = new ArrayList<AbstractZombie>();
-        generateZombies();
+        this.zombieSpawn = new ArrayList<>();
     }
 
     public Wave(int zombies, int flagZombies, int coneZombies) {
@@ -24,8 +23,22 @@ public class Wave {
         this.numZombieAlive = 0;
         complete = false;
         Wave.waveNumber += 1;
-        zombieSpawn = new ArrayList<AbstractZombie>();
-        generateZombies();
+        this.zombieSpawn = new ArrayList<>();
+        //need to fill arrraylist with zombies
+        while (zombies != 0 && flagZombies != 0 && coneZombies != 0){
+            if (flagZombies != 0){
+                zombieSpawn.add(new FlagZombie());
+                flagZombies--;
+            }
+            if (zombies != 0){
+                zombieSpawn.add(new Zombie());
+                zombies--;
+            }
+            if (coneZombies != 0){
+                zombieSpawn.add(new ConeheadZombie());
+                coneZombies--;
+            }
+        }
     }
 
     /**
@@ -142,6 +155,10 @@ public class Wave {
     public static void setWaveNumber(int waveNumber) {
         Wave.waveNumber = waveNumber;
     }
+
+    public ArrayList<AbstractZombie> getZombieSpawn() {return zombieSpawn;}
+
+    public void setZombieSpawn(ArrayList<AbstractZombie> zombieSpawn) {this.zombieSpawn = zombieSpawn; }
 
     /**
      * @return true if wave is complete

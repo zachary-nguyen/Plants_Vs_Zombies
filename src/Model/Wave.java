@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Wave {
@@ -7,12 +8,24 @@ public class Wave {
     private int numZombieAlive; // number of zombies to end wave
     private boolean complete;
     private static int waveNumber;
+    private ArrayList<AbstractZombie> zombieSpawn;
 
     public Wave(int numZombieSpawn) {
         this.numZombieSpawn = numZombieSpawn;
         this.numZombieAlive = 0;
         complete = false;
         Wave.waveNumber += 1;
+        zombieSpawn = new ArrayList<AbstractZombie>();
+        generateZombies();
+    }
+
+    public Wave(int zombies, int flagZombies, int coneZombies) {
+        this.numZombieSpawn = zombies + flagZombies + coneZombies;
+        this.numZombieAlive = 0;
+        complete = false;
+        Wave.waveNumber += 1;
+        zombieSpawn = new ArrayList<AbstractZombie>();
+        generateZombies();
     }
 
     /**
@@ -56,15 +69,25 @@ public class Wave {
      * @return Return the new zombie to be added
      */
     public AbstractZombie getZombie(){
-        Random rand = new Random();
-        int zombieSpawn = rand.nextInt(101);
+        AbstractZombie zombie = zombieSpawn.get(0);
+        zombieSpawn.remove(0);
+        return zombie;
+    }
 
-        if(zombieSpawn <= 60){
-            return new Zombie();
-        }else if (zombieSpawn <= 80){
-            return new FlagZombie();
-        }else{
-            return new ConeheadZombie();
+    /**
+     * Generates the zombies to spawn in this wave
+     */
+    public void generateZombies(){
+        Random rand = new Random();
+        for(int i = 0; i < numZombieSpawn; i++) {
+            int randNum = rand.nextInt(101);
+            if (randNum <= 60) {
+                zombieSpawn.add(new Zombie());
+            } else if (randNum <= 80) {
+                zombieSpawn.add(new FlagZombie());
+            } else {
+                zombieSpawn.add(new ConeheadZombie());
+            }
         }
     }
 

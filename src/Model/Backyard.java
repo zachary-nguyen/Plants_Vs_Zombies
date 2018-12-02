@@ -289,6 +289,7 @@ public class Backyard {
         wave.setComplete(this.currentWave.isComplete());
         wave.setNumZombieAlive(this.currentWave.getNumZombieAlive());
         wave.setNumZombiesSpawn(this.currentWave.getNumZombiesSpawn());
+        wave.setZombieSpawn(this.currentWave.getZombieSpawn());
         Wave.setWaveNumber(Wave.getWaveNumber());
 
         backyard.setMap(newMap);

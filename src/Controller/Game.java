@@ -66,6 +66,7 @@ public class Game implements ActionListener {
         this.redo = new Stack<>();
 
         addActionListeners();
+        backyard.getCurrentWave().generateZombies();
         nextTurn();
     }
 
@@ -80,6 +81,7 @@ public class Game implements ActionListener {
         view.getExit().addActionListener(this);
         view.getUndo().addActionListener(this);
         view.getRedo().addActionListener(this);
+        view.getGenWave().addActionListener(this);
 
         for (int i = 0; i < Backyard.HEIGHT; i++) {
             for (int j = 0; j < Backyard.WIDTH; j++) {
@@ -181,6 +183,12 @@ public class Game implements ActionListener {
                 case "exit":
                     System.exit(0);
                     break;
+                case "genWave":
+                    int zombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of regular zombies to spawn"));
+                    int flagzombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of flag zombies to spawn"));
+                    int conezombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of Conehead zombies to spawn"));
+                    this.backyard.setCurrentWave(new Wave (zombies,flagzombies,conezombies));
+                    break;
             }
         }
     }
@@ -232,6 +240,7 @@ public class Game implements ActionListener {
             }
             JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
             backyard.setCurrentWaveAmountOfZombies(5 * currentWaveNumber);//creates a new wave for backyard
+            backyard.getCurrentWave().generateZombies();
         }
     }
 

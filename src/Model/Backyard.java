@@ -2,6 +2,7 @@ package Model;
 
 import Controller.Game;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -11,10 +12,12 @@ import java.util.Random;
  *
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Mathew Smith
  */
-public class Backyard {
+public class Backyard implements Serializable {
+
 
     public static final int HEIGHT = 5;
     public static final int WIDTH = 9;
+    private static final long serialVersionUID = 6173803228893696282L;
 
     private Wave currentWave;
 

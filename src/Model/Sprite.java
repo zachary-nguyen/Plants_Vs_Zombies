@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Plants vs Zombies
@@ -11,8 +12,10 @@ import java.io.IOException;
  *
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
  */
-public abstract class Sprite implements Comparable {
+public abstract class Sprite implements Comparable,Serializable {
 
+
+    private static final long serialVersionUID = -1629479701004217584L;
     private int health;
     private int damage;
     private int counter;

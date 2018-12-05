@@ -160,10 +160,33 @@ public class Game implements ActionListener {
                     nextTurn();
                     break;
                 case "save":
-                    this.saveGame();
+                    JFileChooser chooser = new JFileChooser();
+                    int result = chooser.showSaveDialog(this.view.getFrame());
+                    if(result == JFileChooser.APPROVE_OPTION){
+                        String filename = chooser.getSelectedFile().getName();
+                        String dir = chooser.getCurrentDirectory().toString();
+                        if(filename != null && dir != null) {
+                            this.saveGame(filename, dir);
+                        }
+                    }
+                    if(result == JFileChooser.CANCEL_OPTION){
+                        System.out.println("Save cancelled");
+                    }
                     break;
                 case "load":
-                    this.loadGame();
+                    JFileChooser chooseLoad = new JFileChooser();
+                    int resultLoad = chooseLoad.showOpenDialog(this.view.getFrame());
+                    if(resultLoad == JFileChooser.APPROVE_OPTION){
+                        String filename = chooseLoad.getSelectedFile().getName();
+                        String dir = chooseLoad.getCurrentDirectory().toString();
+                        if(filename != null && dir != null) {
+                            this.loadGame(filename, dir);
+                        }
+                    }
+
+                    if(resultLoad == JFileChooser.CANCEL_OPTION){
+                        System.out.println("Cancelled loading");
+                    }
                     nextTurn();
                     break;
                 case "shovel":
@@ -252,9 +275,9 @@ public class Game implements ActionListener {
     /**
      * Save the current backyard state to a file to be able to load it later on.
      */
-    private void saveGame(){
+    private void saveGame(String filename, String dir){
         try{
-            FileOutputStream file = new FileOutputStream("PVZSaveFile.ser"); //create a new save file
+            FileOutputStream file = new FileOutputStream(dir + "\\" +  filename + ".ser"); //create a new save file
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             //Serialize backyard object
@@ -269,9 +292,9 @@ public class Game implements ActionListener {
     /**
      * Load a game file to resume the game from a different state.
      */
-    private void loadGame(){
+    private void loadGame(String filename, String dir){
         try{
-            FileInputStream file = new FileInputStream("PVZSaveFile.ser");
+            FileInputStream file = new FileInputStream(dir + "\\"  + filename);
             ObjectInputStream in = new ObjectInputStream(file);
 
             //Deserialize backyard object

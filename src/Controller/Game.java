@@ -7,6 +7,7 @@ import View.View;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.Stack;
 
 /**
@@ -82,7 +83,7 @@ public class Game implements ActionListener {
         view.getUndo().addActionListener(this);
         view.getRedo().addActionListener(this);
         view.getGenWave().addActionListener(this);
-
+        view.getLoad().addActionListener(this);
         for (int i = 0; i < Backyard.HEIGHT; i++) {
             for (int j = 0; j < Backyard.WIDTH; j++) {
                 view.getButtonGrid()[i][j].addActionListener(this);
@@ -159,7 +160,11 @@ public class Game implements ActionListener {
                     nextTurn();
                     break;
                 case "save":
-                    //TODO: implement save (milestone 3)
+                    this.saveGame();
+                    break;
+                case "load":
+                    this.loadGame();
+                    nextTurn();
                     break;
                 case "shovel":
                     //Before an action is performed add it to the undo stack
@@ -241,6 +246,42 @@ public class Game implements ActionListener {
             JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
             backyard.setCurrentWaveAmountOfZombies(5 * currentWaveNumber);//creates a new wave for backyard
             backyard.getCurrentWave().generateZombies();
+        }
+    }
+
+    /**
+     * Save the current backyard state to a file to be able to load it later on.
+     */
+    private void saveGame(){
+        try{
+            FileOutputStream file = new FileOutputStream("PVZSaveFile.ser"); //create a new save file
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            //Serialize backyard object
+            out.writeObject(this.backyard);
+            out.close();
+            file.close();
+        }catch(IOException ex){
+            System.out.println("Error saving!");
+        }
+    }
+
+    /**
+     * Load a game file to resume the game from a different state.
+     */
+    private void loadGame(){
+        try{
+            FileInputStream file = new FileInputStream("PVZSaveFile.ser");
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            //Deserialize backyard object
+            this.backyard = (Backyard)in.readObject();
+            in.close();
+            file.close();
+        }catch(IOException ex){
+            System.out.println("Error loading!");
+        } catch(ClassNotFoundException ex){
+            System.out.println("Class not found exception caught!");
         }
     }
 

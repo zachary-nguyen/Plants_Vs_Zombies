@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 
 public class View extends JFrame {
 
-    private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo,redo,genWave;
+    private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo, redo,genWave, load;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
     private JFrame frame;
@@ -29,6 +29,7 @@ public class View extends JFrame {
         addWallnut = new JButton("Walnut (50)");
 
         save = new JButton("Save");
+        load = new JButton("Load");
         skip = new JButton("Skip");
         shovel = new JButton("Shovel");
         undo = new JButton("Undo");
@@ -42,6 +43,7 @@ public class View extends JFrame {
         addRepeater.setActionCommand("repeater");
         addWallnut.setActionCommand("wallnut");
         save.setActionCommand("save");
+        load.setActionCommand("load");
         skip.setActionCommand("skip");
         shovel.setActionCommand("shovel");
         exit.setActionCommand("exit");
@@ -55,12 +57,13 @@ public class View extends JFrame {
         actionPanel.add(addRepeater);
         actionPanel.add(addWallnut);
         actionPanel.add(save);
+        actionPanel.add(load);
         actionPanel.add(skip);
         actionPanel.add(shovel);
         actionPanel.add(undo);
         actionPanel.add(redo);
-        actionPanel.add(exit);
         actionPanel.add(genWave);
+        actionPanel.add(exit);
 
         //Create score panel
         scorePanel = new JPanel(new GridLayout());
@@ -109,12 +112,11 @@ public class View extends JFrame {
                 backyardPanel.add(buttonGrid[row][col]);
             }
         }
-        this.save.setEnabled(false); //TODO renable save button for milestone3
         frame.getContentPane().add(backyardPanel, BorderLayout.CENTER);
         frame.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
         frame.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1500, 1000);
+        frame.setSize(1600, 1000);
         frame.setVisible(true);
     }
 
@@ -142,6 +144,7 @@ public class View extends JFrame {
         addRepeater.setEnabled(false);
         addWallnut.setEnabled(false);
         save.setEnabled(false);
+        load.setEnabled(false);
         skip.setEnabled(false);
         shovel.setEnabled(false);
         undo.setEnabled(false);
@@ -154,7 +157,8 @@ public class View extends JFrame {
         addPeashooter.setEnabled(true);
         addRepeater.setEnabled(true);
         addWallnut.setEnabled(true);
-        //TODO save.setEnabled(true);
+        save.setEnabled(true);
+        load.setEnabled(true);
         skip.setEnabled(true);
         shovel.setEnabled(true);
         undo.setEnabled(true);
@@ -325,4 +329,12 @@ public class View extends JFrame {
     public JButton getGenWave() {return genWave;}
 
     public void setGenWave(JButton genWave) {this.genWave = genWave;}
+
+    public JButton getLoad() {
+        return load;
+    }
+
+    public void setLoad(JButton load) {
+        this.load = load;
+    }
 }

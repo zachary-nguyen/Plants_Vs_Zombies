@@ -49,7 +49,6 @@ public class TestAllSprites extends TestCase {
         assertEquals(100,this.sunflower.getHealth());
         assertEquals(4,this.sunflower.getCounter());
         assertEquals(50,this.sunflower.getCost());
-
     }
 
     /**

@@ -16,6 +16,17 @@ public class FlagZombie extends AbstractZombie {
         super(zombie);
     }
 
+    /**
+     * Return the xml format of this sprite
+     * @return The xml string format
+     */
+    public String toXML(){
+        String toXml = "\t <FlagZombie> \n";
+        toXml += super.toXML();
+        toXml += "\t </FlagZombie> \n";
+        return toXml;
+    }
+
     @Override
     public int compareTo(Object o) {
         return 0;

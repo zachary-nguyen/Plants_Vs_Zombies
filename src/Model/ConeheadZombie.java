@@ -16,6 +16,17 @@ public class ConeheadZombie extends AbstractZombie {
         super(zombie);
     }
 
+    /**
+     * Return the xml format of this sprite
+     * @return The xml string format
+     */
+    public String toXML(){
+        String toXml = "\t <ConeheadZombie> \n";
+        toXml += super.toXML();
+        toXml += "\t </ConeheadZombie> \n";
+        return toXml;
+    }
+
     @Override
     public int compareTo(Object o) {
         return 0;

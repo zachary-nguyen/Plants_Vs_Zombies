@@ -217,11 +217,23 @@ public class Game implements ActionListener {
                         int flagzombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of flag zombies to spawn"));
                         int conezombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of Conehead zombies to spawn"));
                         int saveOption = JOptionPane.showConfirmDialog(null, "Do you want to save the\nlevel to XML?");
+                        this.backyard.setCurrentWave(new Wave(zombies, flagzombies, conezombies));
                         if (saveOption == JOptionPane.YES_OPTION){
                             System.out.println("Saving to XML");
                             // add logic here
+                            JFileChooser xmlChooser = new JFileChooser();
+                            int resultXml = xmlChooser.showSaveDialog(this.view.getFrame());
+                            if(resultXml == JFileChooser.APPROVE_OPTION){
+                                String filename = xmlChooser.getSelectedFile().getName();
+                                String dir = xmlChooser.getCurrentDirectory().toString();
+                                if(filename != null && dir != null) {
+                                    this.backyard.getCurrentWave().exportToXml(filename,dir);
+                                }
+                            }
+                            if(resultXml == JFileChooser.CANCEL_OPTION){
+                                System.out.println("Save cancelled");
+                            }
                         }
-                        this.backyard.setCurrentWave(new Wave(zombies, flagzombies, conezombies));
                     }catch(NumberFormatException ex){
                         JOptionPane.showMessageDialog(null, "Invalid number, please try again");
                     }

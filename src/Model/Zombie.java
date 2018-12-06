@@ -14,6 +14,17 @@ public class Zombie extends AbstractZombie {
         super(zombie);
     }
 
+    /**
+     * Return the xml format of this sprite
+     * @return The xml string format
+     */
+    public String toXML(){
+        String toXml = "\t <Zombie> \n";
+        toXml += super.toXML();
+        toXml += "\t </Zombie> \n";
+        return toXml;
+    }
+
     @Override
     public int compareTo(Object o) {
         return 0;

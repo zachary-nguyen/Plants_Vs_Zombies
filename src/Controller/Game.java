@@ -212,10 +212,19 @@ public class Game implements ActionListener {
                     System.exit(0);
                     break;
                 case "genWave":
-                    int zombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of regular zombies to spawn"));
-                    int flagzombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of flag zombies to spawn"));
-                    int conezombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of Conehead zombies to spawn"));
-                    this.backyard.setCurrentWave(new Wave (zombies,flagzombies,conezombies));
+                    try {
+                        int zombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of regular zombies to spawn"));
+                        int flagzombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of flag zombies to spawn"));
+                        int conezombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of Conehead zombies to spawn"));
+                        int saveOption = JOptionPane.showConfirmDialog(null, "Do you want to save the\nlevel to XML?");
+                        if (saveOption == JOptionPane.YES_OPTION){
+                            System.out.println("Saving to XML");
+                            // add logic here
+                        }
+                        this.backyard.setCurrentWave(new Wave(zombies, flagzombies, conezombies));
+                    }catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(null, "Invalid number, please try again");
+                    }
                     break;
             }
         }

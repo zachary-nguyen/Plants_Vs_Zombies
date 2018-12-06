@@ -22,12 +22,11 @@ public class TestView extends TestCase {
         this.map = this.backyard.getMap();
     }
 
-
     /**
-     * Test View
+     * Test View creation
      */
     @Test
-    public void testView(){
+    public void testViewCreation(){
         //Test Overall View Works
         assertNotNull(this.view);
 
@@ -50,12 +49,24 @@ public class TestView extends TestCase {
 
         assertNotNull(view.getGenWave());
         assertNotNull(view.getLoad());
+    }
 
+    /**
+     * Tests if score board works are required.
+     */
+    @Test
+    public void testScoreBoard() {
         //Test scorecard
         this.backyard.addSprite(0, 0, this.zombie);
         assertEquals(map[0][0].peek(),this.zombie);
         assertEquals(view.getZombieAlive().getText(), "Zombies Alive: 1");
+    }
 
+    /**
+     * Tests if tile clicks work.
+     */
+    @Test
+    public void testClickable() {
         //Checks if adding sprite to tile works.
         view.getAddSunflower().doClick();
         view.getButtonGrid()[2][4].doClick();

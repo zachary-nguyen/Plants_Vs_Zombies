@@ -69,6 +69,7 @@ public class Game implements ActionListener {
         addActionListeners();
         backyard.getCurrentWave().generateZombies();
         nextTurn();
+        view.getGenWave().setEnabled(true); //allow wave gen on first turn
     }
 
     private void addActionListeners() {
@@ -210,7 +211,7 @@ public class Game implements ActionListener {
                         int zombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of regular zombies to spawn"));
                         int flagzombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of flag zombies to spawn"));
                         int conezombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of Conehead zombies to spawn"));
-                        int delay = Integer.parseInt(JOptionPane.showInputDialog("Enter the amountof turns before the first zombie spawns"));
+                        int delay = Integer.parseInt(JOptionPane.showInputDialog("Enter the amount of turns before the first zombie spawns"));
                         int saveOption = JOptionPane.showConfirmDialog(null, "Do you want to save the\nlevel to XML?");
                         this.backyard.setCurrentWave(new Wave(zombies, flagzombies, conezombies,delay));
 

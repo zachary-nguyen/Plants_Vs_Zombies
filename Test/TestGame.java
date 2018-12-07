@@ -1,6 +1,9 @@
 import Controller.Game;
 import Model.Backyard;
+import Model.Wave;
 import junit.framework.TestCase;
+import junitx.framework.FileAssert;
+import org.junit.Test;
 
 import java.io.File;
 
@@ -17,6 +20,10 @@ public class TestGame extends TestCase {
     }
 
 
+    /**
+     * Test the save functionality
+     */
+    @Test
     public void testSave(){
         String filename = "saveTest";
         String pathname = TestGame.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("%20"," ");
@@ -27,6 +34,10 @@ public class TestGame extends TestCase {
         assertTrue(file.exists());
     }
 
+    /**
+     * Test the load functionality
+     */
+    @Test
     public void testLoad(){
 
         String filename = "saveTest";
@@ -39,6 +50,10 @@ public class TestGame extends TestCase {
         assertEquals(loadBackyard,game.getBackyard()); //Assert that the controllers backyard equals the backyard that was loaded
     }
 
+    /**
+     * Test the undo functionality
+     */
+    @Test
     public void testUndo(){
 
         //Assert that the stacks start off empty
@@ -64,6 +79,10 @@ public class TestGame extends TestCase {
 
     }
 
+    /**
+     * Test the redo functionality
+     */
+    @Test
     public void testRedo(){
 
         //Assert that the stacks start off empty
@@ -87,6 +106,37 @@ public class TestGame extends TestCase {
         assertTrue(game.getUndo().size() ==1);
         assertTrue(redoBackyard.equals(game.getUndo().peek()));
 
+    }
+
+    /**
+     * Verify the export xml is saving levels properly
+     */
+    @Test
+    public void testExportXml(){
+        //Create a new wave to export
+        Wave exportWave = new Wave(1,2,3,4);
+        Wave exportWave2 = new Wave(1,2,3,4);
+
+        File exportedFile = exportWave.exportToXml("Wave1","C:\\Users\\Zachary");
+        File compareFile = exportWave2.exportToXml("Wave2","C:\\Users\\Zachary");
+        FileAssert.assertEquals(exportedFile,compareFile);
+    }
+
+    /**
+     * Test the actionlisteners
+     */
+    @Test
+    public void testActionListeners(){
+        assertEquals("load",this.game.getView().getLoad().getActionCommand());
+        assertEquals("save",this.game.getView().getSave().getActionCommand());
+        assertEquals("undo",this.game.getView().getUndo().getActionCommand());
+        assertEquals("redo",this.game.getView().getRedo().getActionCommand());
+        assertEquals("genWave",this.game.getView().getGenWave().getActionCommand());
+        assertEquals("sunflower",this.game.getView().getAddSunflower().getActionCommand());
+        assertEquals("peashooter",this.game.getView().getAddPeashooter().getActionCommand());
+        assertEquals("repeater",this.game.getView().getAddRepeater().getActionCommand());
+        assertEquals("wallnut",this.game.getView().getAddWallnut().getActionCommand());
+        assertEquals("exit",this.game.getView().getExit().getActionCommand());
     }
 
     public static void main(String[] args) {

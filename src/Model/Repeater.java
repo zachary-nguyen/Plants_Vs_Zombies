@@ -1,8 +1,11 @@
 package Model;
-
+/*
+    Same as Peashooter, except it shoots two bullets at once. Lowered bullet damage.
+ */
 public class Repeater extends AbstractPlant {
 
-    //Same as Peashooter, except it shoots two bullets at once. Lowered bullet damage.
+
+    private static final long serialVersionUID = -7324994739167335884L;
 
     public Repeater()  {
         super("src/images/REPEATER.png", 100, 25, 3,200);

@@ -1,12 +1,13 @@
 package Model;
 
 /**
- * Zombie class is a model class for a basic zombie. It has no special attributes.
+ * Scout Zombie, Lower Damage, Lower Health. Should be spawned at a lower rate than regular Zombies.
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
  */
 public class FlagZombie extends AbstractZombie {
 
-    //Scout Zombie, Lower Damage, Lower Health. Should be spawned at a lower rate than regular Zombies.
+
+    private static final long serialVersionUID = 4783730690368971247L;
 
     public FlagZombie() {
         super("src/images/FLAGZOMBIE.png", 50, 25, 1, 0);

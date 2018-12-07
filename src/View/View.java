@@ -12,7 +12,6 @@ public class View extends JFrame {
     private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo, redo,genWave, load;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
-   // private JFrame frame;
     private JLabel wave, sun, score, zombieAlive, zombieLeft;
 
     public View() {
@@ -51,7 +50,6 @@ public class View extends JFrame {
         undo.setActionCommand("undo");
         redo.setActionCommand("redo");
         genWave.setActionCommand("genWave");
-        genWave.setEnabled(false);
 
         //Add buttons to action panel
         actionPanel.add(addSunflower);
@@ -71,11 +69,11 @@ public class View extends JFrame {
         scorePanel = new JPanel(new GridLayout());
 
         //Create new text fields
-        wave = new JLabel("Wave ");
+        wave = new JLabel("Wave: ");
         score = new JLabel("Score: ");
         sun = new JLabel("Sun: ");
         zombieAlive = new JLabel("Zombies Alive: ");
-        zombieLeft = new JLabel("Zombies Left: ");
+        zombieLeft = new JLabel("Zombies Remaining: ");
 
         scorePanel.add(wave);
         scorePanel.add(score);

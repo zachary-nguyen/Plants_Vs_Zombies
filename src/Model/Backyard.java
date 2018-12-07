@@ -3,9 +3,7 @@ package Model;
 import Controller.Game;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Backyard class contains the map with all the sprites.
@@ -26,7 +24,6 @@ public class Backyard implements Serializable {
 
     private PriorityQueue<Sprite>[][] map;
 
-
     /**
      * Constructor for Backyard class
      */
@@ -44,6 +41,7 @@ public class Backyard implements Serializable {
 
     /**
      * Returns a value between 0-4 to randomly select where to place the next zombie
+     *
      * @return Return a number between 0-4
      */
     private int randomGenerator() {
@@ -188,7 +186,7 @@ public class Backyard implements Serializable {
             for (int col = 0; col < WIDTH; col++) {
                 AbstractZombie deadZombie = null; // zombie to be removed
 
-          //   if the tile contains a bullet and zombie
+                //   if the tile contains a bullet and zombie
                 for (Iterator<Sprite> sprite1 = map[row][col].iterator(); sprite1.hasNext(); ) {
                     Sprite ent1 = sprite1.next();
                     if (ent1 instanceof Bullet) {
@@ -211,7 +209,7 @@ public class Backyard implements Serializable {
                             }
                         }
                     }
-            }
+                }
                 map[row][col].remove(deadZombie);
             }
         }
@@ -220,7 +218,7 @@ public class Backyard implements Serializable {
     /**
      * Helper method for updateBackyard to move all the bullets on the map
      */
-    private void moveBullets(){
+    private void moveBullets() {
         // moves bullets
         for (int row = HEIGHT - 1; row >= 0; row--) {
             for (int col = WIDTH - 1; col >= 0; col--) {
@@ -319,6 +317,34 @@ public class Backyard implements Serializable {
         int currentScore = getScore();
         currentScore++;
         setScore(currentScore);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Backyard backyard = (Backyard) o;
+
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                if (!Arrays.deepEquals(map[row][col].toArray(), backyard.getMap()[row][col].toArray())) {
+                    return false;
+                }
+            }
+        }
+
+        return money == backyard.money &&
+                score == backyard.score &&
+        currentWave.equals(backyard.currentWave);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(currentWave, money, score);
+        result = 31 * result + Arrays.hashCode(map);
+        return result;
     }
 
     /***********************

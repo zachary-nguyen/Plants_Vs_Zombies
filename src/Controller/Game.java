@@ -113,9 +113,9 @@ public class Game implements ActionListener {
                 backyard.updateBackyard();
                 nextTurn();
 
-            }else{
+            } else {
                 this.undo.push(this.backyard.cloneBackyard());
-                backyard.collectSun(tile.getRow(),tile.getCol());
+                backyard.collectSun(tile.getRow(), tile.getCol());
                 view.displayBackyard(backyard.getMap());
                 view.updateScorePanel(currentWaveNumber, backyard.getScore(), backyard.getMoney(),
                         backyard.getCurrentWave().getNumZombieAlive(), backyard.getCurrentWave().getNumZombiesSpawn());
@@ -162,29 +162,31 @@ public class Game implements ActionListener {
                 case "save":
                     JFileChooser chooser = new JFileChooser();
                     int result = chooser.showSaveDialog(this.view.getFrame());
-                    if(result == JFileChooser.APPROVE_OPTION){
+                    if (result == JFileChooser.APPROVE_OPTION) {
                         String filename = chooser.getSelectedFile().getName();
                         String dir = chooser.getCurrentDirectory().toString();
-                        if(filename != null && dir != null) {
+                        if (filename != null && dir != null) {
+                            System.out.println(filename);
+                            System.out.println(dir);
                             this.saveGame(filename, dir);
                         }
                     }
-                    if(result == JFileChooser.CANCEL_OPTION){
+                    if (result == JFileChooser.CANCEL_OPTION) {
                         System.out.println("Save cancelled");
                     }
                     break;
                 case "load":
                     JFileChooser chooseLoad = new JFileChooser();
                     int resultLoad = chooseLoad.showOpenDialog(this.view.getFrame());
-                    if(resultLoad == JFileChooser.APPROVE_OPTION){
+                    if (resultLoad == JFileChooser.APPROVE_OPTION) {
                         String filename = chooseLoad.getSelectedFile().getName();
                         String dir = chooseLoad.getCurrentDirectory().toString();
-                        if(filename != null && dir != null) {
-                            this.loadGame(filename, dir);
+                        if (filename != null && dir != null) {
+                            this.backyard = this.loadGame(filename, dir);
                         }
                     }
 
-                    if(resultLoad == JFileChooser.CANCEL_OPTION){
+                    if (resultLoad == JFileChooser.CANCEL_OPTION) {
                         System.out.println("Cancelled loading");
                     }
                     nextTurn();
@@ -195,18 +197,10 @@ public class Game implements ActionListener {
                     view.disableCommandBtns();
                     break;
                 case "undo":
-                    if (this.undo.size() > 0) {
-                        this.redo.push(this.backyard.cloneBackyard()); //add turn to redo stack
-                        this.backyard = this.undo.pop(); //set current model to top of undo stack
-                        nextTurn();
-                    }
+                    undo();
                     break;
                 case "redo":
-                    if (this.redo.size() > 0) {
-                        this.undo.push(this.backyard.cloneBackyard()); //add the turn to the undo stack
-                        this.backyard = this.redo.pop(); //set current model to top of redo stack
-                        nextTurn();
-                    }
+                    redo();
                     break;
                 case "exit":
                     System.exit(0);
@@ -242,6 +236,22 @@ public class Game implements ActionListener {
         }
     }
 
+    public void undo() {
+        if (this.undo.size() > 0) {
+            this.redo.push(this.backyard.cloneBackyard()); //add turn to redo stack
+            this.backyard = this.undo.pop(); //set current model to top of undo stack
+            nextTurn();
+        }
+    }
+
+    public void redo() {
+        if (this.redo.size() > 0) {
+            this.undo.push(this.backyard.cloneBackyard()); //add the turn to the undo stack
+            this.backyard = this.redo.pop(); //set current model to top of redo stack
+            nextTurn();
+        }
+    }
+
     /**
      * Disables buttons for adding plants that player cannot afford
      */
@@ -263,14 +273,19 @@ public class Game implements ActionListener {
 
         }
 
-        if(backyard.getMoney() < 200){
+        if (backyard.getMoney() < 200) {
             view.getAddRepeater().setEnabled(false);
         } else {
             view.getAddRepeater().setEnabled(true);
         }
     }
 
-    private void nextTurn() {
+
+    /**
+     * Handles ending the turn and updating the view each turn
+     * Checks if the wave is complete and advances the game
+     */
+    public void nextTurn() {
         if (gameOver) {
             JOptionPane.showMessageDialog(this.view.getFrame(), "Your backyard has been overrun!");
             System.exit(0);
@@ -281,6 +296,7 @@ public class Game implements ActionListener {
 
         disableUnaffordablePlants();
         if (backyard.getCurrentWave() != null && backyard.getCurrentWave().isComplete()) {
+            view.getGenWave().setEnabled(true);
             currentWaveNumber++;
             //Check if the level is completed
             if (currentWaveNumber == MAX_NUMBER_OF_WAVES) {
@@ -290,22 +306,24 @@ public class Game implements ActionListener {
             JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
             backyard.setCurrentWaveAmountOfZombies(5 * currentWaveNumber);//creates a new wave for backyard
             backyard.getCurrentWave().generateZombies();
+        } else {
+            view.getGenWave().setEnabled(false);
         }
     }
 
     /**
      * Save the current backyard state to a file to be able to load it later on.
      */
-    private void saveGame(String filename, String dir){
-        try{
-            FileOutputStream file = new FileOutputStream(dir + "\\" +  filename + ".ser"); //create a new save file
+    public void saveGame(String filename, String dir) {
+        try {
+            FileOutputStream file = new FileOutputStream(dir + "\\" + filename + ".ser"); //create a new save file
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             //Serialize backyard object
             out.writeObject(this.backyard);
             out.close();
             file.close();
-        }catch(IOException ex){
+        } catch (IOException ex) {
             System.out.println("Error saving!");
         }
     }
@@ -313,20 +331,23 @@ public class Game implements ActionListener {
     /**
      * Load a game file to resume the game from a different state.
      */
-    private void loadGame(String filename, String dir){
-        try{
-            FileInputStream file = new FileInputStream(dir + "\\"  + filename);
+    public Backyard loadGame(String filename, String dir) {
+        Backyard backyard = this.backyard;
+        try {
+            FileInputStream file = new FileInputStream(dir + "\\" + filename);
             ObjectInputStream in = new ObjectInputStream(file);
 
             //Deserialize backyard object
-            this.backyard = (Backyard)in.readObject();
+            backyard = (Backyard) in.readObject();
             in.close();
             file.close();
-        }catch(IOException ex){
+
+        } catch (IOException ex) {
             System.out.println("Error loading!");
-        } catch(ClassNotFoundException ex){
+        } catch (ClassNotFoundException ex) {
             System.out.println("Class not found exception caught!");
         }
+        return backyard;
     }
 
     public static void main(String[] args) {
@@ -362,6 +383,15 @@ public class Game implements ActionListener {
         this.removePlant = removePlant;
     }
 
+
+    public Stack<Backyard> getRedo() {
+        return redo;
+    }
+
+    public void setRedo(Stack<Backyard> redo) {
+        this.redo = redo;
+    }
+
     public Stack<Backyard> getUndo() {
         return undo;
     }
@@ -382,7 +412,7 @@ public class Game implements ActionListener {
         this.view = view;
     }
 
-    private Backyard getBackyard() {
+    public Backyard getBackyard() {
         return backyard;
     }
 }

@@ -2,6 +2,8 @@ package Model;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class Wave implements Serializable {
@@ -106,6 +108,17 @@ public class Wave implements Serializable {
                 zombieSpawn.add(new ConeheadZombie());
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wave wave = (Wave) o;
+        return numZombieSpawn == wave.numZombieSpawn &&
+                numZombieAlive == wave.numZombieAlive &&
+                complete == wave.complete &&
+                Arrays.deepEquals(zombieSpawn.toArray(), wave.zombieSpawn.toArray());
     }
 
     /**

@@ -35,7 +35,7 @@ public class TestGame extends TestCase {
         game.saveGame(filename,pathname);
         Backyard loadBackyard = game.loadGame(filename +".ser", pathname);
 
-        assertEquals(backyard, loadBackyard); //Assert that the loaded game equals the game you saved
+        assertEquals(backyard,loadBackyard); //Assert that the loaded game equals the game you saved
         assertEquals(loadBackyard,game.getBackyard()); //Assert that the controllers backyard equals the backyard that was loaded
     }
 

@@ -42,7 +42,6 @@ public class TestView extends TestCase {
         assertNotNull(view.getExit());
 
         //Components
-        assertNotNull(view.getFrame());
         assertNotNull(view.getButtonGrid());
         assertNotNull(view.getUndo());
         assertNotNull(view.getRedo());

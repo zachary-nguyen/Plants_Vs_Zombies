@@ -161,7 +161,7 @@ public class Game implements ActionListener {
                     break;
                 case "save":
                     JFileChooser chooser = new JFileChooser();
-                    int result = chooser.showSaveDialog(this.view.getFrame());
+                    int result = chooser.showSaveDialog(this.view);
                     if (result == JFileChooser.APPROVE_OPTION) {
                         String filename = chooser.getSelectedFile().getName();
                         String dir = chooser.getCurrentDirectory().toString();
@@ -177,7 +177,7 @@ public class Game implements ActionListener {
                     break;
                 case "load":
                     JFileChooser chooseLoad = new JFileChooser();
-                    int resultLoad = chooseLoad.showOpenDialog(this.view.getFrame());
+                    int resultLoad = chooseLoad.showOpenDialog(this.view);
                     if (resultLoad == JFileChooser.APPROVE_OPTION) {
                         String filename = chooseLoad.getSelectedFile().getName();
                         String dir = chooseLoad.getCurrentDirectory().toString();
@@ -210,13 +210,15 @@ public class Game implements ActionListener {
                         int zombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of regular zombies to spawn"));
                         int flagzombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of flag zombies to spawn"));
                         int conezombies = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of Conehead zombies to spawn"));
+                        int delay = Integer.parseInt(JOptionPane.showInputDialog("Enter the amountof turns before the first zombie spawns"));
                         int saveOption = JOptionPane.showConfirmDialog(null, "Do you want to save the\nlevel to XML?");
-                        this.backyard.setCurrentWave(new Wave(zombies, flagzombies, conezombies));
+                        this.backyard.setCurrentWave(new Wave(zombies, flagzombies, conezombies,delay));
+
                         if (saveOption == JOptionPane.YES_OPTION){
                             System.out.println("Saving to XML");
                             // add logic here
                             JFileChooser xmlChooser = new JFileChooser();
-                            int resultXml = xmlChooser.showSaveDialog(this.view.getFrame());
+                            int resultXml = xmlChooser.showSaveDialog(this.view);
                             if(resultXml == JFileChooser.APPROVE_OPTION){
                                 String filename = xmlChooser.getSelectedFile().getName();
                                 String dir = xmlChooser.getCurrentDirectory().toString();
@@ -287,7 +289,7 @@ public class Game implements ActionListener {
      */
     public void nextTurn() {
         if (gameOver) {
-            JOptionPane.showMessageDialog(this.view.getFrame(), "Your backyard has been overrun!");
+            JOptionPane.showMessageDialog(this.view, "Your backyard has been overrun!");
             System.exit(0);
         }
         view.displayBackyard(backyard.getMap());
@@ -300,10 +302,10 @@ public class Game implements ActionListener {
             currentWaveNumber++;
             //Check if the level is completed
             if (currentWaveNumber == MAX_NUMBER_OF_WAVES) {
-                JOptionPane.showMessageDialog(this.view.getFrame(), "YOU HAVE WON THE GAME!!!");
+                JOptionPane.showMessageDialog(this.view, "YOU HAVE WON THE GAME!!!");
                 System.exit(0);
             }
-            JOptionPane.showMessageDialog(this.view.getFrame(), "WAVE COMPLETE!!!");
+            JOptionPane.showMessageDialog(this.view, "WAVE COMPLETE!!!");
             backyard.setCurrentWaveAmountOfZombies(5 * currentWaveNumber);//creates a new wave for backyard
             backyard.getCurrentWave().generateZombies();
         } else {

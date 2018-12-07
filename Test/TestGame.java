@@ -117,8 +117,8 @@ public class TestGame extends TestCase {
         Wave exportWave = new Wave(1,2,3,4);
         Wave exportWave2 = new Wave(1,2,3,4);
 
-        File exportedFile = exportWave.exportToXml("Wave1","C:\\Users\\Zachary");
-        File compareFile = exportWave2.exportToXml("Wave2","C:\\Users\\Zachary");
+        File exportedFile = exportWave.exportToXml("Wave1","Test");
+        File compareFile = exportWave2.exportToXml("Wave2","Test");
         FileAssert.assertEquals(exportedFile,compareFile);
     }
 

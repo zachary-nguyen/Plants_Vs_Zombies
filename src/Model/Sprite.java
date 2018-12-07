@@ -103,6 +103,6 @@ public abstract class Sprite implements Comparable,Serializable {
         return health == sprite.health &&
                 damage == sprite.damage &&
                 counter == sprite.counter &&
-                image.equals(sprite.getImage());
+                Objects.equals(image,sprite.getImage());
     }
 }

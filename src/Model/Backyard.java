@@ -337,7 +337,6 @@ public class Backyard implements Serializable {
         return money == backyard.money &&
                 score == backyard.score &&
         currentWave.equals(backyard.currentWave);
-        // Arrays.deepEquals(map, backyard.map);
 
     }
 

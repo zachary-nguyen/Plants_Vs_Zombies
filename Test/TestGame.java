@@ -35,7 +35,7 @@ public class TestGame extends TestCase {
         game.saveGame(filename,pathname);
         Backyard loadBackyard = game.loadGame(filename +".ser", pathname);
 
-        assertTrue(backyard.equals(loadBackyard)); //Assert that the loaded game equals the game you saved
+        assertEquals(backyard, loadBackyard); //Assert that the loaded game equals the game you saved
         assertEquals(loadBackyard,game.getBackyard()); //Assert that the controllers backyard equals the backyard that was loaded
     }
 
@@ -59,8 +59,8 @@ public class TestGame extends TestCase {
         Backyard undoBackyard = game.getUndo().peek();
         game.undo();
         assertTrue(game.getUndo().empty());
-        assertTrue(game.getRedo().size() ==1);
-        assertTrue(undoBackyard.equals(game.getRedo().peek()));
+        assertEquals(1, game.getRedo().size());
+        assertEquals(undoBackyard, game.getRedo().peek());
 
     }
 

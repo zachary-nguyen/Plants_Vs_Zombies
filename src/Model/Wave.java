@@ -1,6 +1,6 @@
 package Model;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -119,6 +119,46 @@ public class Wave implements Serializable {
                 numZombieAlive == wave.numZombieAlive &&
                 complete == wave.complete &&
                 Arrays.deepEquals(zombieSpawn.toArray(), wave.zombieSpawn.toArray());
+    }
+
+    /**
+     * Convert wave class to xml format
+     * @return String version of xml
+     */
+    public String toXML(){
+        String toXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n";
+        toXml += "<Wave> \n";
+        for(AbstractZombie zombie : zombieSpawn){
+            if(zombie instanceof Zombie){
+                zombie = (Zombie)zombie;
+                toXml += zombie.toXML() + "\n";
+            }else if(zombie instanceof FlagZombie){
+                zombie = (FlagZombie)zombie;
+                toXml += zombie.toXML() + "\n";
+            }else{
+                zombie = (ConeheadZombie)zombie;
+                toXml += zombie.toXML() + "\n";
+            }
+        }
+        toXml += "</Wave>";
+        return toXml;
+    }
+
+    /**
+     * Export the wave to XML to be used for loading a level
+     * @return The xml file
+     */
+    public File exportToXml(String fileName, String dir){
+        try {
+            File file = new File(dir + "\\" +  fileName + ".xml");
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+            out.write(this.toXML());
+            out.close();
+            return file;
+        } catch (IOException e) {
+            System.out.println("Error exporting!");
+            return null;
+        }
     }
 
     /***********************

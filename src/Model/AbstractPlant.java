@@ -6,6 +6,8 @@ package Model;
  */
 public abstract class AbstractPlant extends Sprite {
 
+    private static final long serialVersionUID = -1929588032386600141L;
+
     private int cost;
 
     public AbstractPlant() {

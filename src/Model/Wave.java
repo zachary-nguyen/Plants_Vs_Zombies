@@ -3,12 +3,12 @@ package Model;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 public class Wave implements Serializable {
 
     private static final long serialVersionUID = -6348065130252775123L;
+
     private int numZombieSpawn; // number of zombies to end wave
     private int numZombieAlive; // number of zombies to end wave
     private boolean complete;

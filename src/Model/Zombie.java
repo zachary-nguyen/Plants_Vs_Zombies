@@ -6,6 +6,9 @@ package Model;
  */
 public class Zombie extends AbstractZombie {
 
+
+    private static final long serialVersionUID = 1245599900283305880L;
+
     public Zombie() {
         super("src/images/ZOMBIE.png", 100, 50, 1, 0);
     }

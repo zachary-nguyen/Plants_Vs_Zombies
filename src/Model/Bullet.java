@@ -5,6 +5,9 @@ package Model;
  * @author Zachary Nguyen, Eric Cosoreanu, Fareed Ahmad, Matthew Smith
  */
 public class Bullet extends Sprite {
+
+    private static final long serialVersionUID = 2674013404889843406L;
+
     private int speed;
     private boolean move;
 

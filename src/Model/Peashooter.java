@@ -2,6 +2,9 @@ package Model;
 
 public class Peashooter extends AbstractPlant {
 
+
+    private static final long serialVersionUID = 1666434469224557567L;
+
     public Peashooter()  {
         super("src/images/PEASHOOTER.png", 100, 35, 2,100);
     }

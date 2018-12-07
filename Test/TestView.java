@@ -1,12 +1,16 @@
-import View.*;
-import Model.*;
+import Controller.Game;
+import Model.Backyard;
+import Model.Sprite;
+import View.View;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.PriorityQueue;
 
 public class TestView extends TestCase {
 
+    private Game game;
     private View view;
     private Backyard backyard;
     private PriorityQueue<Sprite>[][] map;
@@ -20,6 +24,8 @@ public class TestView extends TestCase {
         this.view = new View();
         this.backyard = new Backyard();
         this.map = this.backyard.getMap();
+        this.game = new Game();
+
     }
 
     /**
@@ -48,6 +54,7 @@ public class TestView extends TestCase {
 
         assertNotNull(view.getGenWave());
         assertNotNull(view.getLoad());
+
     }
 
     /**
@@ -56,9 +63,22 @@ public class TestView extends TestCase {
     @Test
     public void testScoreBoard() {
         //Test scorecard
-        this.backyard.addSprite(0, 0, this.zombie);
         assertEquals(map[0][0].peek(),this.zombie);
-        assertEquals(view.getZombieAlive().getText(), "Zombies Alive: 1");
+        assertEquals("Zombies Alive: ", view.getZombieAlive().getText());
+        assertEquals("Score: ", view.getScore().getText());
+        assertEquals("Wave: ",view.getWave().getText());
+        assertEquals("Sun: ",view.getSun().getText());
+        assertEquals("Zombies Remaining: ",view.getZombieLeft().getText());
+
+        //update the panel
+        view.updateScorePanel(1,0,300,0,5);
+        assertEquals(map[0][0].peek(),this.zombie);
+        assertEquals("Zombies Alive: 0", view.getZombieAlive().getText());
+        assertEquals("Score: 0", view.getScore().getText());
+        assertEquals("Wave: 1",view.getWave().getText());
+        assertEquals("Sun: 300",view.getSun().getText());
+        assertEquals("Zombies Remaining: 5",view.getZombieLeft().getText());
+
     }
 
     /**
@@ -67,9 +87,17 @@ public class TestView extends TestCase {
     @Test
     public void testClickable() {
         //Checks if adding sprite to tile works.
-        view.getAddSunflower().doClick();
-        view.getButtonGrid()[2][4].doClick();
-        assertFalse(view.getButtonGrid()[2][4].isEmpty());
+        game.getView().getAddSunflower().doClick();
+        game.getView().getButtonGrid()[0][0].doClick();
+
+        //verify that a sunflower is addded to the view
+        assertNotNull(game.getBackyard().getMap()[0][0].peek());
+
+        //now remove the sunflower
+        game.getView().getShovel().doClick();
+        game.getView().getButtonGrid()[0][0].doClick();
+
+        assertNull(game.getBackyard().getMap()[0][0].peek());
     }
 
     public static void main(String[] args) {

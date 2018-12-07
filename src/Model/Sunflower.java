@@ -6,6 +6,9 @@ package Model;
  */
 public class Sunflower extends AbstractPlant {
 
+
+    private static final long serialVersionUID = 7081326709614274967L;
+
     private boolean collect;
     private static final int MONEY = 25;
 

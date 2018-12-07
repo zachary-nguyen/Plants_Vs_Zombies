@@ -12,13 +12,14 @@ public class View extends JFrame {
     private JButton addSunflower, addPeashooter, addRepeater, addWallnut, save,  skip, shovel, exit,undo, redo,genWave, load;
     private Tile[][] buttonGrid;
     private JPanel backyardPanel, actionPanel, scorePanel;
-    private JFrame frame;
+   // private JFrame frame;
     private JLabel wave, sun, score, zombieAlive, zombieLeft;
 
     public View() {
         //Initialize Frame
-        this.frame = new JFrame("Plants Vs Zombies");
-        frame.setLayout(new BorderLayout());
+        //this.frame = new JFrame("Plants Vs Zombies");
+        this.setTitle("Plants Vs Zombies");
+        this.setLayout(new BorderLayout());
 
         //Create action Panel
         actionPanel = new JPanel(new GridLayout());
@@ -113,12 +114,12 @@ public class View extends JFrame {
                 backyardPanel.add(buttonGrid[row][col]);
             }
         }
-        frame.getContentPane().add(backyardPanel, BorderLayout.CENTER);
-        frame.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
-        frame.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1600, 1000);
-        frame.setVisible(true);
+        this.getContentPane().add(backyardPanel, BorderLayout.CENTER);
+        this.getContentPane().add(actionPanel, BorderLayout.PAGE_START);
+        this.getContentPane().add(scorePanel, BorderLayout.AFTER_LAST_LINE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1600, 1000);
+        this.setVisible(true);
     }
 
     public void displayBackyard(PriorityQueue[][] map) {
@@ -241,13 +242,6 @@ public class View extends JFrame {
         this.exit = exit;
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
-    }
 
     public Tile[][] getButtonGrid() {
         return buttonGrid;

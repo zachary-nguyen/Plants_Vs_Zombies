@@ -13,33 +13,36 @@ public class Wave implements Serializable {
     private int numZombieAlive; // number of zombies to end wave
     private boolean complete;
     private static int waveNumber;
+    private int startDelay;
     private ArrayList<AbstractZombie> zombieSpawn;
 
     public Wave(int numZombieSpawn) {
         this.numZombieSpawn = numZombieSpawn;
         this.numZombieAlive = 0;
+        startDelay = 2;
         complete = false;
         Wave.waveNumber += 1;
         this.zombieSpawn = new ArrayList<>();
     }
 
-    public Wave(int zombies, int flagZombies, int coneZombies) {
+    public Wave(int zombies, int flagZombies, int coneZombies, int delay) {
         this.numZombieSpawn = zombies + flagZombies + coneZombies;
         this.numZombieAlive = 0;
         complete = false;
         Wave.waveNumber += 1;
         this.zombieSpawn = new ArrayList<>();
+        this.startDelay = delay;
         //need to fill arrraylist with zombies
-        while (zombies != 0 || flagZombies != 0 || coneZombies != 0){
-            if (flagZombies != 0){
+        while (zombies != 0 || flagZombies != 0 || coneZombies != 0) {
+            if (flagZombies != 0) {
                 this.zombieSpawn.add(new FlagZombie());
                 flagZombies--;
             }
-            if (zombies != 0){
+            if (zombies != 0) {
                 this.zombieSpawn.add(new Zombie());
                 zombies--;
             }
-            if (coneZombies != 0){
+            if (coneZombies != 0) {
                 this.zombieSpawn.add(new ConeheadZombie());
                 coneZombies--;
             }
@@ -52,6 +55,16 @@ public class Wave implements Serializable {
 
     public boolean spawnZombie() {
         Random rand = new Random();
+        if (startDelay > 0) {
+            startDelay--;
+            return false;
+        } else if (startDelay == 0) {
+            startDelay = -1;
+            numZombieSpawn--;
+            numZombieAlive++;
+            return true;
+        }
+
         if (numZombieSpawn == 0) {
             return false;
         }
@@ -84,9 +97,10 @@ public class Wave implements Serializable {
 
     /**
      * Returns a zombie to add to the game
+     *
      * @return Return the new zombie to be added
      */
-    public AbstractZombie getZombie(){
+    public AbstractZombie getZombie() {
         AbstractZombie zombie = zombieSpawn.get(0);
         zombieSpawn.remove(0);
         return zombie;
@@ -96,9 +110,9 @@ public class Wave implements Serializable {
      * Generates the zombies to spawn in this wave
      * based of random probability
      */
-    public void generateZombies(){
+    public void generateZombies() {
         Random rand = new Random();
-        for(int i = 0; i < numZombieSpawn; i++) {
+        for (int i = 0; i < numZombieSpawn; i++) {
             int randNum = rand.nextInt(101);
             if (randNum <= 60) {
                 zombieSpawn.add(new Zombie());
@@ -123,20 +137,21 @@ public class Wave implements Serializable {
 
     /**
      * Convert wave class to xml format
+     *
      * @return String version of xml
      */
-    public String toXML(){
+    public String toXML() {
         String toXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n";
         toXml += "<Wave> \n";
-        for(AbstractZombie zombie : zombieSpawn){
-            if(zombie instanceof Zombie){
-                zombie = (Zombie)zombie;
+        for (AbstractZombie zombie : zombieSpawn) {
+            if (zombie instanceof Zombie) {
+                zombie = (Zombie) zombie;
                 toXml += zombie.toXML() + "\n";
-            }else if(zombie instanceof FlagZombie){
-                zombie = (FlagZombie)zombie;
+            } else if (zombie instanceof FlagZombie) {
+                zombie = (FlagZombie) zombie;
                 toXml += zombie.toXML() + "\n";
-            }else{
-                zombie = (ConeheadZombie)zombie;
+            } else {
+                zombie = (ConeheadZombie) zombie;
                 toXml += zombie.toXML() + "\n";
             }
         }
@@ -146,11 +161,12 @@ public class Wave implements Serializable {
 
     /**
      * Export the wave to XML to be used for loading a level
+     *
      * @return The xml file
      */
-    public File exportToXml(String fileName, String dir){
+    public File exportToXml(String fileName, String dir) {
         try {
-            File file = new File(dir + "\\" +  fileName + ".xml");
+            File file = new File(dir + "\\" + fileName + ".xml");
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             out.write(this.toXML());
             out.close();
@@ -190,7 +206,7 @@ public class Wave implements Serializable {
      * @return Returns the number of zombies left to spawn
      */
     public int getNumZombiesSpawn() {
-        return numZombieSpawn ;
+        return numZombieSpawn;
     }
 
     public int getNumZombieSpawn() {
@@ -213,9 +229,13 @@ public class Wave implements Serializable {
         Wave.waveNumber = waveNumber;
     }
 
-    public ArrayList<AbstractZombie> getZombieSpawn() {return zombieSpawn;}
+    public ArrayList<AbstractZombie> getZombieSpawn() {
+        return zombieSpawn;
+    }
 
-    public void setZombieSpawn(ArrayList<AbstractZombie> zombieSpawn) {this.zombieSpawn = zombieSpawn; }
+    public void setZombieSpawn(ArrayList<AbstractZombie> zombieSpawn) {
+        this.zombieSpawn = zombieSpawn;
+    }
 
     /**
      * @return true if wave is complete

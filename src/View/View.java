@@ -50,6 +50,7 @@ public class View extends JFrame {
         undo.setActionCommand("undo");
         redo.setActionCommand("redo");
         genWave.setActionCommand("genWave");
+        genWave.setEnabled(false);
 
         //Add buttons to action panel
         actionPanel.add(addSunflower);
@@ -150,6 +151,7 @@ public class View extends JFrame {
         undo.setEnabled(false);
         redo.setEnabled(false);
         exit.setEnabled(false);
+        genWave.setEnabled(false);
     }
 
     public void enableCommandBtns() {
@@ -164,6 +166,7 @@ public class View extends JFrame {
         undo.setEnabled(true);
         redo.setEnabled(true);
         exit.setEnabled(true);
+        genWave.setEnabled(true);
     }
 
     public void updateScorePanel(int wave, int score, int sun, int zombieAlive, int zombieLeft) {

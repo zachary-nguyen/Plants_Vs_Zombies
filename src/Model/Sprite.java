@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Plants vs Zombies
@@ -94,4 +95,14 @@ public abstract class Sprite implements Comparable,Serializable {
         this.setCounter(this.getCounter() - 1);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sprite sprite = (Sprite) o;
+        return health == sprite.health &&
+                damage == sprite.damage &&
+                counter == sprite.counter &&
+                image.equals(sprite.getImage());
+    }
 }

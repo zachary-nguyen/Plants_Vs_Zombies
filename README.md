@@ -77,5 +77,4 @@ Group: 11
 
   - Implementation of the Save/Load Feature.
   - Implementation of the Game Level Builder Feature.
-  - Implementation of Additional GUI Elements (I.E. Cancel Button).
   - Reduced bugs in the game, meaning a smoother experience for the user. 
